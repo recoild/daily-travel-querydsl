@@ -15,7 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     private final JwtAuthConverter jwtAuthConverter;
 
-    private String[] WHITE_LIST = {
+    private final String[] WHITE_LIST = {
             "/public/**",
             "/swagger-ui/**",
             "/v3/api-docs/**",
@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(WHITE_LIST).permitAll()
-                        .anyRequest().hasRole("client_user"))
+                        .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> {
                     oauth2.jwt(jwt -> {
                         jwt.jwtAuthenticationConverter(jwtAuthConverter);
@@ -43,5 +43,4 @@ public class SecurityConfig {
 
         return http.build();
     }
-
 }
