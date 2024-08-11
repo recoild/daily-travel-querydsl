@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: dailytravel
+
+  profiles:
+    active:
+      - local
+
+  config:
+    import: optional:file:.env[.properties]
