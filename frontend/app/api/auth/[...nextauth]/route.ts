@@ -5,6 +5,7 @@ import KeycloakProvider, {
 } from "next-auth/providers/keycloak";
 import { OAuthConfig } from "next-auth/providers/oauth";
 import { decode } from "next-auth/jwt";
+import GoogleProvider from "next-auth/providers/google";
 
 declare module "next-auth/jwt" {
     interface JWT {
@@ -15,10 +16,14 @@ declare module "next-auth/jwt" {
 
 export const authOptions: AuthOptions = {
     providers: [
-        KeycloakProvider({
-            clientId: process.env.KEYCLOAK_CLIENT_ID,
-            clientSecret: process.env.KEYCLOAK_CLIENT_SECRET,
-            issuer: process.env.KEYCLOAK_ISSUER,
+        // KeycloakProvider({
+        //     clientId: process.env.KEYCLOAK_CLIENT_ID,
+        //     clientSecret: process.env.KEYCLOAK_CLIENT_SECRET,
+        //     issuer: process.env.KEYCLOAK_ISSUER,
+        // }),
+        GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         }),
     ],
     callbacks: {
@@ -40,7 +45,9 @@ export const authOptions: AuthOptions = {
     },
     events: {
         async signIn({ user, account, profile }) {
-            console.log("Sign in", account?.access_token);
+            // console.log(user);
+            // console.log(account);
+            // console.log("Sign in", profile);
             if (account) {
                 try {
                     console.log("Fetching /hello with access token");
@@ -48,7 +55,7 @@ export const authOptions: AuthOptions = {
                         process.env.RESOURCE_SERVER_URL + "/hello",
                         {
                             headers: {
-                                Authorization: `Bearer ${account.access_token}`,
+                                Authorization: `Bearer ${account.id_token}`,
                             },
                             cache: "no-store",
                         }

@@ -3,5 +3,7 @@ declare namespace NodeJS {
         KEYCLOAK_CLIENT_ID: string;
         KEYCLOAK_CLIENT_SECRET: string;
         KEYCLOAK_ISSUER: string;
+        GOOGLE_CLIENT_ID: string;
+        GOOGLE_CLIENT_SECRET: string;
     }
 }

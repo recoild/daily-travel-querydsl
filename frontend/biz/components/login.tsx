@@ -18,7 +18,7 @@ export default function Login() {
     }
     return (
         <>
-            <Button onClick={() => signIn("keycloak")}>로그인</Button>
+            <Button onClick={() => signIn("google")}>로그인</Button>
         </>
     );
 }
