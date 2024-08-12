@@ -15,17 +15,16 @@ services:
       - "1521:1521"
     volumes:
       - oracle-data:/opt/oracle/oradata
-
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=local
-    volumes:
-      - frontend-data:/app
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     - NODE_ENV=local
+  #   volumes:
+  #     - frontend-data:/app
 
   # keycloakdb:
   #   image: postgres:16.3
