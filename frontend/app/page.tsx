@@ -1,6 +1,5 @@
 import { getPosts } from "@/biz/api/postApi";
 import PostList from "@/biz/components/post-list";
-import ProfileInfo from "@/biz/components/profile-info";
 import { getQueryClient } from "@/biz/providers/get-query-client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

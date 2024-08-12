@@ -1,46 +1,61 @@
 services:
-  oracle:
-    image: oracleinanutshell/oracle-xe-11g
+  oracledb:
+    image: gvenzl/oracle-free:23
+    environment:
+      ORACLE_PASSWORD: test
+      APP_USER: test
+      APP_USER_PASSWORD: test
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
     ports:
       - "1521:1521"
-    environment:
-      - ORACLE_ALLOW_REMOTE=true
     volumes:
-      - oracle-data:/u01/app/oracle
-    restart: always
+      - oracle-data:/opt/oracle/oradata
 
-  keycloakdb:
-    image: postgres:16.3
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-
-  keycloak:
-    image: quay.io/keycloak/keycloak:25.0.2
-    command: start-dev
-    environment:
-      KC_HOSTNAME: localhost
-      KC_HOSTNAME_PORT: 8081
-      KC_HOSTNAME_STRICT_BACKCHANNEL: false
-      KC_HOSTNAME_STRICT_HTTPS: false
-      KC_HTTP_ENABLED: true
-      KC_METRICS_ENABLED: true
-      KC_HEALTH_ENABLED: true
-      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
-      KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://keycloakdb:5432/${POSTGRES_DB}
-      KC_DB_USERNAME: ${POSTGRES_USER}
-      KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
-      KC_LOG_LEVEL: info
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
-      - 8081:8080
-    depends_on:
-      - keycloakdb
+      - "3000:3000"
+    environment:
+      - NODE_ENV=local
+
+  # keycloakdb:
+  #   image: postgres:16.3
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   environment:
+  #     POSTGRES_DB: ${POSTGRES_DB}
+  #     POSTGRES_USER: ${POSTGRES_USER}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+  # keycloak:
+  #   image: quay.io/keycloak/keycloak:25.0.2
+  #   command: start-dev
+  #   environment:
+  #     KC_HOSTNAME: localhost
+  #     KC_HOSTNAME_PORT: 8081
+  #     KC_HOSTNAME_STRICT_BACKCHANNEL: false
+  #     KC_HOSTNAME_STRICT_HTTPS: false
+  #     KC_HTTP_ENABLED: true
+  #     KC_METRICS_ENABLED: true
+  #     KC_HEALTH_ENABLED: true
+  #     KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+  #     KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+  #     KC_DB: postgres
+  #     KC_DB_URL: jdbc:postgresql://keycloakdb:5432/${POSTGRES_DB}
+  #     KC_DB_USERNAME: ${POSTGRES_USER}
+  #     KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
+  #     KC_LOG_LEVEL: info
+  #   ports:
+  #     - 8081:8080
+  #   depends_on:
+  #     - keycloakdb
 
 volumes:
-  oracle-data:
-  postgres_data:
+  oracle-data: # postgres_data:

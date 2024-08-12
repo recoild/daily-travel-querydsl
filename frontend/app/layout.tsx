@@ -4,7 +4,7 @@ import "./globals.css";
 import { ReactQueryProvider } from "@/biz/providers/react-query-provider";
 import { NextAuthProvider } from "@/biz/providers/next-auth-provider";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/utils/authOptions";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/biz/providers/theme-provider";
 
