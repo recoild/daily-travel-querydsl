@@ -25,6 +25,9 @@ dependencies {
     //spring-security-test
     testImplementation 'org.springframework.security:spring-security-test:6.3.1'
 
+    //flyway
+    runtimeOnly 'org.flywaydb:flyway-database-oracle:10.17.0'
+
     //web
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
