@@ -12,7 +12,7 @@ services:
       retries: 10
       start_period: 5s
     ports:
-      - "1521:1521"
+      - "2000:1521"
     volumes:
       - oracle-data:/opt/oracle/oradata
 
