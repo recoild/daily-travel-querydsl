@@ -12,7 +12,7 @@ services:
       retries: 10
       start_period: 5s
     ports:
-      - "2000:1521"
+      - "1521:1521"
     volumes:
       - oracle-data:/opt/oracle/oradata
 
@@ -24,6 +24,8 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=local
+    volumes:
+      - frontend-data:/app
 
   # keycloakdb:
   #   image: postgres:16.3
@@ -59,3 +61,4 @@ services:
 
 volumes:
   oracle-data: # postgres_data:
+  frontend-data:
