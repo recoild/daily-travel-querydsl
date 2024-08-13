@@ -22,6 +22,9 @@ public class Hashtag {
     @Column(name = "hashtag_id")
     private Long id;
 
+    @Column(name = "hashtag_name")
+    private String hashtagName;
+
     @OneToMany(mappedBy = "hashtag", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PostHashtag> postHashtags = new HashSet<>();
 }
