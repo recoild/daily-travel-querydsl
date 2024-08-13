@@ -27,7 +27,7 @@ class PostServiceImplTest {
     ObjectMapper objectMapper;
 
     @Autowired
-    PostService postService;
+    private UserRepository userRepository;
 
     @Autowired
     private PostRepository postRepository;
@@ -66,17 +66,17 @@ class PostServiceImplTest {
 
         Map<String, Object> tokenAttributes = new HashMap<String, Object>();
         tokenAttributes.put("data", data);
-
         String json = (String) tokenAttributes.get("data");
         PrincipalDTO principalDTO = objectMapper.readValue(json, PrincipalDTO.class);
 
         String uuid = principalDTO.getSub();
         // uuid로 user 객체 찾아서 post에 set insert
+        User findUser = userRepository.findByUuid(uuid);
 
-
+        post.setUser(findUser);
 
         //when
-        postService.insertPost(post);
+        postRepository.save(post);
 
         //then
         Optional<Post> findPost = postRepository.findById(1L);
