@@ -4,7 +4,7 @@ import com.fisa.dailytravel.post.dto.PostRequest;
 import com.fisa.dailytravel.post.dto.PostResponse;
 import org.springframework.stereotype.Service;
 
-@Service
+//@Service
 public interface PostService {
 
     String savePost(String uuid, PostRequest postRequest);

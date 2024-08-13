@@ -24,7 +24,6 @@ public class ObjectMapperTest {
     ObjectMapper objectMapper;
 
     private ModelMapper mapper = new ModelMapper();
-    private UserRepository userRepository;
 
 
     /**
@@ -62,9 +61,7 @@ public class ObjectMapperTest {
         user.setNickname(principalDTO.getName());
         user.setUuid(principalDTO.getSub());
 
-
         Assertions.assertThat("최영하").isEqualTo(principalDTO.getName());
-
     }
 
 

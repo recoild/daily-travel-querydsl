@@ -8,17 +8,19 @@ import com.fisa.dailytravel.like.repository.PostRepository;
 import com.fisa.dailytravel.post.models.Post;
 import com.fisa.dailytravel.user.controller.models.User;
 import com.fisa.dailytravel.user.controller.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class PostServiceImplTest {
@@ -35,6 +37,7 @@ class PostServiceImplTest {
     private ModelMapper mapper = new ModelMapper();
 
     @Test
+    @Transactional
     public void insertPost() throws JsonProcessingException {
         //given
         String data = "{"
@@ -70,16 +73,16 @@ class PostServiceImplTest {
         PrincipalDTO principalDTO = objectMapper.readValue(json, PrincipalDTO.class);
 
         String uuid = principalDTO.getSub();
-        // uuid로 user 객체 찾아서 post에 set insert
         User findUser = userRepository.findByUuid(uuid);
 
         post.setUser(findUser);
+        post.setCreatedAt(LocalDate.now());
 
         //when
         postRepository.save(post);
 
         //then
-        Optional<Post> findPost = postRepository.findById(1L);
+        Optional<Post> findPost = postRepository.findById(6L);
 
         Assertions.assertThat(findPost).isPresent();
         Assertions.assertThat("제목").isEqualTo(findPost.get().getTitle());
