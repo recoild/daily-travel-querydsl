@@ -39,4 +39,11 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "users_id", nullable = false)
     private User user;
+
+    public void setUser(Long usersId) {
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
