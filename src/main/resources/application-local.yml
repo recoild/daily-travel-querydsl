@@ -39,6 +39,8 @@ server:
     whitelabel:
       enabled: false # disable default whitelabel error page.
   shutdown: graceful
+  servlet:
+    context-path: /api
 
 keycloak:
   auth-server-url: ${KEYCLOAK_SERVER_URL}
