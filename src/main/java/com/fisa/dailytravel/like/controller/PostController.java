@@ -2,9 +2,9 @@ package com.fisa.dailytravel.like.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fisa.dailytravel.global.util.JsonUtil;
 import com.fisa.dailytravel.like.dto.PostDTO;
 import com.fisa.dailytravel.like.dto.PrincipalDTO;
+import com.fisa.dailytravel.like.repository.PostRepository;
 import com.fisa.dailytravel.like.service.PostService;
 import com.fisa.dailytravel.post.models.Post;
 import com.fisa.dailytravel.user.controller.models.User;
@@ -24,9 +24,10 @@ import java.util.Map;
 public class PostController {
 
     private final PostService postService;
+    private final PostRepository postRepository;
 
     private ModelMapper mapper = new ModelMapper();
-    private ObjectMapper obMapper = JsonUtil.getInstance();
+    private final ObjectMapper obMapper;
 
     public ResponseEntity<?> insertPost(@RequestBody PostDTO pDTO, JwtAuthenticationToken principal) throws JsonProcessingException {
         log.info("insert info start");
@@ -34,15 +35,9 @@ public class PostController {
 
         Map<String, Object> tokenAttributes = principal.getTokenAttributes();
         String json = obMapper.writeValueAsString(tokenAttributes);
+        log.info(json);
         PrincipalDTO principalDTO = obMapper.readValue(json, PrincipalDTO.class);
 
-        // 이메일, 이름, 닉네임 not null
-        User user = new User();
-        user.setEmail(principalDTO.getEmail());
-        user.setNickname(principalDTO.getName());
-        user.setUuid(principalDTO.getSub());
-
-        post.setUser(user);
 
         postService.insertPost(post);
 
