@@ -14,7 +14,6 @@ import java.util.Optional;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
-    private final UserRepository userRepository;
 
     // 게시판 생성
     @Override
