@@ -20,7 +20,6 @@ import java.util.List;
 @Builder
 @EqualsAndHashCode(of = "id")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
     @SequenceGenerator(name = "users_seq", sequenceName = "users_seq", allocationSize = 1)

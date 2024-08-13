@@ -15,9 +15,15 @@ public class HelloController {
     @GetMapping("/hello")
     public ResponseEntity<String> getMethodName(JwtAuthenticationToken principal) {
         Map<String, Object> info = new HashMap<>();
+        Map<String, Object> infoList = principal.getTokenAttributes();
+        System.out.println(infoList.get("name"));
+
         info.put("name", principal.getName());
         info.put("tokenAttributes", principal.getTokenAttributes());
-        log.info("info: {}", info);
+//        log.info("info: {}", info);
+//        log.info("infoDetail:" + info.get("tokenAttributes"));
+        Object tokenAttributes = info.get("tokenAttributes");
+
 
         return ResponseEntity.ok("Hello, " + principal.getName());
     }
