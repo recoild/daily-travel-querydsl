@@ -1,6 +1,7 @@
 package com.fisa.dailytravel.post.service;
 
 import com.fisa.dailytravel.post.dto.PostRequest;
+import com.fisa.dailytravel.post.dto.PostResponse;
 import com.fisa.dailytravel.post.models.Hashtag;
 import com.fisa.dailytravel.post.models.Image;
 import com.fisa.dailytravel.post.models.Post;
@@ -67,5 +68,11 @@ public class PostServiceImpl implements PostService {
                     .build());
         }
         return "게시글 저장 완료";
+    }
+
+    @Override
+    public PostResponse getPost(String uuid, Long postId) {
+        return PostResponse.of(postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글 없음")));
     }
 }
