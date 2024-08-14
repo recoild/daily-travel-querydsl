@@ -1,10 +1,7 @@
 package com.fisa.dailytravel.like.dto;
 
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.OffsetDateTime;
 import java.util.Date;
@@ -19,22 +16,24 @@ import java.util.Date;
  * email=gymlet789@gmail.com}
  */
 @ToString
-@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
 public class PrincipalDTO {
     private String at_hash;
     private String sub;
-    private String email_verified;
+    private boolean email_verified;
     private String iss;
     private String given_name;
     private String picture;
     private String aud;
     private String azp;
     private String name;
-    private OffsetDateTime exp;
+    private String exp;
     private String family_name;
-    private OffsetDateTime iat;
+    private String iat;
     private String email;
+
 
 }
