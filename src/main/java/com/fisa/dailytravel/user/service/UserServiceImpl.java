@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(Long id) {
-        return null;
+    public User getUser(String uuid) {
+        return userRepository.findByUuid(uuid);
     }
 }

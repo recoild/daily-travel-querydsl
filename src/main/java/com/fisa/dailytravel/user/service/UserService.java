@@ -6,5 +6,5 @@ import com.fisa.dailytravel.user.models.User;
 public interface UserService {
     public void signin(UserCreateRequest userCreateRequest) throws Exception;
 
-    User getUser(Long id);
+    User getUser(String uuid);
 }
