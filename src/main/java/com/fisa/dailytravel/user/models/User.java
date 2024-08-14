@@ -1,4 +1,4 @@
-package com.fisa.dailytravel.user.controller.models;
+package com.fisa.dailytravel.user.models;
 
 import com.fisa.dailytravel.comment.models.Comment;
 import com.fisa.dailytravel.like.models.Like;
@@ -6,8 +6,8 @@ import com.fisa.dailytravel.post.models.Post;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -38,11 +38,11 @@ public class User {
     @Column(name = "profile_image_path")
     private String profileImagePath;
 
-    @Column(name = "created_at", nullable = false)
-    private LocalDate createdAt;
+    @Column(name = "created_at", insertable = false, updatable = false, nullable = false)
+    private Date createdAt;
 
-    @Column(name = "updated_at")
-    private LocalDate updatedAt;
+    @Column(name = "updated_at", insertable = false, updatable = false)
+    private Date updatedAt;
 
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;

@@ -5,8 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fisa.dailytravel.like.dto.PostDTO;
 import com.fisa.dailytravel.like.dto.PrincipalDTO;
 import com.fisa.dailytravel.post.models.Post;
-import com.fisa.dailytravel.user.controller.models.User;
-import com.fisa.dailytravel.user.controller.repository.UserRepository;
+import com.fisa.dailytravel.user.models.User;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
@@ -15,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @SpringBootTest
 public class ObjectMapperTest {
@@ -28,6 +26,7 @@ public class ObjectMapperTest {
 
     /**
      * ObjectMapper 수동 DI 테스트
+     *
      * @throws JsonProcessingException
      */
     @Test
@@ -85,7 +84,6 @@ public class ObjectMapperTest {
         Assertions.assertThat("제목").isEqualTo(post.getTitle());
 
     }
-
 
 
 }

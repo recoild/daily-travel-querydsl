@@ -3,15 +3,14 @@ package com.fisa.dailytravel.post.service;
 import com.fisa.dailytravel.post.dto.PostRequest;
 import com.fisa.dailytravel.post.dto.PostResponse;
 import com.fisa.dailytravel.post.models.Hashtag;
-import com.fisa.dailytravel.post.models.Image;
 import com.fisa.dailytravel.post.models.Post;
 import com.fisa.dailytravel.post.models.PostHashtag;
 import com.fisa.dailytravel.post.repository.HashTagRepository;
 import com.fisa.dailytravel.post.repository.ImageRepository;
 import com.fisa.dailytravel.post.repository.PostHashtagRepository;
 import com.fisa.dailytravel.post.repository.PostRepository;
-import com.fisa.dailytravel.user.controller.models.User;
-import com.fisa.dailytravel.user.controller.repository.UserRepository;
+import com.fisa.dailytravel.user.models.User;
+import com.fisa.dailytravel.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +35,7 @@ public class PostServiceImpl implements PostService {
                 .title(postRequest.getTitle())
                 .content(postRequest.getContent())
                 .placeName(postRequest.getPlaceName()).likesCount(0)
-                .thumbnail(postRequest.getImageFiles().get(0))
+//                .thumbnail(postRequest.getImageFiles().get(0))
                 .latitude(postRequest.getLatitude())
                 .longitude(postRequest.getLongitude())
                 .createdAt(LocalDate.now())
@@ -45,14 +44,14 @@ public class PostServiceImpl implements PostService {
 
         postRepository.save(post);
 
-        List<String> imageFiles = postRequest.getImageFiles();
+//        List<String> imageFiles = postRequest.getImageFiles();
 
-        for (String imageFile : imageFiles) {
-            imageRepository.save(Image.builder()
-                    .post(post)
-                    .imagePath(imageFile)
-                    .build());
-        }
+//        for (String imageFile : imageFiles) {
+//            imageRepository.save(Image.builder()
+//                    .post(post)
+//                    .imagePath(imageFile)
+//                    .build());
+//        }
 
         List<String> hashtags = postRequest.getHashtag();
 
