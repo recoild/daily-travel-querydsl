@@ -12,6 +12,6 @@ import java.util.List;
 
 public interface CommentService {
     String createComment(String uuid, CommentRequest commentRequest);
-    Page<Comment> getPageComments(Long postId, CommentPageRequest commentPageRequest);
+    List<CommentResponse> getPageComments(Long postId, CommentPageRequest commentPageRequest);
     String deleteComment(String uuid, CommentRequest commentRequest);
 }
