@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -19,16 +18,15 @@ public class PostPreviewResponse {
     private String author;
     private int likeCount;
     private List<String> imageFiles;
-    private List<String> hashtags = new ArrayList<>();
+    private List<String> hashtags;
     private String creationDate;
 
-    public static PostPreviewResponse of(Post post, String author, String thumbnailUrl, List<String> hashtags) {
+    public static PostPreviewResponse of(Post post, List<String> hashtags) {
         return PostPreviewResponse.builder()
                 .id(post.getId())
                 .title(post.getTitle())
-                .author(author)
+                .author(post.getUser().getNickname())
                 .likeCount(post.getLikesCount())
-//                .imageFiles(thumbnailUrl)
                 .hashtags(hashtags)
                 .creationDate(post.getUpdatedAt() == null ? post.getCreatedAt().toString() : post.getUpdatedAt().toString())
                 .build();
