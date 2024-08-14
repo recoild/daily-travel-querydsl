@@ -1,6 +1,8 @@
 package com.fisa.dailytravel.post.controller;
 
 import com.fisa.dailytravel.global.dto.ApiResponse;
+import com.fisa.dailytravel.post.dto.PostPagingRequest;
+import com.fisa.dailytravel.post.dto.PostPagingResponse;
 import com.fisa.dailytravel.post.dto.PostRequest;
 import com.fisa.dailytravel.post.dto.PostResponse;
 import com.fisa.dailytravel.post.service.PostService;
@@ -26,5 +28,11 @@ public class PostController {
     public ApiResponse<PostResponse> getPost(@PathVariable("id") String postId, JwtAuthenticationToken principal) {
         String uuid = principal.getName();
         return ApiResponse.ok(postService.getPost(uuid, Long.valueOf(postId)));
+    }
+
+    @GetMapping("/v1/post")
+    public ApiResponse<PostPagingResponse> getPosts(@RequestBody PostPagingRequest postPagingRequest, JwtAuthenticationToken principal) {
+        String uuid = principal.getName();
+        return ApiResponse.ok(postService.getAllPosts(uuid, postPagingRequest));
     }
 }
