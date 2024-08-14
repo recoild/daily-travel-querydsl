@@ -5,7 +5,7 @@ import com.fisa.dailytravel.user.models.User;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
+
 @Table(name = "likes")
 @Getter
 @Setter
@@ -13,6 +13,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(of = "id")
+@Entity
 public class Like {
 
     @Id

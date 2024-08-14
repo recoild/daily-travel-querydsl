@@ -2,7 +2,7 @@ package com.fisa.dailytravel.like.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fisa.dailytravel.global.dto.ApiResponse;
-import com.fisa.dailytravel.like.dto.PostDTO;
+import com.fisa.dailytravel.like.dto.PostRequest;
 import com.fisa.dailytravel.like.service.PostLikeService;
 import com.fisa.dailytravel.post.models.Post;
 import com.fisa.dailytravel.user.models.User;
@@ -23,24 +23,13 @@ import java.time.LocalDate;
 public class PostLikeController {
 
     private final PostLikeService postLikeService;
-    private final UserRepository userRepository;
 
-    private ModelMapper mapper = new ModelMapper();
 
     @PostMapping("/v1/mockPost")
-    public ApiResponse insertPost(@RequestBody PostDTO pDTO, JwtAuthenticationToken principal) throws JsonProcessingException {
-        log.info("insert info start");
-        Post post = mapper.map(pDTO, Post.class);
+    public ApiResponse insertPost(@RequestBody PostRequest pDTO, JwtAuthenticationToken principal) throws JsonProcessingException {
+        postLikeService.insertPost(pDTO, principal);
 
-        String uuid = principal.getName();
-        User findUser = userRepository.findByUuid(uuid);
 
-        post.setUser(findUser);
-        post.setCreatedAt(LocalDate.now());
-
-        postLikeService.insertPost(post);
-
-        log.info("insert info end");
         return ApiResponse.ok();
     }
 
