@@ -2,8 +2,7 @@ package com.fisa.dailytravel.post.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.fisa.dailytravel.global.config.S3Uploader;
-import com.fisa.dailytravel.post.dto.PostRequest;
-import com.fisa.dailytravel.post.dto.PostResponse;
+import com.fisa.dailytravel.post.dto.*;
 import com.fisa.dailytravel.post.models.Hashtag;
 import com.fisa.dailytravel.post.models.Image;
 import com.fisa.dailytravel.post.models.Post;
@@ -15,7 +14,10 @@ import com.fisa.dailytravel.post.repository.PostRepository;
 import com.fisa.dailytravel.user.models.User;
 import com.fisa.dailytravel.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -94,5 +96,31 @@ public class PostServiceImpl implements PostService {
         }
 
         return PostResponse.of(post.get(), imageFiles);
+    }
+
+    @Transactional
+    @Override
+    public PostPagingResponse getAllPosts(String uuid, PostPagingRequest postPagingRequest) {
+        Page<Post> postPageList = postRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(postPagingRequest.getPage(), postPagingRequest.getCount()));
+
+        List<PostPreviewResponse> postPreviewResponses = new ArrayList<>();
+
+        postPageList.stream().forEach(post -> {
+            List<PostHashtag> postHashtag = postHashtagRepository.findByPostId(post.getId());
+
+            List<String> hashtags = new ArrayList<>();
+
+            for (PostHashtag hashtag : postHashtag) {
+                hashtags.add(hashtag.getHashtag().getHashtagName());
+            }
+
+            postPreviewResponses.add(PostPreviewResponse.of(post, hashtags));
+        });
+
+        return PostPagingResponse.builder()
+                .page(postPagingRequest.getPage())
+                .postPreviewResponses(postPreviewResponses)
+                .isEnd(postPageList.isLast())
+                .build();
     }
 }
