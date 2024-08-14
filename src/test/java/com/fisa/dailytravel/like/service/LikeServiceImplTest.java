@@ -1,9 +1,12 @@
 package com.fisa.dailytravel.like.service;
 
+import com.fisa.dailytravel.post.dto.PostResponse;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 @SpringBootTest
 class LikeServiceImplTest {
@@ -14,14 +17,20 @@ class LikeServiceImplTest {
     /**
      * 즐겨찾기 (좋아요 누른) 게시물 가져오기
      */
+    @Test
     void favoriteGetPostList(){
         //given
-        String uuid = "";
+        String uuid = "111969318487959339341";
+        int page = 0;
+        int count = 10;
 
         //when
-        //likeService.favoritePosts();
+        List<PostResponse> postResponses = likeService.favoritePosts(uuid, page, count);
+
+        postResponses.forEach(System.out::println);
 
         //then
+        Assertions.assertThat(postResponses).isNotNull();
     }
 
 

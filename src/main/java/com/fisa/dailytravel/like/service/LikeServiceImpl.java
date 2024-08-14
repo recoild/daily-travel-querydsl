@@ -8,13 +8,13 @@ import com.fisa.dailytravel.post.models.Post;
 import com.fisa.dailytravel.post.repository.PostRepository;
 import com.fisa.dailytravel.user.models.User;
 import com.fisa.dailytravel.user.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.parameters.P;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +27,6 @@ public class LikeServiceImpl implements LikeService{
     private final LikeRepository likeRepository;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
-
 
     @Transactional
     @Override
@@ -58,6 +57,7 @@ public class LikeServiceImpl implements LikeService{
                 });
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<PostResponse> favoritePosts(String uuid, int page, int count) {
         User user = userRepository.findByUuid(uuid);
