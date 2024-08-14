@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post, Long> {
+public interface PostLikeRepository extends JpaRepository<Post, Long> {
 
 }

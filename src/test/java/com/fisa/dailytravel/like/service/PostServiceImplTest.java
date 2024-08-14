@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fisa.dailytravel.like.dto.PostDTO;
 import com.fisa.dailytravel.like.dto.PrincipalDTO;
-import com.fisa.dailytravel.like.repository.PostRepository;
+import com.fisa.dailytravel.like.repository.PostLikeRepository;
 import com.fisa.dailytravel.post.models.Post;
 import com.fisa.dailytravel.user.controller.models.User;
 import com.fisa.dailytravel.user.controller.repository.UserRepository;
@@ -32,7 +32,7 @@ class PostServiceImplTest {
     private UserRepository userRepository;
 
     @Autowired
-    private PostRepository postRepository;
+    private PostLikeRepository postRepository;
 
     private ModelMapper mapper = new ModelMapper();
 
