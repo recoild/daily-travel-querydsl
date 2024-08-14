@@ -57,6 +57,9 @@ dependencies {
 
     //resource server
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+
+    //s3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 }
 
 test {
