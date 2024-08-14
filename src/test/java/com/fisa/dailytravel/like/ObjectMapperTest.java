@@ -2,7 +2,7 @@ package com.fisa.dailytravel.like;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fisa.dailytravel.like.dto.PostDTO;
+import com.fisa.dailytravel.like.dto.PostRequest;
 import com.fisa.dailytravel.like.dto.PrincipalDTO;
 import com.fisa.dailytravel.post.models.Post;
 import com.fisa.dailytravel.user.models.User;
@@ -69,14 +69,14 @@ public class ObjectMapperTest {
      */
     @Test
     public void modelMapperTest() {
-        PostDTO pDTO = new PostDTO();
+        PostRequest pDTO = new PostRequest();
 
         pDTO.setPostTitle("제목");
         pDTO.setLatitude(37.123);
         pDTO.setLongitude(126.889);
         pDTO.setThumbnail("https://lh3.googleusercontent.com/a/ACg8ocITbuhJ_pg3L6has17MvaLkNzNK3L7CaVKAWsJKjyTGakAzWA=s96-c");
         pDTO.setLikesCount(2);
-        pDTO.setPostContent("내용ㅇ입니다.");
+        pDTO.setPostContent("내용입니다.");
         pDTO.setPlaceName("우리FIS");
 
         Post post = mapper.map(pDTO, Post.class);

@@ -2,22 +2,21 @@ package com.fisa.dailytravel.like.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fisa.dailytravel.like.dto.PostDTO;
-import com.fisa.dailytravel.like.dto.PrincipalDTO;
+
+import com.fisa.dailytravel.like.dto.PostRequest;
 import com.fisa.dailytravel.like.repository.PostLikeRepository;
+
 import com.fisa.dailytravel.post.models.Post;
 import com.fisa.dailytravel.user.models.User;
 import com.fisa.dailytravel.user.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 
@@ -31,60 +30,37 @@ class PostServiceImplTest {
     private UserRepository userRepository;
 
     @Autowired
-    private PostLikeRepository postRepository;
+    private PostLikeRepository postLikeRepository;
 
     private ModelMapper mapper = new ModelMapper();
 
     @Test
-    @Transactional
     public void insertPost() throws JsonProcessingException {
-        //given
-        String data = "{"
-                + "\"at_hash\": \"uoiS7Ahf1Jqu9Me1JqHT3A\","
-                + "\"sub\": \"111969318487959339341\","
-                + "\"email_verified\": true,"
-                + "\"iss\": \"https://accounts.google.com\","
-                + "\"given_name\": \"영하\","
-                + "\"picture\": \"https://lh3.googleusercontent.com/a/ACg8ocITbuhJ_pg3L6has17MvaLkNzNK3L7CaVKAWsJKjyTGakAzWA=s96-c\","
-                + "\"aud\": \"756324778211-bt04f318ugn8fb23jrdg2u495i5m18d8.apps.googleusercontent.com\","
-                + "\"azp\": \"756324778211-bt04f318ugn8fb23jrdg2u495i5m18d8.apps.googleusercontent.com\","
-                + "\"name\": \"최영하\","
-                + "\"exp\": \"2024-08-13T06:41:23Z\","
-                + "\"family_name\": \"최\","
-                + "\"iat\": \"2024-08-13T05:41:23Z\","
-                + "\"email\": \"gymlet789@gmail.com\""
-                + "}";
+        String uuid = "111969318487959339341";
+        PostRequest pDTO = PostRequest.builder()
+                .postTitle("Sample Title")
+                .postContent("This is a sample post content.")
+                .placeName("Sample Place")
+                .likesCount(100)
+                .thumbnail("sample_thumbnail.jpg")
+                .latitude(37.7749)
+                .longitude(-122.4194)
+                .build();
 
-        PostDTO pDTO = new PostDTO();
-        pDTO.setPostTitle("제목");
-        pDTO.setLatitude(37.123);
-        pDTO.setLongitude(126.889);
-        pDTO.setThumbnail("https://lh3.googleusercontent.com/a/ACg8ocITbuhJ_pg3L6has17MvaLkNzNK3L7CaVKAWsJKjyTGakAzWA=s96-c");
-        pDTO.setLikesCount(2);
-        pDTO.setPostContent("내용ㅇ입니다.");
-        pDTO.setPlaceName("우리FIS");
+        User user = userRepository.findByUuid(uuid);
 
         Post post = mapper.map(pDTO, Post.class);
-
-        Map<String, Object> tokenAttributes = new HashMap<String, Object>();
-        tokenAttributes.put("data", data);
-        String json = (String) tokenAttributes.get("data");
-        PrincipalDTO principalDTO = objectMapper.readValue(json, PrincipalDTO.class);
-
-        String uuid = principalDTO.getSub();
-        User findUser = userRepository.findByUuid(uuid);
-
-        post.setUser(findUser);
         post.setCreatedAt(LocalDate.now());
+        post.setUser(user);
 
         //when
-        postRepository.save(post);
+        postLikeRepository.save(post);
 
         //then
-        Optional<Post> findPost = postRepository.findById(6L);
+        Optional<Post> findPost = postLikeRepository.findById(20L);
 
         Assertions.assertThat(findPost).isPresent();
-        Assertions.assertThat("제목").isEqualTo(findPost.get().getTitle());
+        Assertions.assertThat("Sample Title").isEqualTo(findPost.get().getTitle());
     }
 
 }
