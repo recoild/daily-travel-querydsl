@@ -23,7 +23,6 @@ import java.util.Date;
 @EqualsAndHashCode(of = "id")
 @Table(name = "comments")
 @Entity
-//@EntityListeners(AuditingEntityListener.class)
 public class Comment {
 
     @Id
@@ -39,12 +38,10 @@ public class Comment {
     @Column(name = "comments_content", nullable = false)
     private String content;
 
-//    @CreatedDate
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Date createdAt;
 
-//    @LastModifiedDate
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
@@ -53,13 +50,4 @@ public class Comment {
     @JoinColumn(name = "users_id", nullable = false)
     private User user;
 
-//    public void setUser(User usersId) {
-//    }
-
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
-
-    public void setUser(User user) {
-    }
 }
