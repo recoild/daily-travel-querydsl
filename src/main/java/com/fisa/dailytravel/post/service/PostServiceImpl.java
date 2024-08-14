@@ -40,7 +40,6 @@ public class PostServiceImpl implements PostService {
     public String savePost(String uuid, PostRequest postRequest) throws IOException {
         User user = userRepository.findByUuid(uuid);
 
-        // TODO: thumbnail 경로 이름 수정
         Post post = Post.builder()
                 .title(postRequest.getTitle())
                 .content(postRequest.getContent())

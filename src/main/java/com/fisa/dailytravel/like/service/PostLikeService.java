@@ -8,4 +8,5 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 public interface PostLikeService {
 
     public void insertPost(PostRequest pDTO, JwtAuthenticationToken principal);
+
 }
