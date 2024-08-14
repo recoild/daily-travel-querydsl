@@ -6,8 +6,8 @@ import com.fisa.dailytravel.post.models.Post;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -39,10 +39,10 @@ public class User {
     private String profileImagePath;
 
     @Column(name = "created_at", insertable = false, updatable = false, nullable = false)
-    private Date createdAt;
+    private LocalDate createdAt;
 
     @Column(name = "updated_at", insertable = false, updatable = false)
-    private Date updatedAt;
+    private LocalDate updatedAt;
 
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;

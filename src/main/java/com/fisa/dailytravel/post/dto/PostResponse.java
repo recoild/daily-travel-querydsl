@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,11 +19,12 @@ public class PostResponse {
     private String placeName;
     private int likesCount;
     private String thumbnail;
+    private List<String> images;
     private Double latitude;
     private Double longitude;
-    private LocalDate date;
+    private String creationDate;
 
-    public static PostResponse of(Post post) {
+    public static PostResponse of(Post post, List<String> imageFiles) {
         return PostResponse.builder()
                 .title(post.getTitle())
                 .content(post.getContent())
@@ -31,9 +32,10 @@ public class PostResponse {
                 .placeName(post.getPlaceName())
                 .likesCount(post.getLikesCount())
                 .thumbnail(post.getThumbnail())
+                .images(imageFiles)
                 .latitude(post.getLatitude())
                 .longitude(post.getLongitude())
-                .date(post.getUpdatedAt() == null ? post.getCreatedAt() : post.getUpdatedAt())
+                .creationDate(post.getUpdatedAt() == null ? post.getCreatedAt().toString() : post.getUpdatedAt().toString())
                 .build();
     }
 }
