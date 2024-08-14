@@ -1,10 +1,8 @@
 package com.fisa.dailytravel.like.dto;
 
-
 import lombok.*;
 
 @Builder
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -17,4 +15,5 @@ public class PostRequest {
     private String thumbnail;
     private Double latitude;
     private Double longitude;
+
 }
