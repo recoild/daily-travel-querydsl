@@ -2,11 +2,12 @@ package com.fisa.dailytravel.post.service;
 
 import com.fisa.dailytravel.post.dto.PostRequest;
 import com.fisa.dailytravel.post.dto.PostResponse;
-import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 public interface PostService {
 
-    String savePost(String uuid, PostRequest postRequest);
+    String savePost(String uuid, PostRequest postRequest) throws IOException;
 
     PostResponse getPost(String uuid, Long postId);
 }
