@@ -4,17 +4,26 @@ import com.fisa.dailytravel.post.models.Post;
 import com.fisa.dailytravel.user.models.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
+import java.util.Date;
 
-@Entity
-@Table(name = "comments")
-@Getter
-@Setter
+
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @Builder
+@ToString
 @EqualsAndHashCode(of = "id")
+@Table(name = "comments")
+@Entity
+//@EntityListeners(AuditingEntityListener.class)
 public class Comment {
 
     @Id
@@ -30,13 +39,27 @@ public class Comment {
     @Column(name = "comments_content", nullable = false)
     private String content;
 
-    @Column(name = "created_at", nullable = false)
-    private LocalDate createdAt;
+//    @CreatedDate
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private Date createdAt;
 
+//    @LastModifiedDate
+    @UpdateTimestamp
     @Column(name = "updated_at")
-    private LocalDate updatedAt;
+    private Date updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "users_id", nullable = false)
     private User user;
+
+//    public void setUser(User usersId) {
+//    }
+
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
+
+    public void setUser(User user) {
+    }
 }
