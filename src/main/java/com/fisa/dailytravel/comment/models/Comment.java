@@ -1,7 +1,7 @@
 package com.fisa.dailytravel.comment.models;
 
 import com.fisa.dailytravel.post.models.Post;
-import com.fisa.dailytravel.user.controller.models.User;
+import com.fisa.dailytravel.user.models.User;
 import jakarta.persistence.*;
 import lombok.*;
 
