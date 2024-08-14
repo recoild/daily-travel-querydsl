@@ -48,7 +48,6 @@ public class PostServiceImpl implements PostService {
                 .thumbnail(postRequest.getImageFiles().get(0).getOriginalFilename())
                 .latitude(postRequest.getLatitude())
                 .longitude(postRequest.getLongitude())
-//                .createdAt(LocalDate.now())
                 .user(user)
                 .build();
 
@@ -65,7 +64,7 @@ public class PostServiceImpl implements PostService {
                     .build());
         }
 
-        List<String> hashtags = postRequest.getHashtag();
+        List<String> hashtags = postRequest.getHashtags();
 
         for (String hashtagName : hashtags) {
             Hashtag hashtag = Hashtag.builder()
