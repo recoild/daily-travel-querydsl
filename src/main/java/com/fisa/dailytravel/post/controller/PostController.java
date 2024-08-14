@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RequiredArgsConstructor
 @RestController
 public class PostController {
@@ -15,7 +17,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/v1/post")
-    public ApiResponse<String> createPost(@ModelAttribute PostRequest postRequest, JwtAuthenticationToken principal) {
+    public ApiResponse<String> createPost(@ModelAttribute PostRequest postRequest, JwtAuthenticationToken principal) throws IOException {
         String uuid = principal.getName();
         return ApiResponse.ok(postService.savePost(uuid, postRequest));
     }
