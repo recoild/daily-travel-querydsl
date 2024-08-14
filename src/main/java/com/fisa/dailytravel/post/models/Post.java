@@ -47,10 +47,10 @@ public class Post {
     private Double longitude;
 
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at", insertable = false, updatable = false, nullable = false)
     private Date createdAt;
 
-    @Column(insertable = false, name = "updated_at")
+    @Column(name = "updated_at", insertable = false, updatable = false)
     private Date updatedAt;
 
     @ManyToOne

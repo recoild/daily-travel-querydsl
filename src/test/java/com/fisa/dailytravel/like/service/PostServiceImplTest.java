@@ -50,14 +50,13 @@ class PostServiceImplTest {
         User user = userRepository.findByUuid(uuid);
 
         Post post = mapper.map(pDTO, Post.class);
-        post.setCreatedAt(LocalDate.now());
         post.setUser(user);
 
         //when
         postLikeRepository.save(post);
 
         //then
-        Optional<Post> findPost = postLikeRepository.findById(20L);
+        Optional<Post> findPost = postLikeRepository.findById(21L);
 
         Assertions.assertThat(findPost).isPresent();
         Assertions.assertThat("Sample Title").isEqualTo(findPost.get().getTitle());
