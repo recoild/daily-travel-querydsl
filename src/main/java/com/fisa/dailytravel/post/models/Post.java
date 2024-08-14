@@ -6,13 +6,9 @@ import com.fisa.dailytravel.user.models.User;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-@Entity
+
 @Table(name = "post")
 @Getter
 @Setter
@@ -20,6 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(of = "id")
+@Entity
 public class Post {
 
     @Id
@@ -49,11 +46,12 @@ public class Post {
     @Column(name = "longitude", columnDefinition = "NUMBER(9, 6)")
     private Double longitude;
 
-    @Column(name = "created_at", nullable = false)
-    private LocalDate createdAt;
 
-    @Column(name = "updated_at")
-    private LocalDate updatedAt;
+    @Column(name = "created_at", nullable = false)
+    private Date createdAt;
+
+    @Column(insertable = false, name = "updated_at")
+    private Date updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "users_id", nullable = false)
