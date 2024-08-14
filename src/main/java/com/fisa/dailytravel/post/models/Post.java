@@ -5,7 +5,6 @@ import com.fisa.dailytravel.like.models.Like;
 import com.fisa.dailytravel.user.models.User;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.*;
 
@@ -47,11 +46,10 @@ public class Post {
     @Column(name = "longitude", columnDefinition = "NUMBER(9, 6)")
     private Double longitude;
 
-    @CreationTimestamp
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at", insertable = false, updatable = false, nullable = false)
     private Date createdAt;
 
-    @Column(insertable = false, name = "updated_at")
+    @Column(name = "updated_at", insertable = false, updatable = false)
     private Date updatedAt;
 
     @ManyToOne

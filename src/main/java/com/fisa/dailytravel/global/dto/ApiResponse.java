@@ -33,6 +33,15 @@ public class ApiResponse<T> {
                 .build();
     }
 
+    // 생성 완료
+    public static <T> ApiResponse<T> created(T data) {
+        return (ApiResponse<T>) ApiResponse.builder()
+                .status(HttpStatus.CREATED)
+                .message("생성 완료")
+                .data(data)
+                .build();
+    }
+
     // 실패했을 때
     public static <T> ApiResponse<T> error(T errorCode) {
         return (ApiResponse<T>) ApiResponse.builder()
