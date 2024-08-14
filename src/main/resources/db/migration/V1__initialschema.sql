@@ -116,28 +116,3 @@ START WITH 1
 INCREMENT BY 1
 NOCACHE
 NOCYCLE;
-
--- 데이터 삽입
-INSERT INTO USERS (users_id, uuid, email, nickname, profile_image_path, created_at, updated_at, is_deleted)
-VALUES (users_seq.NEXTVAL, 'google', 'jjeong@naver.com', 'jjeong', '/images/jjeong.jpg', SYSDATE, SYSDATE, 0);
-
-INSERT INTO USERS (users_id, uuid, email, nickname, profile_image_path, created_at, updated_at, is_deleted)
-VALUES (users_seq.NEXTVAL, 'google', 'youngha@naver.com', 'youngha', '/images/youngha.jpg', SYSDATE, SYSDATE, 0);
-
-INSERT INTO USERS (users_id, uuid, email, nickname, profile_image_path, created_at, updated_at, is_deleted)
-VALUES (users_seq.NEXTVAL, 'google', 'jaehyeong@naver.com', 'jaehyeong', '/images/jaehyeong.jpg', SYSDATE, SYSDATE, 0);
-
-INSERT INTO USERS (users_id, uuid, email, nickname, profile_image_path, created_at, updated_at, is_deleted)
-VALUES (users_seq.NEXTVAL, 'google', 'yuna@naver.com', 'yuna', '/images/yuna.jpg', SYSDATE, SYSDATE, 0);
-
-INSERT INTO POST (post_id, post_title, post_content, place_name, likes_count, thumbnail, latitude, longitude, created_at, updated_at, users_id)
-VALUES (post_seq.NEXTVAL, '우리 FISA', '3기', '상암', 525, 'thumbnail', 37.5833854182651, 126.885992324027, SYSDATE, SYSDATE, 1);
-
-INSERT INTO COMMENTS (comments_id, post_id, users_id, comments_content, created_at, updated_at)
-VALUES (comments_seq.NEXTVAL, 1, 1, '클라우드 엔지니어링', SYSDATE, SYSDATE);
-
-INSERT INTO COMMENTS (comments_id, post_id, users_id, comments_content, created_at, updated_at)
-VALUES (comments_seq.NEXTVAL, 1, 1, '클라우드 서비스 개발', SYSDATE, SYSDATE);
-
-INSERT INTO COMMENTS (comments_id, post_id, users_id, comments_content, created_at, updated_at)
-VALUES (comments_seq.NEXTVAL, 1, 1, 'AI 엔지니어링', SYSDATE, SYSDATE);

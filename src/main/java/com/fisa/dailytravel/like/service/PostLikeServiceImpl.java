@@ -27,7 +27,7 @@ public class PostLikeServiceImpl implements PostLikeService {
 
         User user = userRepository.findByUuid(uuid);
         post.setUser(user);
-        post.setCreatedAt(LocalDate.now());
+//        post.setCreatedAt(LocalDate.now());
         postLikeRepository.save(post);
     }
 }
