@@ -4,12 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fisa.dailytravel.global.dto.ApiResponse;
 import com.fisa.dailytravel.like.dto.PostRequest;
 import com.fisa.dailytravel.like.service.PostLikeService;
-import com.fisa.dailytravel.post.models.Post;
-import com.fisa.dailytravel.user.models.User;
-import com.fisa.dailytravel.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,14 +20,10 @@ public class PostLikeController {
 
     private final PostLikeService postLikeService;
 
-
     @PostMapping("/v1/mockPost")
     public ApiResponse insertPost(@RequestBody PostRequest pDTO, JwtAuthenticationToken principal) throws JsonProcessingException {
         postLikeService.insertPost(pDTO, principal);
-
-
         return ApiResponse.ok();
     }
-
 
 }
