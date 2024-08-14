@@ -3,6 +3,8 @@ package com.fisa.dailytravel.comment.controller;
 import com.fisa.dailytravel.comment.dto.CommentRequest;
 import com.fisa.dailytravel.comment.dto.CommentResponse;
 import com.fisa.dailytravel.comment.service.CommentService;
+import com.fisa.dailytravel.global.dto.ApiResponse;
+import com.fisa.dailytravel.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -12,27 +14,31 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @Slf4j
+@RestController
 @RequiredArgsConstructor
 public class CommentController {
 
- //   private final PostService postService;
+    private final PostService postService;
     private final CommentService commentService;
 
     // 해당 게시글의 글 작성
     @PostMapping("/v1/comments")
-    public ResponseEntity<CommentResponse> createComment(@RequestBody CommentRequest commentRequest, JwtAuthenticationToken principal) { // id -> commentsId
+    public ApiResponse<CommentResponse> createComment(@RequestBody CommentRequest commentRequest, JwtAuthenticationToken principal) { // id -> commentsId
 
         log.info("comment insert start!");
         try {
             // JwtAuthenticationToken principal, principal.getName()
-            CommentResponse comment = commentService.createComment(commentRequest, principal);
-            log.info("comment insert end!");
-            return ResponseEntity.status(HttpStatus.CREATED).body(comment);
+//            CommentResponse comment = commentService.createComment(commentRequest, principal);
+//            log.info("comment insert end!");
+            String uuid = principal.getName();
+            System.out.println(commentRequest);
+            return ApiResponse.ok(commentService.createComment(uuid, commentRequest));
+//            return ResponseEntity.status(HttpStatus.CREATED).body(comment);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return null;
+            //return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 

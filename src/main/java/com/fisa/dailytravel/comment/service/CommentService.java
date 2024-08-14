@@ -7,7 +7,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import java.util.List;
 
 public interface CommentService {
-    CommentResponse createComment(CommentRequest commentRequest, JwtAuthenticationToken principal);
+    CommentResponse createComment(String uuid, CommentRequest commentRequest);
     List<CommentResponse> getAllComments(Long id);
     void deleteComment(Long id, Long commentsId);
 }

@@ -5,7 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserCreateRequest {
+public class UserModifyRequest {
     private String uuid;
-    private String email;
+    private String nickname;
+    private String profileImage;
 }
