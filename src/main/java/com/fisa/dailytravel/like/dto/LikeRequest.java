@@ -9,4 +9,6 @@ import lombok.*;
 @Getter
 public class LikeRequest {
     private Long postId;
+    private int page;
+    private int count;
 }

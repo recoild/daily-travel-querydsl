@@ -16,4 +16,6 @@ public class PostRequest {
     private Double latitude;
     private Double longitude;
 
+
+
 }

@@ -10,6 +10,24 @@ class LikeServiceImplTest {
 
     @Autowired
     LikeService likeService;
+
+    /**
+     * 즐겨찾기 (좋아요 누른) 게시물 가져오기
+     */
+    void favoriteGetPostList(){
+        //given
+        String uuid = "";
+
+        //when
+        //likeService.favoritePosts();
+
+        //then
+    }
+
+
+
+
+
     /**
      * 좋아요를 안 눌렀으면 좋아요 등록
      */
@@ -41,4 +59,5 @@ class LikeServiceImplTest {
         //then
         Assertions.assertThat(like).isFalse();
     }
+
 }

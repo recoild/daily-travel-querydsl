@@ -15,8 +15,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-
-import java.time.LocalDate;
 import java.util.Optional;
 
 
@@ -56,7 +54,7 @@ class PostServiceImplTest {
         postLikeRepository.save(post);
 
         //then
-        Optional<Post> findPost = postLikeRepository.findById(21L);
+        Optional<Post> findPost = postLikeRepository.findById(23L);
 
         Assertions.assertThat(findPost).isPresent();
         Assertions.assertThat("Sample Title").isEqualTo(findPost.get().getTitle());
