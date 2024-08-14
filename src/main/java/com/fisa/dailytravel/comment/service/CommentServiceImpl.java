@@ -51,9 +51,13 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Page<Comment> getPageComments(Long postId, CommentPageRequest commentPageRequest) {
+    public List<CommentResponse> getPageComments(Long postId, CommentPageRequest commentPageRequest) {
         Pageable pageable = PageRequest.of(commentPageRequest.getPage(), commentPageRequest.getCount());
-        return commentRepository.findByPostId(postId, pageable);
+
+        Page<Comment> comments = commentRepository.findByPostId(postId, pageable);
+        List<CommentResponse> commentResponses = comments.stream().map(comment -> CommentResponse.of(comment)).collect(Collectors.toList());
+
+        return commentResponses;
     }
 
     @Override

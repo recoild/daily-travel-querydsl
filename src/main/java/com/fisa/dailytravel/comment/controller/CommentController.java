@@ -1,11 +1,12 @@
 package com.fisa.dailytravel.comment.controller;
 
+import com.fisa.dailytravel.comment.dto.CommentListResponse;
 import com.fisa.dailytravel.comment.dto.CommentPageRequest;
 import com.fisa.dailytravel.comment.dto.CommentRequest;
+import com.fisa.dailytravel.comment.dto.CommentResponse;
 import com.fisa.dailytravel.comment.models.Comment;
 import com.fisa.dailytravel.comment.service.CommentService;
 import com.fisa.dailytravel.global.dto.ApiResponse;
-import com.fisa.dailytravel.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -36,17 +37,19 @@ public class CommentController {
     }
 
     // 해당 게시글의 댓글 목록 조회
-//    @GetMapping("v1/comments/{postId}")
-//    public ApiResponse<List<String>> getPageComments(@PathVariable("postId") Long postId, @RequestBody CommentPageRequest commentPageRequest) {
-//        try {
-//            return ApiResponse.ok(commentService.getPageComments(postId, commentPageRequest));
-////            List<Comment> comments = commentService.getPageComments(postId, commentPageRequest).getContent();
-////            return ApiResponse.ok(comments);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
+    @GetMapping("v1/comments/{postId}")
+    public ApiResponse<CommentListResponse> getPageComments(@PathVariable("postId") Long postId, @RequestBody CommentPageRequest commentPageRequest, JwtAuthenticationToken principal) {
+        try {
+            List<CommentResponse> comments = commentService.getPageComments(postId, commentPageRequest);
+
+            return ApiResponse.ok(CommentListResponse.builder().comments(comments).build());
+//            List<Comment> comments = commentService.getPageComments(postId, commentPageRequest).getContent();
+//            return ApiResponse.ok(comments);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     // 해당 게시글의 댓글 삭제
     @DeleteMapping("/v1/comments")

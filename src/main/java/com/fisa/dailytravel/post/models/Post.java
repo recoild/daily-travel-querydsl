@@ -46,6 +46,7 @@ public class Post {
     @Column(name = "longitude", columnDefinition = "NUMBER(9, 6)")
     private Double longitude;
 
+//    @CreationTimestamp
     @Column(name = "created_at", insertable = false, updatable = false, nullable = false)
     private Date createdAt;
 
