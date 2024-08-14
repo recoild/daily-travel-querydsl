@@ -19,6 +19,4 @@ public class PostRequest {
     private List<String> hashtag;
     private double latitude;
     private double longitude;
-
-    
 }

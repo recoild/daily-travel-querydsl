@@ -27,7 +27,7 @@ public class PostLikeController {
 
     private ModelMapper mapper = new ModelMapper();
 
-    @PostMapping("/v1/post")
+    @PostMapping("/v1/mockPost")
     public ApiResponse insertPost(@RequestBody PostDTO pDTO, JwtAuthenticationToken principal) throws JsonProcessingException {
         log.info("insert info start");
         Post post = mapper.map(pDTO, Post.class);
