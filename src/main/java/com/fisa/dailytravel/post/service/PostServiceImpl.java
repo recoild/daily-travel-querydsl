@@ -63,7 +63,7 @@ public class PostServiceImpl implements PostService {
                     .build());
         }
 
-        List<String> hashtags = postRequest.getHashtag();
+        List<String> hashtags = postRequest.getHashtags();
 
         for (String hashtagName : hashtags) {
             Hashtag hashtag = Hashtag.builder()
