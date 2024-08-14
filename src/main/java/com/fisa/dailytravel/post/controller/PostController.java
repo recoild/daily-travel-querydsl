@@ -15,7 +15,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/v1/post")
-    public ApiResponse<String> createPost(@RequestBody PostRequest postRequest, JwtAuthenticationToken principal) {
+    public ApiResponse<String> createPost(@ModelAttribute PostRequest postRequest, JwtAuthenticationToken principal) {
         String uuid = principal.getName();
         return ApiResponse.ok(postService.savePost(uuid, postRequest));
     }
