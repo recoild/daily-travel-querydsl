@@ -25,7 +25,7 @@ public class UserController {
         userCreateRequest.setUuid(principal.getName());
         userService.createUser(userCreateRequest);
 
-        return ApiResponse.ok(new UserCreateResponse());
+        return ApiResponse.ok(new UserCreateResponse("User created successfully"));
 //        return ApiResponse.ok(userService.createUser(userCreateRequest));
     }
 }
