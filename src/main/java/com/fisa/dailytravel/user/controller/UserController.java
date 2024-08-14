@@ -15,17 +15,16 @@ public class UserController {
     private final UserServiceImpl userService;
 
     @PostMapping("/v1/user")
-    public ApiResponse<UserCreateResponse> createUser(JwtAuthenticationToken principal) {
-        //get email from attribute
+    public ApiResponse<UserCreateResponse> signin(JwtAuthenticationToken principal) throws Exception {
         String email = principal.getTokenAttributes().get("email").toString();
+        String picture = principal.getTokenAttributes().get("picture").toString();
 
-        //set email to userCreateRequest
         UserCreateRequest userCreateRequest = new UserCreateRequest();
         userCreateRequest.setEmail(email);
         userCreateRequest.setUuid(principal.getName());
-        userService.createUser(userCreateRequest);
+        userCreateRequest.setPicture(picture);
+        userService.signin(userCreateRequest);
 
-        return ApiResponse.ok(new UserCreateResponse("User created successfully"));
-//        return ApiResponse.ok(userService.createUser(userCreateRequest));
+        return ApiResponse.created(new UserCreateResponse("User created successfully"));
     }
 }
