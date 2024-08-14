@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Setter
 @Getter
-public class PostDTO {
+public class PostRequest {
     private String postTitle;
     private String postContent;
     private String placeName;

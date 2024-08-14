@@ -1,0 +1,50 @@
+package com.fisa.dailytravel.like.service;
+
+import com.fisa.dailytravel.like.repository.LikeRepository;
+import com.fisa.dailytravel.post.repository.PostRepository;
+import com.fisa.dailytravel.user.controller.models.User;
+import com.fisa.dailytravel.user.controller.repository.UserRepository;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@SpringBootTest
+class LikeServiceImplTest {
+
+    @Autowired
+    LikeService likeService;
+    /**
+     * 좋아요를 안 눌렀으면 좋아요 등록
+     */
+    @Test
+    void likeToggleLike(){
+        //given
+        String uuid = "111969318487959339341";
+        Long postId = 11L;
+
+        //when
+        Boolean like = likeService.likeToggle(postId, uuid);
+
+        //then
+        Assertions.assertThat(like).isTrue();
+    }
+
+    /**
+     * 좋아요 눌렀으면 좋아요 삭제
+     */
+    @Test
+    void likeToggleLikeDelete(){
+        //given
+        String uuid = "111969318487959339341";
+        Long postId = 11L;
+
+        //when
+        Boolean like = likeService.likeToggle(postId, uuid);
+
+        //then
+        Assertions.assertThat(like).isFalse();
+    }
+}
