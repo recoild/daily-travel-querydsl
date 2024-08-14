@@ -27,7 +27,7 @@ public class ObjectMapperTest {
 
 
     /**
-     * ModelMapper 테스트
+     * ObjectMapper 수동 DI 테스트
      * @throws JsonProcessingException
      */
     @Test
