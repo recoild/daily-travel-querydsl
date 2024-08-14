@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
 public class PostRequest {
     private String title;
     private String content;
-    private List<String> imageFiles;
+    private List<MultipartFile> imageFiles;
     private String placeName;
     private List<String> hashtag;
     private double latitude;
