@@ -6,15 +6,14 @@ import com.fisa.dailytravel.like.dto.PostDTO;
 import com.fisa.dailytravel.like.dto.PrincipalDTO;
 import com.fisa.dailytravel.like.repository.PostLikeRepository;
 import com.fisa.dailytravel.post.models.Post;
-import com.fisa.dailytravel.user.controller.models.User;
-import com.fisa.dailytravel.user.controller.repository.UserRepository;
+import com.fisa.dailytravel.user.models.User;
+import com.fisa.dailytravel.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.time.LocalDate;
 import java.util.HashMap;
