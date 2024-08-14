@@ -21,12 +21,13 @@ public class PostPreviewResponse {
     private List<String> hashtags;
     private String creationDate;
 
-    public static PostPreviewResponse of(Post post, List<String> hashtags) {
+    public static PostPreviewResponse of(Post post, List<String> imageFiles, List<String> hashtags) {
         return PostPreviewResponse.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .author(post.getUser().getNickname())
                 .likeCount(post.getLikesCount())
+                .imageFiles(imageFiles)
                 .hashtags(hashtags)
                 .creationDate(post.getUpdatedAt() == null ? post.getCreatedAt().toString() : post.getUpdatedAt().toString())
                 .build();

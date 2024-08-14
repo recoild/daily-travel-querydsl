@@ -88,14 +88,22 @@ public class PostServiceImpl implements PostService {
 
         List<String> imageFiles = new ArrayList<>();
 
-        String path = post.get().getUser().getNickname() + "-postId" + postId + "-";
+        getPostImages(post.get(), images);
+
+        return PostResponse.of(post.get(), imageFiles);
+    }
+
+    public List<String> getPostImages(Post post, List<Image> images) {
+        List<String> imageFiles = new ArrayList<>();
+
+        String path = post.getUser().getNickname() + "-postId" + post.getId() + "-";
 
         for (Image image : images) {
             URL url = s3Client.getUrl("fisa-dailytravel-bucket-test", path + image.getImagePath());
             imageFiles.add(url.toString());
         }
 
-        return PostResponse.of(post.get(), imageFiles);
+        return imageFiles;
     }
 
     @Transactional
@@ -109,12 +117,13 @@ public class PostServiceImpl implements PostService {
             List<PostHashtag> postHashtag = postHashtagRepository.findByPostId(post.getId());
 
             List<String> hashtags = new ArrayList<>();
-
             for (PostHashtag hashtag : postHashtag) {
                 hashtags.add(hashtag.getHashtag().getHashtagName());
             }
 
-            postPreviewResponses.add(PostPreviewResponse.of(post, hashtags));
+            List<Image> images = imageRepository.findByPostId(post.getId());
+
+            postPreviewResponses.add(PostPreviewResponse.of(post, getPostImages(post, images), hashtags));
         });
 
         return PostPagingResponse.builder()
