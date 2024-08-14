@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -14,22 +15,20 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public void createUser(UserCreateRequest userCreateRequest) {
-        try {
-            User user = new User();
+    public void signin(UserCreateRequest userCreateRequest) throws Exception {
+        User user = userRepository.findByUuid(userCreateRequest.getUuid());
+        Optional<User> userOptional = Optional.ofNullable(user);
+        if (userOptional.isEmpty())
+            user = new User();
 
-            //날짜에서 yymmddhhmmss 형식. user_를 붙여준다.
-            String nickname = "user_" + new Date().getTime();
+        String nickname = "user_" + new Date().getTime();
 
-            user.setUuid(userCreateRequest.getUuid());
-            user.setNickname(nickname);
-            user.setEmail(userCreateRequest.getEmail());
-            user.setProfileImagePath("");
-            user.setIsDeleted(false);
-            userRepository.save(user);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        user.setUuid(userCreateRequest.getUuid());
+        user.setNickname(nickname);
+        user.setEmail(userCreateRequest.getEmail());
+        user.setProfileImagePath(userCreateRequest.getPicture());
+        user.setIsDeleted(false);
+        userRepository.save(user);
     }
 
     @Override
