@@ -1,5 +1,4 @@
 package com.fisa.dailytravel.user.dto;
 
-public class UserCreateResponse {
-
+public class UserGetResponse {
 }
