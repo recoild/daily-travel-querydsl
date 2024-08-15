@@ -1,15 +1,12 @@
 package com.fisa.dailytravel.like.service;
+
 import com.fisa.dailytravel.like.dto.LikeResponse;
 import com.fisa.dailytravel.like.models.Like;
 import com.fisa.dailytravel.like.repository.LikeRepository;
-
 import com.fisa.dailytravel.post.dto.PostPreviewResponse;
-import com.fisa.dailytravel.post.dto.PostResponse;
-import com.fisa.dailytravel.post.models.Hashtag;
 import com.fisa.dailytravel.post.models.Image;
 import com.fisa.dailytravel.post.models.Post;
 import com.fisa.dailytravel.post.repository.PostRepository;
-
 import com.fisa.dailytravel.user.models.User;
 import com.fisa.dailytravel.user.repository.UserRepository;
 
