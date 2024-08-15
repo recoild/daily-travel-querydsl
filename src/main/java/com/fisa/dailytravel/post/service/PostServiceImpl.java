@@ -23,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -66,14 +65,14 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponse getPost(String uuid, Long postId) {
-        Optional<Post> post = postRepository.findById(postId);
+        Post post = postRepository.findById(postId).get();
         List<Image> images = imageRepository.findByPostId(postId);
 
         List<String> imageFiles = new ArrayList<>();
 
         getPostImages(images);
 
-        return PostResponse.of(post.get(), imageFiles);
+        return PostResponse.of(post, imageFiles);
     }
 
     public void savePostImages(Post post, List<MultipartFile> imageFiles) throws IOException {

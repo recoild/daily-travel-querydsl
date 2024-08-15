@@ -14,6 +14,7 @@ public class PostResponse {
     private String title;
     private String content;
     private String author;
+    private String authorProfile;
     private String placeName;
     private int likesCount;
     private String thumbnail;
@@ -27,6 +28,7 @@ public class PostResponse {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .author(post.getUser().getNickname())
+                .authorProfile(post.getUser().getProfileImagePath())
                 .placeName(post.getPlaceName())
                 .likesCount(post.getLikesCount())
                 .thumbnail(post.getThumbnail())

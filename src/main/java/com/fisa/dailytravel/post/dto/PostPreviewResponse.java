@@ -1,7 +1,6 @@
 package com.fisa.dailytravel.post.dto;
 
 import com.fisa.dailytravel.post.models.Post;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,6 +16,7 @@ public class PostPreviewResponse {
     private Long id;
     private String title;
     private String author;
+    private String authorProfile;
     private int likeCount;
     private List<String> imageFiles;
     private List<String> hashtags;
@@ -27,6 +27,7 @@ public class PostPreviewResponse {
                 .id(post.getId())
                 .title(post.getTitle())
                 .author(post.getUser().getNickname())
+                .authorProfile(post.getUser().getProfileImagePath())
                 .likeCount(post.getLikesCount())
                 .imageFiles(imageFiles)
                 .hashtags(hashtags)
