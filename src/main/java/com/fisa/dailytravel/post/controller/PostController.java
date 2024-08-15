@@ -35,4 +35,10 @@ public class PostController {
         String uuid = principal.getName();
         return ApiResponse.ok(postService.getAllPosts(uuid, postPagingRequest));
     }
+
+    @PutMapping("/v1/post")
+    public ApiResponse<String> editPost(@ModelAttribute PostRequest postRequest, JwtAuthenticationToken principal) throws IOException {
+        String uuid = principal.getName();
+        return ApiResponse.ok(postService.modifyPost(uuid, postRequest));
+    }
 }

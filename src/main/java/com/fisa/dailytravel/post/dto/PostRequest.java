@@ -13,6 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 public class PostRequest {
+    private Long id;
     private String title;
     private String content;
     private List<MultipartFile> imageFiles;
