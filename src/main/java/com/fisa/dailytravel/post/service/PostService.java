@@ -16,4 +16,6 @@ public interface PostService {
     PostPagingResponse getAllPosts(String uuid, PostPagingRequest postPagingRequest);
 
     String modifyPost(String uuid, PostRequest postRequest) throws IOException;
+
+    String deletePost(String uuid, Long postId);
 }
