@@ -1,25 +1,27 @@
 package com.fisa.dailytravel.comment.service;
 
-import com.fisa.dailytravel.comment.dto.CommentPageRequest;
-import com.fisa.dailytravel.comment.dto.CommentRequest;
-import com.fisa.dailytravel.comment.dto.CommentResponse;
-import com.fisa.dailytravel.comment.models.Comment;
-import com.fisa.dailytravel.comment.repository.CommentRepository;
-import com.fisa.dailytravel.post.models.Post;
-import com.fisa.dailytravel.post.repository.PostRepository;
-import com.fisa.dailytravel.user.models.User;
-import com.fisa.dailytravel.user.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.fisa.dailytravel.comment.dto.CommentPageRequest;
+import com.fisa.dailytravel.comment.dto.CommentRequest;
+import com.fisa.dailytravel.comment.dto.CommentResponse;
+import com.fisa.dailytravel.comment.models.Comment;
+import com.fisa.dailytravel.comment.repository.CommentRepository;
+
+import com.fisa.dailytravel.post.models.Post;
+import com.fisa.dailytravel.post.repository.PostRepository;
+
+import com.fisa.dailytravel.user.models.User;
+import com.fisa.dailytravel.user.repository.UserRepository;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
@@ -32,7 +34,7 @@ public class CommentServiceImpl implements CommentService {
 
 
     @Override
-    public String createComment(String uuid, CommentRequest commentRequest) {//CommentRequest(id=1, content=룰루랄라3)
+    public String createComment(String uuid, CommentRequest commentRequest) {
 
         User user = userRepository.findByUuid(uuid);
         Post post = postRepository.findById(commentRequest.getId()).get();
@@ -54,7 +56,7 @@ public class CommentServiceImpl implements CommentService {
     public List<CommentResponse> getPageComments(Long postId, CommentPageRequest commentPageRequest) {
         Pageable pageable = PageRequest.of(commentPageRequest.getPage(), commentPageRequest.getCount());
 
-        Page<Comment> comments = commentRepository.findByPostId(postId, pageable);
+        Page<Comment> comments = commentRepository.findByPostIdOrderByCreatedAtAscIdAsc(postId, pageable);
         List<CommentResponse> commentResponses = comments.stream().map(comment -> CommentResponse.of(comment)).collect(Collectors.toList());
 
         return commentResponses;

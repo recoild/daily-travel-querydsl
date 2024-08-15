@@ -1,32 +1,35 @@
 package com.fisa.dailytravel.comment.controller;
 
+import java.util.List;
+
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.DeleteMapping;
+
 import com.fisa.dailytravel.comment.dto.CommentListResponse;
 import com.fisa.dailytravel.comment.dto.CommentPageRequest;
 import com.fisa.dailytravel.comment.dto.CommentRequest;
 import com.fisa.dailytravel.comment.dto.CommentResponse;
-import com.fisa.dailytravel.comment.models.Comment;
 import com.fisa.dailytravel.comment.service.CommentService;
 import com.fisa.dailytravel.global.dto.ApiResponse;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
-@RestController
 @RequiredArgsConstructor
+@RestController
 public class CommentController {
 
     private final CommentService commentService;
 
-    // 해당 게시글의 글 작성
+    // 해당 게시글의 댓글 작성
     @PostMapping("/v1/comments")
-    public ApiResponse<String> createComment(@RequestBody CommentRequest commentRequest, JwtAuthenticationToken principal) { // id -> commentsId
-
-        log.info("comment insert start!");
+    public ApiResponse<String> createComment(@RequestBody CommentRequest commentRequest, JwtAuthenticationToken principal) {
         try {
             String uuid = principal.getName();
             return ApiResponse.ok(commentService.createComment(uuid, commentRequest));
@@ -41,10 +44,7 @@ public class CommentController {
     public ApiResponse<CommentListResponse> getPageComments(@PathVariable("postId") Long postId, @RequestBody CommentPageRequest commentPageRequest, JwtAuthenticationToken principal) {
         try {
             List<CommentResponse> comments = commentService.getPageComments(postId, commentPageRequest);
-
             return ApiResponse.ok(CommentListResponse.builder().comments(comments).build());
-//            List<Comment> comments = commentService.getPageComments(postId, commentPageRequest).getContent();
-//            return ApiResponse.ok(comments);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
