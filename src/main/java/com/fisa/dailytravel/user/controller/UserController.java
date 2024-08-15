@@ -1,16 +1,14 @@
 package com.fisa.dailytravel.user.controller;
 
 import com.fisa.dailytravel.global.dto.ApiResponse;
-import com.fisa.dailytravel.user.dto.UserCreateRequest;
-import com.fisa.dailytravel.user.dto.UserCreateResponse;
-import com.fisa.dailytravel.user.dto.UserGetResponse;
+import com.fisa.dailytravel.user.dto.*;
 import com.fisa.dailytravel.user.models.User;
 import com.fisa.dailytravel.user.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,7 +30,7 @@ public class UserController {
     }
 
     @GetMapping("/v1/user")
-    public ApiResponse<UserGetResponse> getUser(JwtAuthenticationToken principal) {
+    public ApiResponse<UserGetResponse> getUser(JwtAuthenticationToken principal) throws Exception {
         String uuid = principal.getName();
         User user = userService.getUser(uuid);
         if (user == null) {
@@ -48,5 +46,14 @@ public class UserController {
                 .build();
 
         return ApiResponse.ok(userGetResponse);
+    }
+
+    @PutMapping("/v1/user")
+    public ApiResponse<UserUpdateResponse> updateUser(@ModelAttribute UserUpdateRequest userUpdateRequest, JwtAuthenticationToken principal) throws IOException {
+        String uuid = principal.getName();
+
+        UserUpdateResponse userUpdateResponse = userService.updateUser(uuid, userUpdateRequest);
+
+        return ApiResponse.ok(userUpdateResponse);
     }
 }

@@ -72,7 +72,7 @@ public class PostServiceImpl implements PostService {
 
         List<String> imageFiles = new ArrayList<>();
 
-        getPostImages(post.get(), images);
+        getPostImages(images);
 
         return PostResponse.of(post.get(), imageFiles);
     }
@@ -88,13 +88,11 @@ public class PostServiceImpl implements PostService {
         }
     }
 
-    public List<String> getPostImages(Post post, List<Image> images) {
+    public List<String> getPostImages(List<Image> images) {
         List<String> imageFiles = new ArrayList<>();
 
-        String path = post.getUser().getNickname() + "-postId" + post.getId() + "-";
-
         for (Image image : images) {
-            URL url = s3Client.getUrl("fisa-dailytravel-bucket-test", path + image.getImagePath());
+            URL url = s3Client.getUrl("fisa-dailytravel-bucket-test", image.getImagePath());
             imageFiles.add(url.toString());
         }
 
@@ -140,7 +138,7 @@ public class PostServiceImpl implements PostService {
 
             List<Image> images = imageRepository.findByPostId(post.getId());
 
-            postPreviewResponses.add(PostPreviewResponse.of(post, getPostImages(post, images), hashtags));
+            postPreviewResponses.add(PostPreviewResponse.of(post, getPostImages(images), hashtags));
         });
 
         return PostPagingResponse.builder()
@@ -164,7 +162,7 @@ public class PostServiceImpl implements PostService {
         // 기존 이미지 삭제 후 새로운 이미지 저장
         List<Image> images = imageRepository.findByPostId(postRequest.getId());
 
-        for (String postImageUrl : getPostImages(post, images)) {
+        for (String postImageUrl : getPostImages(images)) {
             s3Uploader.deleteImage(postImageUrl);
         }
         imageRepository.deleteAllByPost(post);
