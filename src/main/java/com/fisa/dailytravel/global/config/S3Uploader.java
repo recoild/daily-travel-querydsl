@@ -30,24 +30,14 @@ public class S3Uploader {
         metadata.setContentLength(file.getSize());
 
         if (type.equals("post")) {
-            s3FileName="post/"+s3FileName;
-            PutObjectRequest putObjectRequest = new PutObjectRequest(bucket ,
-                    s3FileName,
-                    file.getInputStream(),
-                    metadata);
-            putObjectRequest.withCannedAcl(CannedAccessControlList.PublicRead);
-
-            amazonS3.putObject(putObjectRequest);
+            s3FileName = "post/" + s3FileName;
         } else if (type.equals("user")) {
-            s3FileName="user/"+s3FileName;
-            PutObjectRequest putObjectRequest = new PutObjectRequest(bucket,
-                    s3FileName,
-                    file.getInputStream(),
-                    metadata);
-            putObjectRequest.withCannedAcl(CannedAccessControlList.PublicRead);
-
-            amazonS3.putObject(putObjectRequest);
+            s3FileName = "user/" + s3FileName;
         }
+
+        PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, s3FileName, file.getInputStream(), metadata);
+        putObjectRequest.withCannedAcl(CannedAccessControlList.PublicRead);
+        amazonS3.putObject(putObjectRequest);
 
         return amazonS3.getUrl(bucket, s3FileName).toString();
     }

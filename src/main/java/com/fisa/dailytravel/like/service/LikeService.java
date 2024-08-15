@@ -13,4 +13,6 @@ public interface LikeService {
     public Boolean likeToggle(Long postId, String uuid);
 
     public LikeResponse favoritePosts(String uuid, int page, int count);
+
+
 }

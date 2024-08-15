@@ -115,6 +115,14 @@ public class PostServiceImpl implements PostService {
         }
     }
 
+    public void deleteHashtag(Post post) {
+        List<PostHashtag> postHashtags = postHashtagRepository.findByPostId(post.getId());
+
+        for (PostHashtag postHashtag : postHashtags) {
+            hashTagRepository.deleteById(postHashtag.getHashtag().getId());
+        }
+    }
+
     @Transactional
     @Override
     public PostPagingResponse getAllPosts(String uuid, PostPagingRequest postPagingRequest) {
@@ -132,12 +140,7 @@ public class PostServiceImpl implements PostService {
 
             List<Image> images = imageRepository.findByPostId(post.getId());
 
-//            postPreviewResponses.add(PostPreviewResponse.of(post, getPostImages(post, images), hashtags));
-            List<String> imageFiles = new ArrayList<>();
-            for (Image image : images) {
-                imageFiles.add(image.getImagePath());
-            }
-            postPreviewResponses.add(PostPreviewResponse.of(post, imageFiles, hashtags));
+            postPreviewResponses.add(PostPreviewResponse.of(post, getPostImages(post, images), hashtags));
         });
 
         return PostPagingResponse.builder()
@@ -169,16 +172,24 @@ public class PostServiceImpl implements PostService {
         savePostImages(post, postRequest.getImageFiles());
 
         // 기존 해시태그 삭제 후 새로운 해시태그 저장
-        List<PostHashtag> postHashtags = postHashtagRepository.findByPostId(postRequest.getId());
-        
-        for (PostHashtag postHashtag : postHashtags) {
-            hashTagRepository.delete(postHashtag.getHashtag());
-        }
+        deleteHashtag(post);
         postHashtagRepository.deleteAllByPost(post);
 
         List<String> hashtags = postRequest.getHashtags();
         saveHashtag(post, hashtags);
 
         return "게시글 수정 완료";
+    }
+
+    @Transactional
+    @Override
+    public String deletePost(String uuid, Long postId) {
+        Post post = postRepository.findById(postId).get();
+
+        imageRepository.deleteAllByPost(post);
+        deleteHashtag(post);
+        postHashtagRepository.deleteAllByPost(post);
+        postRepository.deleteById(postId);
+        return "게시글 삭제 완료";
     }
 }

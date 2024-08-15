@@ -4,6 +4,7 @@ import com.fisa.dailytravel.global.dto.ApiResponse;
 
 import com.fisa.dailytravel.like.dto.LikeRequest;
 import com.fisa.dailytravel.like.dto.LikeResponse;
+import com.fisa.dailytravel.like.fasade.RedissonLockLikeFacade;
 import com.fisa.dailytravel.like.service.LikeService;
 
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -16,10 +17,11 @@ import lombok.RequiredArgsConstructor;
 public class LikeController {
 
     private final LikeService likeService;
+    private final RedissonLockLikeFacade redissonLockLikeFacade;
 
     @PostMapping("/v1/likes")
     public ApiResponse<Boolean> toggleLike(@RequestBody LikeRequest likeRequest, JwtAuthenticationToken principal) {
-        return ApiResponse.ok(likeService.likeToggle(likeRequest.getPostId(), principal.getName()));
+        return ApiResponse.ok(redissonLockLikeFacade.serviceToggle(likeRequest.getPostId(), principal.getName()));
     }
 
     @GetMapping("/v1/likes")

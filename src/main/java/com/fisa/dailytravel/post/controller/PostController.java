@@ -31,7 +31,7 @@ public class PostController {
     }
 
     @GetMapping("/v1/post")
-    public ApiResponse<PostPagingResponse> getPosts(@ModelAttribute PostPagingRequest postPagingRequest,  JwtAuthenticationToken principal) {
+    public ApiResponse<PostPagingResponse> getPosts(@ModelAttribute PostPagingRequest postPagingRequest, JwtAuthenticationToken principal) {
         String uuid = principal.getName();
         return ApiResponse.ok(postService.getAllPosts(uuid, postPagingRequest));
     }
@@ -40,5 +40,11 @@ public class PostController {
     public ApiResponse<String> editPost(@ModelAttribute PostRequest postRequest, JwtAuthenticationToken principal) throws IOException {
         String uuid = principal.getName();
         return ApiResponse.ok(postService.modifyPost(uuid, postRequest));
+    }
+
+    @DeleteMapping("/v1/post")
+    public ApiResponse<String> deletePost(@RequestBody PostRequest postRequest, JwtAuthenticationToken principal) {
+        String uuid = principal.getName();
+        return ApiResponse.ok(postService.deletePost(uuid, postRequest.getId()));
     }
 }
