@@ -31,7 +31,7 @@ public class PostController {
     }
 
     @GetMapping("/v1/post")
-    public ApiResponse<PostPagingResponse> getPosts(@RequestBody PostPagingRequest postPagingRequest, JwtAuthenticationToken principal) {
+    public ApiResponse<PostPagingResponse> getPosts(@ModelAttribute PostPagingRequest postPagingRequest, JwtAuthenticationToken principal) {
         String uuid = principal.getName();
         return ApiResponse.ok(postService.getAllPosts(uuid, postPagingRequest));
     }
