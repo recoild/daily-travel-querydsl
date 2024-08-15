@@ -2,9 +2,23 @@ package com.fisa.dailytravel.like.models;
 
 import com.fisa.dailytravel.post.models.Post;
 import com.fisa.dailytravel.user.models.User;
-import jakarta.persistence.*;
-import lombok.*;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 
 @Table(name = "likes")
 @Getter
