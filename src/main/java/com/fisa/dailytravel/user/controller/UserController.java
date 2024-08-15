@@ -52,7 +52,7 @@ public class UserController {
     public ApiResponse<UserUpdateResponse> updateUser(@ModelAttribute UserUpdateRequest userUpdateRequest, JwtAuthenticationToken principal) throws IOException {
         String uuid = principal.getName();
 
-        UserUpdateResponse userUpdateResponse = userService.updateUser(userUpdateRequest);
+        UserUpdateResponse userUpdateResponse = userService.updateUser(uuid, userUpdateRequest);
 
         return ApiResponse.ok(userUpdateResponse);
     }

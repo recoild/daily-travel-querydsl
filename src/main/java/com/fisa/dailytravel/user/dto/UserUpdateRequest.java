@@ -7,10 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
-@Builder
 public class UserUpdateRequest {
-    private String uuid;
     private String nickname;
     private MultipartFile profileImageFile;
-
 }

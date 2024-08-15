@@ -12,5 +12,5 @@ public interface UserService {
 
     User getUser(String uuid) throws Exception;
 
-    UserUpdateResponse updateUser(UserUpdateRequest userUpdateRequest) throws IOException;
+    UserUpdateResponse updateUser(String uuid, UserUpdateRequest userUpdateRequest) throws IOException;
 }
