@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -92,8 +91,7 @@ public class PostServiceImpl implements PostService {
         List<String> imageFiles = new ArrayList<>();
 
         for (Image image : images) {
-            URL url = s3Client.getUrl("fisa-dailytravel-bucket-test", image.getImagePath());
-            imageFiles.add(url.toString());
+            imageFiles.add(image.getImagePath());
         }
 
         return imageFiles;
