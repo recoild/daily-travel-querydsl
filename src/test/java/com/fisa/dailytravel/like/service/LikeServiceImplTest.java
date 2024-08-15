@@ -1,5 +1,6 @@
 package com.fisa.dailytravel.like.service;
 
+import com.fisa.dailytravel.like.dto.LikeResponse;
 import com.fisa.dailytravel.post.dto.PostResponse;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -25,12 +26,11 @@ class LikeServiceImplTest {
         int count = 10;
 
         //when
-        List<PostResponse> postResponses = likeService.favoritePosts(uuid, page, count);
-
-        postResponses.forEach(System.out::println);
+        LikeResponse postResponses = likeService.favoritePosts(uuid, page, count);
 
         //then
-        Assertions.assertThat(postResponses).isNotNull();
+        Assertions.assertThat(postResponses.getPostPreviewResponses()).isNotEmpty();
+        Assertions.assertThat(postResponses.getPostPreviewResponses().size()).isEqualTo(10);
     }
 
 

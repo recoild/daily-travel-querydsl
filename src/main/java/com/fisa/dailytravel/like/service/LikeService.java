@@ -1,5 +1,7 @@
 package com.fisa.dailytravel.like.service;
 
+import com.fisa.dailytravel.like.dto.LikeResponse;
+import com.fisa.dailytravel.post.dto.PostPreviewResponse;
 import com.fisa.dailytravel.post.dto.PostResponse;
 import com.fisa.dailytravel.post.models.Post;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -10,5 +12,5 @@ public interface LikeService {
 
     public Boolean likeToggle(Long postId, String uuid);
 
-    public List<PostResponse> favoritePosts(String uuid, int page, int count);
+    public LikeResponse favoritePosts(String uuid, int page, int count);
 }
