@@ -1,6 +1,7 @@
 package com.fisa.dailytravel.post.dto;
 
 import com.fisa.dailytravel.post.models.Post;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
