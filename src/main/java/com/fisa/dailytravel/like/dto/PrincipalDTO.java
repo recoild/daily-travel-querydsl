@@ -1,12 +1,10 @@
 package com.fisa.dailytravel.like.dto;
 
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Setter;
+import lombok.Getter;
 
-import lombok.*;
-
-import java.time.OffsetDateTime;
-import java.util.Date;
-
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
