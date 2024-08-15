@@ -1,8 +1,10 @@
 package com.fisa.dailytravel.global.config;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -28,11 +30,24 @@ public class S3Uploader {
         metadata.setContentLength(file.getSize());
 
         if (type.equals("post")) {
-            amazonS3.putObject(bucket + "/post", s3FileName, file.getInputStream(), metadata);
-        } else if (type.equals("user")) {
-            amazonS3.putObject(bucket + "/user", s3FileName, file.getInputStream(), metadata);
-        }
+            s3FileName="post/"+s3FileName;
+            PutObjectRequest putObjectRequest = new PutObjectRequest(bucket ,
+                    s3FileName,
+                    file.getInputStream(),
+                    metadata);
+            putObjectRequest.withCannedAcl(CannedAccessControlList.PublicRead);
 
+            amazonS3.putObject(putObjectRequest);
+        } else if (type.equals("user")) {
+            s3FileName="user/"+s3FileName;
+            PutObjectRequest putObjectRequest = new PutObjectRequest(bucket,
+                    s3FileName,
+                    file.getInputStream(),
+                    metadata);
+            putObjectRequest.withCannedAcl(CannedAccessControlList.PublicRead);
+
+            amazonS3.putObject(putObjectRequest);
+        }
 
         return amazonS3.getUrl(bucket, s3FileName).toString();
     }
