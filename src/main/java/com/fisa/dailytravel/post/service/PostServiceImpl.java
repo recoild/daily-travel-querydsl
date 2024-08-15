@@ -132,7 +132,12 @@ public class PostServiceImpl implements PostService {
 
             List<Image> images = imageRepository.findByPostId(post.getId());
 
-            postPreviewResponses.add(PostPreviewResponse.of(post, getPostImages(post, images), hashtags));
+//            postPreviewResponses.add(PostPreviewResponse.of(post, getPostImages(post, images), hashtags));
+            List<String> imageFiles = new ArrayList<>();
+            for (Image image : images) {
+                imageFiles.add(image.getImagePath());
+            }
+            postPreviewResponses.add(PostPreviewResponse.of(post, imageFiles, hashtags));
         });
 
         return PostPagingResponse.builder()
