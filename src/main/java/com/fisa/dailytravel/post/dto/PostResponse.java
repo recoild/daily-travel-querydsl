@@ -41,7 +41,7 @@ public class PostResponse {
                 .latitude(post.getLatitude())
                 .longitude(post.getLongitude())
                 .hashtags(hashtags)
-                .creationDate(post.getUpdatedAt() == null ? post.getCreatedAt().toString() : post.getUpdatedAt().toString())
+                .creationDate(post.getCreatedAt().toString())
                 .comments(comments)
                 .build();
     }

@@ -2,7 +2,6 @@ package com.fisa.dailytravel.user.controller;
 
 import com.fisa.dailytravel.global.dto.ApiResponse;
 import com.fisa.dailytravel.user.dto.*;
-import com.fisa.dailytravel.user.models.User;
 import com.fisa.dailytravel.user.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -32,20 +31,13 @@ public class UserController {
     @GetMapping("/v1/user")
     public ApiResponse<UserGetResponse> getUser(JwtAuthenticationToken principal) throws Exception {
         String uuid = principal.getName();
-        User user = userService.getUser(uuid);
+
+        UserGetResponse user = userService.getUser(uuid);
         if (user == null) {
             return ApiResponse.error(null);
         }
-        UserGetResponse userGetResponse = UserGetResponse.builder()
-                .email(user.getEmail())
-                .nickname(user.getNickname())
-                .profileImagePath(user.getProfileImagePath())
-                .createdAt(user.getCreatedAt())
-                .updatedAt(user.getUpdatedAt())
-                .isDeleted(user.getIsDeleted())
-                .build();
 
-        return ApiResponse.ok(userGetResponse);
+        return ApiResponse.ok(user);
     }
 
     @PutMapping("/v1/user")
