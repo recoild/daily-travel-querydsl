@@ -56,28 +56,12 @@ public class PostServiceImpl implements PostService {
 
         List<MultipartFile> imageFiles = postRequest.getImageFiles();
 
-        for (MultipartFile imageFile : imageFiles) {
-            String imageUrl = s3Uploader.uploadImage("post", user.getNickname(), post.getId(), imageFile);
-
-            imageRepository.save(Image.builder()
-                    .post(post)
-                    .imagePath(imageUrl)
-                    .build());
-        }
+        savePostImages(post, imageFiles);
 
         List<String> hashtags = postRequest.getHashtags();
 
-        for (String hashtagName : hashtags) {
-            Hashtag hashtag = Hashtag.builder()
-                    .hashtagName(hashtagName)
-                    .build();
+        saveHashtag(post, hashtags);
 
-            hashTagRepository.save(hashtag);
-            postHashtagRepository.save(PostHashtag.builder()
-                    .post(post)
-                    .hashtag(hashtag)
-                    .build());
-        }
         return "게시글 저장 완료";
     }
 
@@ -93,6 +77,17 @@ public class PostServiceImpl implements PostService {
         return PostResponse.of(post.get(), imageFiles);
     }
 
+    public void savePostImages(Post post, List<MultipartFile> imageFiles) throws IOException {
+        for (MultipartFile imageFile : imageFiles) {
+            String imageUrl = s3Uploader.uploadImage("post", post.getUser().getNickname(), post.getId(), imageFile);
+
+            imageRepository.save(Image.builder()
+                    .post(post)
+                    .imagePath(imageUrl)
+                    .build());
+        }
+    }
+
     public List<String> getPostImages(Post post, List<Image> images) {
         List<String> imageFiles = new ArrayList<>();
 
@@ -104,6 +99,20 @@ public class PostServiceImpl implements PostService {
         }
 
         return imageFiles;
+    }
+
+    public void saveHashtag(Post post, List<String> hashtags) {
+        for (String hashtagName : hashtags) {
+            Hashtag hashtag = Hashtag.builder()
+                    .hashtagName(hashtagName)
+                    .build();
+
+            hashTagRepository.save(hashtag);
+            postHashtagRepository.save(PostHashtag.builder()
+                    .post(post)
+                    .hashtag(hashtag)
+                    .build());
+        }
     }
 
     @Transactional
@@ -131,5 +140,40 @@ public class PostServiceImpl implements PostService {
                 .postPreviewResponses(postPreviewResponses)
                 .isEnd(postPageList.isLast())
                 .build();
+    }
+
+    @Transactional
+    @Override
+    public String modifyPost(String uuid, PostRequest postRequest) throws IOException {
+        Post post = postRepository.findById(postRequest.getId()).get();
+
+        post.setTitle(postRequest.getTitle());
+        post.setContent(postRequest.getContent());
+        post.setPlaceName(postRequest.getPlaceName());
+        post.setLatitude(postRequest.getLatitude());
+        post.setLongitude(postRequest.getLongitude());
+
+        // 기존 이미지 삭제 후 새로운 이미지 저장
+        List<Image> images = imageRepository.findByPostId(postRequest.getId());
+
+        for (String postImageUrl : getPostImages(post, images)) {
+            s3Uploader.deleteImage(postImageUrl);
+        }
+        imageRepository.deleteAllByPost(post);
+
+        savePostImages(post, postRequest.getImageFiles());
+
+        // 기존 해시태그 삭제 후 새로운 해시태그 저장
+        List<PostHashtag> postHashtags = postHashtagRepository.findByPostId(postRequest.getId());
+        
+        for (PostHashtag postHashtag : postHashtags) {
+            hashTagRepository.delete(postHashtag.getHashtag());
+        }
+        postHashtagRepository.deleteAllByPost(post);
+
+        List<String> hashtags = postRequest.getHashtags();
+        saveHashtag(post, hashtags);
+
+        return "게시글 수정 완료";
     }
 }
