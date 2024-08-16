@@ -10,8 +10,8 @@ spring:
   servlet:
     multipart:
       enabled: true
-      max-file-size: 30MB
-      max-request-size: 30MB
+      max-file-size: 200MB
+      max-request-size: 200MB
 
   flyway:
     enabled: true # Flyway 마이그레이션을 활성화합니다.
