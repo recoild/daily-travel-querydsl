@@ -8,8 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentRequest {
-
     private Long id; // 댓글이 달린 게시글 ID
     private String content; // 댓글 내용
-
 }

@@ -3,14 +3,12 @@ package com.fisa.dailytravel.comment.dto;
 import com.fisa.dailytravel.comment.models.Comment;
 import lombok.*;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
-@ToString
 public class CommentResponse {
-
     private Long id; // 댓글 ID
     private Long postId; // 댓글이 달린 게시글 ID
     private String content; // 댓글 내용
