@@ -31,7 +31,8 @@ public class PostPreviewResponse {
                 .likeCount(post.getLikesCount())
                 .imageFiles(imageFiles)
                 .hashtags(hashtags)
-                .creationDate(post.getUpdatedAt() == null ? post.getCreatedAt().toString() : post.getUpdatedAt().toString())
+//                .creationDate(post.getUpdatedAt() == null ? post.getCreatedAt().toString() : post.getUpdatedAt().toString())
+                .creationDate(post.getCreatedAt().toString())
                 .build();
     }
 }

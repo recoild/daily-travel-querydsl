@@ -1,6 +1,8 @@
 package com.fisa.dailytravel.post.service;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.fisa.dailytravel.comment.dto.CommentResponse;
+import com.fisa.dailytravel.comment.models.Comment;
 import com.fisa.dailytravel.global.config.S3Uploader;
 import com.fisa.dailytravel.post.dto.*;
 import com.fisa.dailytravel.post.models.Hashtag;
@@ -23,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -64,15 +67,39 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PostResponse getPost(String uuid, Long postId) {
-        Post post = postRepository.findById(postId).get();
+        Optional<Post> post = postRepository.findById(postId);
         List<Image> images = imageRepository.findByPostId(postId);
 
         List<String> imageFiles = new ArrayList<>();
+        List<String> hashtags = new ArrayList<>();
+        List<CommentResponse> comments = new ArrayList<>();
+        String authorProfileImagePath = "";
+
+        if (post.isPresent()) {
+            List<PostHashtag> postHashtags = postHashtagRepository.findByPostId(postId);
+            for (PostHashtag postHashtag : postHashtags) {
+                hashtags.add(postHashtag.getHashtag().getHashtagName());
+            }
+            authorProfileImagePath = post.get().getUser().getProfileImagePath();
+
+            List<Comment> commentList = new ArrayList<>();
+
+            for (Comment comment : post.get().getComments()) {
+                commentList.add(comment);
+            }
+
+            for (Comment comment : commentList) {
+                comments.add(CommentResponse.of(comment));
+            }
+        }
 
         getPostImages(images);
 
-        return PostResponse.of(post, imageFiles);
+        imageFiles = getPostImages(images);
+
+        return PostResponse.of(post.get(), imageFiles, hashtags, authorProfileImagePath, comments);
     }
 
     public void savePostImages(Post post, List<MultipartFile> imageFiles) throws IOException {

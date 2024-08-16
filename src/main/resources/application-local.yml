@@ -6,6 +6,13 @@ spring:
           #          issuer-uri: ${KEYCLOAK_SERVER_URL}/realms/${KEYCLOAK_REALM}
           #          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
           issuer-uri: https://accounts.google.com
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 30MB
+      max-request-size: 30MB
+
   flyway:
     enabled: true # Flyway 마이그레이션을 활성화합니다.
     baselineOnMigrate: false # 기존 스키마에 베이스라인을 설정하여 마이그레이션을 시작할 수 있게 합니다.
@@ -39,8 +46,7 @@ server:
     whitelabel:
       enabled: false # disable default whitelabel error page.
   shutdown: graceful
-#  servlet:
-#    context-path: /api
+
 
 keycloak:
   auth-server-url: ${KEYCLOAK_SERVER_URL}
