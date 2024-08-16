@@ -1,12 +1,10 @@
 package com.fisa.dailytravel.global.aop;
 
 import jakarta.servlet.http.HttpServletRequest;
-
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -21,7 +19,6 @@ import java.util.Objects;
 @Aspect
 @Component
 public class LoggingAspect {
-
     private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
     @Pointcut("execution(* com.fisa.dailytravel..controller..*(..))")
@@ -39,16 +36,16 @@ public class LoggingAspect {
 
         Object result = null;
 
-        try{
+        try {
             result = joinPoint.proceed();
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("ExceptionMethod: {} - ExceptionMessage: {}", joinPoint.getSignature().getName(), e.getMessage());
-        }finally {
+        } finally {
             long endTime = System.currentTimeMillis();
             long duration = endTime - startTime;
 
             HttpStatusCode status = HttpStatus.OK;
-            if (result instanceof ResponseEntity<?>){
+            if (result instanceof ResponseEntity<?>) {
                 status = ((ResponseEntity<?>) result).getStatusCode();
             }
 
