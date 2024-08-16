@@ -1,6 +1,5 @@
 package com.fisa.dailytravel.post.service;
 
-import com.amazonaws.services.s3.AmazonS3;
 import com.fisa.dailytravel.comment.dto.CommentResponse;
 import com.fisa.dailytravel.comment.models.Comment;
 import com.fisa.dailytravel.global.config.S3Uploader;
@@ -27,17 +26,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class PostServiceImpl implements PostService {
-
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final ImageRepository imageRepository;
     private final HashTagRepository hashTagRepository;
     private final PostHashtagRepository postHashtagRepository;
     private final S3Uploader s3Uploader;
-    private final AmazonS3 s3Client;
 
     @Override
     public String savePost(String uuid, PostRequest postRequest) throws IOException {

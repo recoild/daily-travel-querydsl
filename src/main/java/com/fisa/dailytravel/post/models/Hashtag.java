@@ -6,16 +6,15 @@ import lombok.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "hashtag")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(of = "id")
+@Table(name = "hashtag")
+@Entity
 public class Hashtag {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hashtag_seq")
     @SequenceGenerator(name = "hashtag_seq", sequenceName = "hashtag_seq", allocationSize = 1)

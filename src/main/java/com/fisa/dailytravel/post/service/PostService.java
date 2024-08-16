@@ -8,7 +8,6 @@ import com.fisa.dailytravel.post.dto.PostResponse;
 import java.io.IOException;
 
 public interface PostService {
-
     String savePost(String uuid, PostRequest postRequest) throws IOException;
 
     PostResponse getPost(String uuid, Long postId);

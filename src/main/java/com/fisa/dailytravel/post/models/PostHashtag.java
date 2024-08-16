@@ -3,16 +3,15 @@ package com.fisa.dailytravel.post.models;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
-@Table(name = "post_hashtag")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(of = "id")
+@Table(name = "post_hashtag")
+@Entity
 public class PostHashtag {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "post_hashtag_seq")
     @SequenceGenerator(name = "post_hashtag_seq", sequenceName = "post_hashtag_seq", allocationSize = 1)

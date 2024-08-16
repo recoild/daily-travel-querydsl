@@ -1,15 +1,17 @@
 package com.fisa.dailytravel.post.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fisa.dailytravel.comment.dto.CommentResponse;
 import com.fisa.dailytravel.post.models.Post;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+@Getter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @Builder
 public class PostResponse {
     private Long id;
@@ -23,7 +25,8 @@ public class PostResponse {
     private List<String> images;
     private Double latitude;
     private Double longitude;
-    private String creationDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime creationDate;
     private List<String> hashtags;
     private List<CommentResponse> comments;
 
@@ -41,7 +44,7 @@ public class PostResponse {
                 .latitude(post.getLatitude())
                 .longitude(post.getLongitude())
                 .hashtags(hashtags)
-                .creationDate(post.getCreatedAt().toString())
+                .creationDate(post.getCreatedAt())
                 .comments(comments)
                 .build();
     }

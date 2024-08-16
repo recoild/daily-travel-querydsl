@@ -14,7 +14,6 @@ import java.util.Optional;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-
     @EntityGraph(attributePaths = {"postHashtags", "images"})
     Page<Post> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
