@@ -24,4 +24,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT p FROM Post p WHERE p.user.id = :userId ORDER BY p.createdAt DESC ")
     List<Post> findLatestPostByUserId(@Param("userId") Long userId, Pageable pageable);
+
+    int countByTitle(String title);
 }
