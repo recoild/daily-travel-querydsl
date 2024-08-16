@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +19,8 @@ import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class PostServiceTest {
@@ -73,5 +77,30 @@ public class PostServiceTest {
 
         int postCount = postRepository.countByTitle(postRequest.getTitle());
         Assertions.assertEquals(threadCount, postCount);
+    }
+
+    @Test
+    public void testJPAPagingQuery() {
+        int page = 0;
+        int size = 3;
+
+        // @Query 사용
+        long startTimeQuery = System.currentTimeMillis();
+        postRepository.findAllByOrderByCreatedAtDesc(page, size);
+        long endTimeQuery = System.currentTimeMillis();
+        long durationQuery = endTimeQuery - startTimeQuery;
+
+        // Pageable 사용
+        Pageable pageable = PageRequest.of(page, size);
+        long startTimePageable = System.currentTimeMillis();
+        postRepository.findAllByOrderByCreatedAtDesc(pageable);
+        long endTimePageable = System.currentTimeMillis();
+        long durationPageable = endTimePageable - startTimePageable;
+
+        System.out.println("@Query 조회시간 : " + durationQuery + " ms");
+        System.out.println("Pageable 조회시간 : " + durationPageable + " ms");
+
+        assertTrue(durationQuery >= 0);
+        assertTrue(durationPageable >= 0);
     }
 }
