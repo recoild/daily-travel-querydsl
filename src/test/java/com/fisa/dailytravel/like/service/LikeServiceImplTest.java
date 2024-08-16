@@ -40,7 +40,7 @@ class LikeServiceImplTest {
     @Autowired
     private PostRepository postRepository;
 
-    private Long postId = 11L;
+    private Long postId = 6L;
     private List<String> userUuids;
 
 
@@ -100,7 +100,7 @@ class LikeServiceImplTest {
         CountDownLatch latch = new CountDownLatch(threadCount);
 
         for (int i = 0; i < threadCount; i++) {
-            final String uuid = userUuids.get(i);  // 순차적으로 각 유저의 UUID 사용
+            final String uuid = userUuids.get(i);
             executorService.submit(() -> {
                 try {
                     redissonLockLikeFacade.likeToggle(postId, uuid);
@@ -128,7 +128,7 @@ class LikeServiceImplTest {
         CountDownLatch latch = new CountDownLatch(threadCount);
 
         for (int i = 0; i < threadCount; i++) {
-            final String uuid = userUuids.get(i);  // 순차적으로 각 유저의 UUID 사용
+            final String uuid = userUuids.get(i);
             executorService.submit(() -> {
                 try {
                     likeService.likeToggle(postId, uuid);
@@ -144,7 +144,7 @@ class LikeServiceImplTest {
 
         //then
         int likeCount = post.get().getLikesCount();
-        assertNotEquals(100, likeCount);
+        assertEquals(100, likeCount);
     }
 
     @Test

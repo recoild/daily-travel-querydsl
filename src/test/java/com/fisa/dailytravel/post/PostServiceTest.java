@@ -98,7 +98,7 @@ public class PostServiceTest {
         long durationPageable = endTimePageable - startTimePageable;
 
         System.out.println("@Query 조회시간 : " + durationQuery + " ms");
-        System.out.println("Pageable 조회시간 : " + durationPageable + " ms");
+        System.out.println("@EntityGraph 조회시간 : " + durationPageable + " ms");
 
         assertTrue(durationQuery >= 0);
         assertTrue(durationPageable >= 0);
