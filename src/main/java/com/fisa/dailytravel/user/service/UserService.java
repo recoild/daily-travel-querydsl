@@ -8,11 +8,9 @@ import com.fisa.dailytravel.user.dto.UserUpdateResponse;
 import java.io.IOException;
 
 public interface UserService {
-    public void signin(UserCreateRequest userCreateRequest) throws Exception;
-
+    void signin(UserCreateRequest userCreateRequest) throws Exception;
 
     UserGetResponse getUser(String uuid) throws Exception;
 
     UserUpdateResponse updateUser(String uuid, UserUpdateRequest userUpdateRequest) throws IOException;
-
 }

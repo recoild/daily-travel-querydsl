@@ -1,16 +1,18 @@
 package com.fisa.dailytravel.post.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fisa.dailytravel.post.models.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @Builder
 public class PostPreviewResponse {
     private Long id;
@@ -20,7 +22,8 @@ public class PostPreviewResponse {
     private int likeCount;
     private List<String> imageFiles;
     private List<String> hashtags;
-    private String creationDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime creationDate;
 
     public static PostPreviewResponse of(Post post, List<String> imageFiles, List<String> hashtags) {
         return PostPreviewResponse.builder()
@@ -31,8 +34,7 @@ public class PostPreviewResponse {
                 .likeCount(post.getLikesCount())
                 .imageFiles(imageFiles)
                 .hashtags(hashtags)
-//                .creationDate(post.getUpdatedAt() == null ? post.getCreatedAt().toString() : post.getUpdatedAt().toString())
-                .creationDate(post.getCreatedAt().toString())
+                .creationDate(post.getCreatedAt())
                 .build();
     }
 }

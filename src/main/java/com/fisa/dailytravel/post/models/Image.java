@@ -3,16 +3,15 @@ package com.fisa.dailytravel.post.models;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
-@Table(name = "image")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(of = "id")
+@Table(name = "image")
+@Entity
 public class Image {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "image_seq")
     @SequenceGenerator(name = "image_seq", sequenceName = "image_seq", allocationSize = 1)

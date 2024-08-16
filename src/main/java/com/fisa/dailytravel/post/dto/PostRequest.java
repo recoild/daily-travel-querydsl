@@ -8,10 +8,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PostRequest {
     private Long id;
     private String title;

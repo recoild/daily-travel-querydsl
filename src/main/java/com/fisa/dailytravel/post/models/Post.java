@@ -1,24 +1,27 @@
 package com.fisa.dailytravel.post.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fisa.dailytravel.comment.models.Comment;
 import com.fisa.dailytravel.like.models.Like;
 import com.fisa.dailytravel.user.models.User;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-
-@Table(name = "post")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(of = "id")
+@Table(name = "post")
 @Entity
 public class Post {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "post_seq")
     @SequenceGenerator(name = "post_seq", sequenceName = "post_seq", allocationSize = 1)
@@ -47,10 +50,12 @@ public class Post {
     private Double longitude;
 
     @Column(name = "created_at", insertable = false, updatable = false, nullable = false)
-    private Date createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at", insertable = false, updatable = false)
-    private Date updatedAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "users_id", nullable = false)

@@ -6,8 +6,8 @@ import lombok.Getter;
 
 import java.util.List;
 
-@AllArgsConstructor
 @Getter
+@AllArgsConstructor
 @Builder
 public class PostPagingResponse {
     private int page;

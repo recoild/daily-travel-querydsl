@@ -16,7 +16,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @RestController
 public class PostController {
-
     private final PostServiceImpl postService;
     private final RedissonLockPostFacade redissonLockPostFacade;
 

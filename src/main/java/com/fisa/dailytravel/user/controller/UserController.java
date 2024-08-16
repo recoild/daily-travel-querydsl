@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
-@RestController
 @RequiredArgsConstructor
+@RestController
 public class UserController {
     private final UserServiceImpl userService;
 

@@ -31,6 +31,7 @@ public class RedissonLockPostFacade {
             if (lock != null && lock.isLocked())
                 lock.unlock();
         }
+
         return lockName;
     }
 }
