@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestController
 @Slf4j
+@RestController
 public class HelloController {
     @GetMapping("/hello")
     public ResponseEntity<String> getMethodName(JwtAuthenticationToken principal) {
@@ -23,7 +23,6 @@ public class HelloController {
 //        log.info("info: {}", info);
 //        log.info("infoDetail:" + info.get("tokenAttributes"));
         Object tokenAttributes = info.get("tokenAttributes");
-
 
         return ResponseEntity.ok("Hello, " + principal.getName());
     }

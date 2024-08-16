@@ -19,7 +19,6 @@ public class UserGetResponse {
     private PostPreviewResponse recentPost;
     private List<PostPreviewResponse> likedPosts;
 
-
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
