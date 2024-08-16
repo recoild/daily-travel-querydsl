@@ -19,19 +19,16 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
 @Slf4j
 @RequiredArgsConstructor
+@Service
 public class CommentServiceImpl implements CommentService {
-
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
 
-
     @Override
     public String createComment(String uuid, CommentRequest commentRequest) {
-
         User user = userRepository.findByUuid(uuid);
         Post post = postRepository.findById(commentRequest.getId()).get();
 

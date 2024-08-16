@@ -5,7 +5,8 @@ import com.fisa.dailytravel.post.dto.PostPagingRequest;
 import com.fisa.dailytravel.post.dto.PostPagingResponse;
 import com.fisa.dailytravel.post.dto.PostRequest;
 import com.fisa.dailytravel.post.dto.PostResponse;
-import com.fisa.dailytravel.post.service.PostService;
+import com.fisa.dailytravel.post.fasade.RedissonLockPostFacade;
+import com.fisa.dailytravel.post.service.PostServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
@@ -16,12 +17,13 @@ import java.io.IOException;
 @RestController
 public class PostController {
 
-    private final PostService postService;
+    private final PostServiceImpl postService;
+    private final RedissonLockPostFacade redissonLockPostFacade;
 
     @PostMapping("/v1/post")
     public ApiResponse<String> createPost(@ModelAttribute PostRequest postRequest, JwtAuthenticationToken principal) throws IOException {
         String uuid = principal.getName();
-        return ApiResponse.ok(postService.savePost(uuid, postRequest));
+        return ApiResponse.ok(redissonLockPostFacade.savePostUseRedisson(uuid, postRequest));
     }
 
     @GetMapping("/v1/post/{id}")

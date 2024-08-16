@@ -9,9 +9,9 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
-@Configuration
-@EnableWebSecurity
 @RequiredArgsConstructor
+@EnableWebSecurity
+@Configuration
 public class SecurityConfig {
     private final JwtAuthConverter jwtAuthConverter;
 
@@ -39,7 +39,6 @@ public class SecurityConfig {
                         jwt.jwtAuthenticationConverter(jwtAuthConverter);
                     });
                 });
-
 
         return http.build();
     }
