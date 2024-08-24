@@ -47,6 +47,21 @@ server:
       enabled: false # disable default whitelabel error page.
   shutdown: graceful
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    export:
+      prometheus:
+        enabled: true
+  endpoint:
+    prometheus:
+      enabled: true
+    show-details: always
 
 keycloak:
   auth-server-url: ${KEYCLOAK_SERVER_URL}
