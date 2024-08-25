@@ -4,19 +4,14 @@ import com.fisa.dailytravel.comment.dto.CommentResponse;
 import com.fisa.dailytravel.comment.models.Comment;
 import com.fisa.dailytravel.global.config.S3Uploader;
 import com.fisa.dailytravel.post.dto.*;
-import com.fisa.dailytravel.post.models.Hashtag;
-import com.fisa.dailytravel.post.models.Image;
-import com.fisa.dailytravel.post.models.Post;
-import com.fisa.dailytravel.post.models.PostHashtag;
-import com.fisa.dailytravel.post.repository.HashTagRepository;
-import com.fisa.dailytravel.post.repository.ImageRepository;
-import com.fisa.dailytravel.post.repository.PostHashtagRepository;
-import com.fisa.dailytravel.post.repository.PostRepository;
+import com.fisa.dailytravel.post.models.*;
+import com.fisa.dailytravel.post.repository.*;
 import com.fisa.dailytravel.user.models.User;
 import com.fisa.dailytravel.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,6 +30,8 @@ public class PostServiceImpl implements PostService {
     private final HashTagRepository hashTagRepository;
     private final PostHashtagRepository postHashtagRepository;
     private final S3Uploader s3Uploader;
+    private final PostDocRepository postDocRepository;
+
 
     @Override
     public String savePost(String uuid, PostRequest postRequest) throws IOException {
@@ -158,6 +155,7 @@ public class PostServiceImpl implements PostService {
             }
 
             List<Image> images = imageRepository.findByPostId(post.getId());
+            images.add(Image.builder().imagePath(post.getThumbnail()).build());
 
             postPreviewResponses.add(PostPreviewResponse.of(post, getPostImages(images), hashtags));
         });
@@ -210,5 +208,53 @@ public class PostServiceImpl implements PostService {
         postHashtagRepository.deleteAllByPost(post);
         postRepository.deleteById(postId);
         return "게시글 삭제 완료";
+    }
+
+    @Override
+    public PostPagingResponse searchPosts(String uuid, PostSearchPagingRequest postSearchPagingRequest) throws Exception {
+
+        Pageable pageable = PageRequest.of(postSearchPagingRequest.getPage(), postSearchPagingRequest.getCount());
+        List<Post> postPageList = postRepository.findByContentContaining(postSearchPagingRequest.getSearch(), pageable);
+
+        List<PostPreviewResponse> postPreviewResponses = new ArrayList<>();
+        postPageList.stream().forEach(post -> {
+            List<Image> images = imageRepository.findByPostId(post.getId());
+            List<PostHashtag> postHashtags = postHashtagRepository.findByPostId(post.getId());
+            List<String> hashtags = new ArrayList<>();
+            for (PostHashtag postHashtag : postHashtags) {
+                hashtags.add(postHashtag.getHashtag().getHashtagName());
+            }
+            postPreviewResponses.add(PostPreviewResponse.of(post, getPostImages(images), hashtags));
+        });
+
+        return PostPagingResponse.builder()
+                .page(postSearchPagingRequest.getPage())
+                .postPreviewResponses(postPreviewResponses)
+                .isEnd(postPageList.isEmpty())
+                .build();
+    }
+
+    @Override
+    public PostPagingResponse searchPostsWithES(String uuid, PostSearchPagingRequest search) throws Exception {
+        Pageable pageable = PageRequest.of(search.getPage(), search.getCount());
+        List<PostDoc> postDocs = postDocRepository.findByPostContentContaining(search.getSearch(), pageable);
+
+        List<PostPreviewResponse> postPreviewResponses = new ArrayList<>();
+        postDocs.stream().forEach(postDoc -> {
+            Post post = postRepository.findById(postDoc.getId()).get();
+            List<Image> images = imageRepository.findByPostId(post.getId());
+            List<PostHashtag> postHashtags = postHashtagRepository.findByPostId(post.getId());
+            List<String> hashtags = new ArrayList<>();
+            for (PostHashtag postHashtag : postHashtags) {
+                hashtags.add(postHashtag.getHashtag().getHashtagName());
+            }
+            postPreviewResponses.add(PostPreviewResponse.of(post, getPostImages(images), hashtags));
+        });
+
+        return PostPagingResponse.builder()
+                .page(search.getPage())
+                .postPreviewResponses(postPreviewResponses)
+                .isEnd(postDocs.isEmpty())
+                .build();
     }
 }

@@ -1,10 +1,7 @@
 package com.fisa.dailytravel.post.controller;
 
 import com.fisa.dailytravel.global.dto.ApiResponse;
-import com.fisa.dailytravel.post.dto.PostPagingRequest;
-import com.fisa.dailytravel.post.dto.PostPagingResponse;
-import com.fisa.dailytravel.post.dto.PostRequest;
-import com.fisa.dailytravel.post.dto.PostResponse;
+import com.fisa.dailytravel.post.dto.*;
 import com.fisa.dailytravel.post.fasade.RedissonLockPostFacade;
 import com.fisa.dailytravel.post.service.PostServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +32,18 @@ public class PostController {
     public ApiResponse<PostPagingResponse> getPosts(@ModelAttribute PostPagingRequest postPagingRequest, JwtAuthenticationToken principal) {
         String uuid = principal.getName();
         return ApiResponse.ok(postService.getAllPosts(uuid, postPagingRequest));
+    }
+
+    @GetMapping("/v1/post/search")
+    public ApiResponse<PostPagingResponse> searchPostsV1(@ModelAttribute PostSearchPagingRequest postSearchPagingRequest, JwtAuthenticationToken principal) throws Exception {
+        String uuid = principal.getName();
+        return ApiResponse.ok(postService.searchPosts(uuid, postSearchPagingRequest));
+    }
+
+    @GetMapping("/v2/post/search")
+    public ApiResponse<PostPagingResponse> searchPostsV2(@ModelAttribute PostSearchPagingRequest postSearchPagingRequest, JwtAuthenticationToken principal) throws Exception {
+        String uuid = principal.getName();
+        return ApiResponse.ok(postService.searchPostsWithES(uuid, postSearchPagingRequest));
     }
 
     @PutMapping("/v1/post")
