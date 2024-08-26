@@ -22,8 +22,16 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+    //actuator
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:3.3.2'
+
+
     //modelmapper
     implementation 'org.modelmapper:modelmapper:3.1.1'
+
+    //micrometer
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.13.3'
+
 
     //spring-security-test
     testImplementation 'org.springframework.security:spring-security-test:6.3.1'
@@ -55,6 +63,10 @@ dependencies {
 
     //ojdbc11
     implementation 'com.oracle.database.jdbc:ojdbc11'
+
+    //elastic search 7.11.1
+    implementation 'org.springframework.data:spring-data-elasticsearch:4.2.12'
+
 
     //security
     implementation 'org.springframework.boot:spring-boot-starter-security'
