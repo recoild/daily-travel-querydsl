@@ -9,9 +9,15 @@ import com.fisa.dailytravel.post.repository.*;
 import com.fisa.dailytravel.user.models.User;
 import com.fisa.dailytravel.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +37,7 @@ public class PostServiceImpl implements PostService {
     private final PostHashtagRepository postHashtagRepository;
     private final S3Uploader s3Uploader;
     private final PostDocRepository postDocRepository;
+    private final ElasticsearchRestTemplate elasticsearchRestTemplate;
 
 
     @Override
@@ -237,10 +244,24 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostPagingResponse searchPostsWithES(String uuid, PostSearchPagingRequest search) throws Exception {
         Pageable pageable = PageRequest.of(search.getPage(), search.getCount());
-        List<PostDoc> postDocs = postDocRepository.findByPostContentContaining(search.getSearch(), pageable);
+
+        //공백 문자열 "win move" 를 검색 시 spring data는 *win move* 로 검색하여 오류 발생.
+        //그러므로, *win* *move* 로 검색하도록 수정
+        //postDocRepository.findByPostContentContaining(search.getSearch(), pageable);
+
+        NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
+                .withQuery(QueryBuilders.matchQuery("post_content", search.getSearch()))
+                .withPageable(pageable)
+                .build();
+
+        SearchHits<PostDoc> searchHits = elasticsearchRestTemplate.search(searchQuery, PostDoc.class);
+
+        List<PostDoc> postDocs = searchHits.getSearchHits().stream()
+                .map(SearchHit::getContent)
+                .toList();
 
         List<PostPreviewResponse> postPreviewResponses = new ArrayList<>();
-        postDocs.stream().forEach(postDoc -> {
+        postDocs.forEach(postDoc -> {
             Post post = postRepository.findById(postDoc.getId()).get();
             List<Image> images = imageRepository.findByPostId(post.getId());
             List<PostHashtag> postHashtags = postHashtagRepository.findByPostId(post.getId());
