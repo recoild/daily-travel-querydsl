@@ -32,7 +32,6 @@ dependencies {
     //micrometer
     implementation 'io.micrometer:micrometer-registry-prometheus:1.13.3'
 
-
     //spring-security-test
     testImplementation 'org.springframework.security:spring-security-test:6.3.1'
 
@@ -66,7 +65,6 @@ dependencies {
 
     //elastic search 7.11.1
     implementation 'org.springframework.data:spring-data-elasticsearch:4.2.12'
-
 
     //security
     implementation 'org.springframework.boot:spring-boot-starter-security'
