@@ -25,10 +25,4 @@ public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
     public ElasticsearchRestTemplate elasticsearchRestTemplate() {
         return new ElasticsearchRestTemplate(elasticsearchClient());
     }
-
-    // ElasticsearchOperations 빈이 자동으로 생성되지 않도록 수정
-    // @Bean
-    // public ElasticsearchOperations elasticsearchOperations() {
-    //     return new ElasticsearchRestTemplate(elasticsearchClient());
-    // }
 }
