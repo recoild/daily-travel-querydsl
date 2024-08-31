@@ -58,11 +58,11 @@ public class PostServiceImpl implements PostService {
 
         List<MultipartFile> imageFiles = postRequest.getImageFiles();
 
-        savePostImages(post, imageFiles);
+        savePostImages(post, imageFiles); // post에 이미지 저장 -> 해당 post에 맞는 이미지 저장
 
         List<String> hashtags = postRequest.getHashtags();
 
-        saveHashtag(post, hashtags);
+        saveHashtag(post, hashtags); // post에 해시태그 저장 -> 해당 post에 맞는 해시태그 저장
 
         return "게시글 저장 완료";
     }
@@ -76,31 +76,31 @@ public class PostServiceImpl implements PostService {
         List<String> imageFiles = new ArrayList<>();
         List<String> hashtags = new ArrayList<>();
         List<CommentResponse> comments = new ArrayList<>();
-        String authorProfileImagePath = "";
+        String authorProfileImagePath = ""; // 작성자 프로필 이미지 경로
 
         if (post.isPresent()) {
             List<PostHashtag> postHashtags = postHashtagRepository.findByPostId(postId);
             for (PostHashtag postHashtag : postHashtags) {
-                hashtags.add(postHashtag.getHashtag().getHashtagName());
+                hashtags.add(postHashtag.getHashtag().getHashtagName()); // post에 저장된 해시태그 가져오기
             }
-            authorProfileImagePath = post.get().getUser().getProfileImagePath();
+            authorProfileImagePath = post.get().getUser().getProfileImagePath(); // 작성자 프로필 이미지 경로 가져오기
 
             List<Comment> commentList = new ArrayList<>();
 
             for (Comment comment : post.get().getComments()) {
-                commentList.add(comment);
+                commentList.add(comment); // post에 저장된 댓글 가져오기
             }
 
             for (Comment comment : commentList) {
-                comments.add(CommentResponse.of(comment));
+                comments.add(CommentResponse.of(comment)); // 댓글 정보 가져오기
             }
         }
 
-        getPostImages(images);
+        getPostImages(images); // post에 저장된 이미지 가져오기
 
-        imageFiles = getPostImages(images);
+        imageFiles = getPostImages(images); // post에 저장된 이미지를 가져와서 imageFiles에 저장
 
-        return PostResponse.of(post.get(), imageFiles, hashtags, authorProfileImagePath, comments);
+        return PostResponse.of(post.get(), imageFiles, hashtags, authorProfileImagePath, comments); // post, imageFiles, hashtags, authorProfileImagePath, comments 반환
     }
 
     public void savePostImages(Post post, List<MultipartFile> imageFiles) throws IOException {
@@ -118,10 +118,10 @@ public class PostServiceImpl implements PostService {
         List<String> imageFiles = new ArrayList<>();
 
         for (Image image : images) {
-            imageFiles.add(image.getImagePath());
+            imageFiles.add(image.getImagePath()); // post에 저장된 이미지 가져오기
         }
 
-        return imageFiles;
+        return imageFiles; // post에 저장된 이미지 반환
     }
 
     public void saveHashtag(Post post, List<String> hashtags) {
