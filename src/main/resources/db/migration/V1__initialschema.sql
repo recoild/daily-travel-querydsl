@@ -34,7 +34,7 @@ CREATE TABLE comments (
                           updated_at DATE,
                           users_id NUMBER NOT NULL,
                           CONSTRAINT fk_comments_post FOREIGN KEY (post_id)
-                              REFERENCES post(post_id),
+                              REFERENCES post(post_id) ON DELETE CASCADE,
                           CONSTRAINT fk_comments_users FOREIGN KEY (users_id)
                               REFERENCES users(users_id)
 );
@@ -44,7 +44,7 @@ CREATE TABLE image (
                        post_id NUMBER NOT NULL,
                        image_path VARCHAR2(255) NOT NULL,
                        CONSTRAINT fk_image_post FOREIGN KEY (post_id)
-                           REFERENCES post(post_id)
+                           REFERENCES post(post_id) ON DELETE CASCADE
 );
 
 CREATE TABLE likes (
@@ -52,7 +52,7 @@ CREATE TABLE likes (
                        post_id NUMBER NOT NULL,
                        users_id NUMBER NOT NULL,
                        CONSTRAINT fk_likes_post FOREIGN KEY (post_id)
-                           REFERENCES post(post_id),
+                           REFERENCES post(post_id) ON DELETE CASCADE,
                        CONSTRAINT fk_likes_users FOREIGN KEY (users_id)
                            REFERENCES users(users_id)
 );
@@ -67,7 +67,7 @@ CREATE TABLE post_hashtag (
                               post_id NUMBER NOT NULL,
                               hashtag_id NUMBER NOT NULL,
                               CONSTRAINT fk_post_hashtag_post FOREIGN KEY (post_id)
-                                  REFERENCES post(post_id),
+                                  REFERENCES post(post_id) ON DELETE CASCADE,
                               CONSTRAINT fk_post_hashtag_hashtag FOREIGN KEY (hashtag_id)
                                   REFERENCES hashtag(hashtag_id)
 );
