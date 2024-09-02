@@ -3,9 +3,22 @@ package com.fisa.dailytravel.post.service;
 import com.fisa.dailytravel.comment.dto.CommentResponse;
 import com.fisa.dailytravel.comment.models.Comment;
 import com.fisa.dailytravel.global.config.S3Uploader;
-import com.fisa.dailytravel.post.dto.*;
-import com.fisa.dailytravel.post.models.*;
-import com.fisa.dailytravel.post.repository.*;
+import com.fisa.dailytravel.post.dto.PostPagingRequest;
+import com.fisa.dailytravel.post.dto.PostPagingResponse;
+import com.fisa.dailytravel.post.dto.PostPreviewResponse;
+import com.fisa.dailytravel.post.dto.PostRequest;
+import com.fisa.dailytravel.post.dto.PostResponse;
+import com.fisa.dailytravel.post.dto.PostSearchPagingRequest;
+import com.fisa.dailytravel.post.models.Hashtag;
+import com.fisa.dailytravel.post.models.Image;
+import com.fisa.dailytravel.post.models.Post;
+import com.fisa.dailytravel.post.models.PostDoc;
+import com.fisa.dailytravel.post.models.PostHashtag;
+import com.fisa.dailytravel.post.repository.HashTagRepository;
+import com.fisa.dailytravel.post.repository.ImageRepository;
+import com.fisa.dailytravel.post.repository.PostDocRepository;
+import com.fisa.dailytravel.post.repository.PostHashtagRepository;
+import com.fisa.dailytravel.post.repository.PostRepository;
 import com.fisa.dailytravel.user.models.User;
 import com.fisa.dailytravel.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -78,6 +91,7 @@ public class PostServiceImpl implements PostService {
         List<CommentResponse> comments = new ArrayList<>();
         String authorProfileImagePath = "";
 
+        boolean mine = false;
         if (post.isPresent()) {
             List<PostHashtag> postHashtags = postHashtagRepository.findByPostId(postId);
             for (PostHashtag postHashtag : postHashtags) {
@@ -94,13 +108,17 @@ public class PostServiceImpl implements PostService {
             for (Comment comment : commentList) {
                 comments.add(CommentResponse.of(comment));
             }
+
+            if (post.get().getUser().getUuid().equals(uuid)) {
+                mine = true;
+            }
         }
 
         getPostImages(images);
 
         imageFiles = getPostImages(images);
 
-        return PostResponse.of(post.get(), imageFiles, hashtags, authorProfileImagePath, comments);
+        return PostResponse.of(post.get(), imageFiles, hashtags, authorProfileImagePath, comments, mine);
     }
 
     public void savePostImages(Post post, List<MultipartFile> imageFiles) throws IOException {
