@@ -22,15 +22,10 @@ import com.fisa.dailytravel.post.repository.PostRepository;
 import com.fisa.dailytravel.user.models.User;
 import com.fisa.dailytravel.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
-import org.springframework.data.elasticsearch.core.SearchHit;
-import org.springframework.data.elasticsearch.core.SearchHits;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -50,8 +45,7 @@ public class PostServiceImpl implements PostService {
     private final PostHashtagRepository postHashtagRepository;
     private final S3Uploader s3Uploader;
     private final PostDocRepository postDocRepository;
-    private final ElasticsearchRestTemplate elasticsearchRestTemplate;
-
+    private final RestHighLevelClient client;
 
     @Override
     public String savePost(String uuid, PostRequest postRequest) throws IOException {
@@ -161,6 +155,7 @@ public class PostServiceImpl implements PostService {
 
         for (PostHashtag postHashtag : postHashtags) {
             hashTagRepository.deleteById(postHashtag.getHashtag().getId());
+
         }
     }
 
@@ -214,8 +209,8 @@ public class PostServiceImpl implements PostService {
         savePostImages(post, postRequest.getImageFiles());
 
         // 기존 해시태그 삭제 후 새로운 해시태그 저장
+        postHashtagRepository.deleteByPost(post);
         deleteHashtag(post);
-        postHashtagRepository.deleteAllByPost(post);
 
         List<String> hashtags = postRequest.getHashtags();
         saveHashtag(post, hashtags);
@@ -230,7 +225,7 @@ public class PostServiceImpl implements PostService {
 
         imageRepository.deleteAllByPost(post);
         deleteHashtag(post);
-        postHashtagRepository.deleteAllByPost(post);
+        postHashtagRepository.deleteByPost(post);
         postRepository.deleteById(postId);
         return "게시글 삭제 완료";
     }
@@ -265,35 +260,60 @@ public class PostServiceImpl implements PostService {
 
         //공백 문자열 "win move" 를 검색 시 spring data는 *win move* 로 검색하여 오류 발생.
         //그러므로, *win* *move* 로 검색하도록 수정
-        //postDocRepository.findByPostContentContaining(search.getSearch(), pageable);
+        List<PostDoc> searchHits = postDocRepository.findByPostContentContainingOrderByCreatedAt(search.getSearch(), pageable);
 
-        NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
-                .withQuery(QueryBuilders.matchQuery("post_content", search.getSearch()))
-                .withPageable(pageable)
-                .build();
-
-        SearchHits<PostDoc> searchHits = elasticsearchRestTemplate.search(searchQuery, PostDoc.class);
-
-        List<PostDoc> postDocs = searchHits.getSearchHits().stream()
-                .map(SearchHit::getContent)
-                .toList();
-
-        List<PostPreviewResponse> postPreviewResponses = new ArrayList<>();
-        postDocs.forEach(postDoc -> {
-            Post post = postRepository.findById(postDoc.getId()).get();
-            List<Image> images = imageRepository.findByPostId(post.getId());
-            List<PostHashtag> postHashtags = postHashtagRepository.findByPostId(post.getId());
-            List<String> hashtags = new ArrayList<>();
-            for (PostHashtag postHashtag : postHashtags) {
-                hashtags.add(postHashtag.getHashtag().getHashtagName());
-            }
-            postPreviewResponses.add(PostPreviewResponse.of(post, getPostImages(images), hashtags));
+        List<Long> postIds = new ArrayList<>();
+        searchHits.forEach(doc -> {
+            postIds.add(doc.getId());
         });
+
+        List<Post> posts = postRepository.findAllByIdIn(postIds);
+        List<PostPreviewResponse> postPreviewResponses = new ArrayList<>();
+        posts.stream().forEach(post -> {
+            postPreviewResponses.add(PostPreviewResponse.of(post, getPostImages(imageRepository.findByPostId(post.getId())), new ArrayList<>()));
+        });
+
+
+//        NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
+//                .withQuery(QueryBuilders.matchQuery("post_content", search.getSearch()))
+//                .withPageable(pageable)
+//                .build();
+//        SearchRequest searchRequest = new SearchRequest("posts");
+//        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+//        searchSourceBuilder.size(20);
+//        searchSourceBuilder.timeout(new TimeValue(2, TimeUnit.SECONDS));
+//        searchSourceBuilder.query(QueryBuilders.matchQuery("post_content", search.getSearch()));
+//        searchSourceBuilder.sort(new FieldSortBuilder("updated_at").order(SortOrder.DESC));
+//        searchRequest.source(searchSourceBuilder);
+//
+//        SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
+
+//        SearchHits<PostDoc> searchHits = client.search(searchQuery, PostDoc.class);
+//
+//        SearchHits hits = searchResponse.getHits();
+//        TotalHits totalHits = hits.getTotalHits(); // total 검색 건수
+//
+//
+//        List<PostDoc> postDocs = searchHits.getSearchHits().stream()
+//                .map(SearchHit::getContent)
+//                .toList();
+//
+//        List<PostPreviewResponse> postPreviewResponses = new ArrayList<>();
+//        postDocs.forEach(postDoc -> {
+//            Post post = postRepository.findById(postDoc.getId()).get();
+//            List<Image> images = imageRepository.findByPostId(post.getId());
+//            List<PostHashtag> postHashtags = postHashtagRepository.findByPostId(post.getId());
+//            List<String> hashtags = new ArrayList<>();
+//            for (PostHashtag postHashtag : postHashtags) {
+//                hashtags.add(postHashtag.getHashtag().getHashtagName());
+//            }
+//            postPreviewResponses.add(PostPreviewResponse.of(post, getPostImages(images), hashtags));
+//        });
 
         return PostPagingResponse.builder()
                 .page(search.getPage())
                 .postPreviewResponses(postPreviewResponses)
-                .isEnd(postDocs.isEmpty())
+                .isEnd(posts.isEmpty())
                 .build();
     }
 }

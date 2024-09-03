@@ -14,7 +14,9 @@ import java.util.Optional;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-    //    @EntityGraph(attributePaths = {"postHashtags", "images"})
+    List<Post> findAllByIdIn(List<Long> postIds);
+
+    //    @EntityGraph(attributePaths = {"postHashtags.hashtag", "images"})
     Page<Post> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
     @Query("SELECT p FROM Post p ORDER BY p.createdAt DESC")

@@ -11,5 +11,5 @@ import java.util.List;
 public interface PostHashtagRepository extends JpaRepository<PostHashtag, Long> {
     List<PostHashtag> findByPostId(Long postId);
 
-    void deleteAllByPost(Post post);
+    void deleteByPost(Post post);
 }

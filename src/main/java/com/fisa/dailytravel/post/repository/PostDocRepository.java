@@ -7,5 +7,5 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 import java.util.List;
 
 public interface PostDocRepository extends ElasticsearchRepository<PostDoc, String> {
-    List<PostDoc> findByPostContentContaining(String postContent, Pageable pageable);
+    List<PostDoc> findByPostContentContainingOrderByCreatedAt(String postContent, Pageable pageable);
 }
