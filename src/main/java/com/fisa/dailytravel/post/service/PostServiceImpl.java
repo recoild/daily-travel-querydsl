@@ -34,7 +34,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -66,39 +69,42 @@ public class PostServiceImpl implements PostService {
 
         postRepository.save(post);
 
-        List<MultipartFile> imageFiles = postRequest.getImageFiles();
+        if (postRequest.getImageFiles() != null) {
+            List<Image> imagesNew = new ArrayList<>();
+            for (MultipartFile imageFile : postRequest.getImageFiles()) {
+                String imageUrl = s3Uploader.uploadImage("post", post.getUser().getNickname(), post.getId(), imageFile);
+                imagesNew.add(Image.builder()
+                        .post(post)
+                        .imagePath(imageUrl)
+                        .build());
+            }
 
-        if (imageFiles != null)
-            savePostImages(post, imageFiles);
+            imageRepository.saveAll(imagesNew);
+        }
+
+        postHashtagRepository.deleteByPostId(post.getId());
 
         List<String> hashtags = postRequest.getHashtags();
         if (hashtags != null) {
+            Map<String, Hashtag> existingHashtags = hashTagRepository.findAll()
+                    .stream()
+                    .collect(Collectors.toMap(Hashtag::getHashtagName, Function.identity()));
+
+            HashSet<PostHashtag> postHashtags = new HashSet<>();
             for (String hashtagNew : hashtags) {
-                Hashtag hashtag = hashTagRepository.findByHashtagName(hashtagNew)
-                        .orElseGet(() -> {
-                            Hashtag newHashtag = new Hashtag();
-                            newHashtag.setHashtagName(hashtagNew);
-                            return hashTagRepository.save(newHashtag);
-                        });
+                Hashtag hashtag = existingHashtags.computeIfAbsent(hashtagNew, name -> {
+                    Hashtag newHashtag = new Hashtag();
+                    newHashtag.setHashtagName(name);
+                    return hashTagRepository.save(newHashtag);
+                });
 
                 PostHashtag postHashtag = new PostHashtag();
                 postHashtag.setPost(post);
                 postHashtag.setHashtag(hashtag);
-
-                post.getPostHashtags().add(postHashtag);
-                postHashtagRepository.save(postHashtag);
-//                post.getPostHashtags().stream().filter(
-//                        postHashtag1 ->
-//                                postHashtag1.getHashtag().getHashtagName().equals(hashtag.getHashtagName())
-//                ).findFirst().ifPresentOrElse(
-//                        postHashtag1 -> {
-//                        },
-//                        () -> {
-//                            post.getPostHashtags().add(postHashtag);
-//                            postHashtagRepository.save(postHashtag);
-//                        }
-//                );
+                postHashtags.add(postHashtag);
             }
+
+            postHashtagRepository.saveAll(postHashtags);
         }
 
         return "게시글 저장 완료";
@@ -219,7 +225,7 @@ public class PostServiceImpl implements PostService {
     @Transactional
     @Override
     public String modifyPost(String uuid, PostRequest postRequest) throws IOException {
-        Post post = postRepository.findById(postRequest.getId())
+        Post post = postRepository.findPostAndPostHashtagsById(postRequest.getId())
                 .orElseThrow(() -> new RuntimeException("Post not found"));
 
         post.setTitle(postRequest.getTitle());
@@ -236,10 +242,20 @@ public class PostServiceImpl implements PostService {
         for (String postImageUrl : getPostImages(images)) {
             s3Uploader.deleteImage(postImageUrl);
         }
-        imageRepository.deleteAllByPost(post);
+        imageRepository.deleteByPostId(post.getId());
 
-        if (postRequest.getImageFiles() != null)
-            savePostImages(post, postRequest.getImageFiles());
+        if (postRequest.getImageFiles() != null) {
+            List<Image> imagesNew = new ArrayList<>();
+            for (MultipartFile imageFile : postRequest.getImageFiles()) {
+                String imageUrl = s3Uploader.uploadImage("post", post.getUser().getNickname(), post.getId(), imageFile);
+                imagesNew.add(Image.builder()
+                        .post(post)
+                        .imagePath(imageUrl)
+                        .build());
+            }
+
+            imageRepository.saveAll(imagesNew);
+        }
 
         // 게시글에 등록된 해시태그 삭제. 이 때, 해시태그 테이블의 원본 해시태그 정보는 삭제 안 함.
         postHashtagRepository.deleteByPostId(post.getId());
@@ -247,22 +263,27 @@ public class PostServiceImpl implements PostService {
         // 게시글에 새로운 해시태그 등록.
         List<String> hashtags = postRequest.getHashtags();
         if (hashtags != null) {
+            Map<String, Hashtag> existingHashtags = hashTagRepository.findAll()
+                    .stream()
+                    .collect(Collectors.toMap(Hashtag::getHashtagName, Function.identity()));
+
+            HashSet<PostHashtag> postHashtags = new HashSet<>();
             for (String hashtagNew : hashtags) {
-                Hashtag hashtag = hashTagRepository.findByHashtagName(hashtagNew)
-                        .orElseGet(() -> {
-                            Hashtag newHashtag = new Hashtag();
-                            newHashtag.setHashtagName(hashtagNew);
-                            return hashTagRepository.save(newHashtag);
-                        });
+                Hashtag hashtag = existingHashtags.computeIfAbsent(hashtagNew, name -> {
+                    Hashtag newHashtag = new Hashtag();
+                    newHashtag.setHashtagName(name);
+                    return hashTagRepository.save(newHashtag);
+                });
 
                 PostHashtag postHashtag = new PostHashtag();
                 postHashtag.setPost(post);
                 postHashtag.setHashtag(hashtag);
-
-                post.getPostHashtags().add(postHashtag);
-                postHashtagRepository.save(postHashtag);
+                postHashtags.add(postHashtag);
             }
+
+            postHashtagRepository.saveAll(postHashtags);
         }
+
         return "게시글 수정 완료";
     }
 
