@@ -87,6 +87,17 @@ public class PostServiceImpl implements PostService {
 
                 post.getPostHashtags().add(postHashtag);
                 postHashtagRepository.save(postHashtag);
+//                post.getPostHashtags().stream().filter(
+//                        postHashtag1 ->
+//                                postHashtag1.getHashtag().getHashtagName().equals(hashtag.getHashtagName())
+//                ).findFirst().ifPresentOrElse(
+//                        postHashtag1 -> {
+//                        },
+//                        () -> {
+//                            post.getPostHashtags().add(postHashtag);
+//                            postHashtagRepository.save(postHashtag);
+//                        }
+//                );
             }
         }
 
