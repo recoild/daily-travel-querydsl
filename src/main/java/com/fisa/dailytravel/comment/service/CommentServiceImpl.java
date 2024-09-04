@@ -54,14 +54,10 @@ public class CommentServiceImpl implements CommentService {
     public List<CommentResponse> getComments(Long postId, CommentPageRequest commentPageRequest) {
         Pageable pageable = PageRequest.of(commentPageRequest.getPage(), commentPageRequest.getCount());
 
-        // 로그 추가
         log.info("Requested Page: " + commentPageRequest.getPage()); // 요청된 페이지
         log.info("Page Size: " + commentPageRequest.getCount()); // 페이지 크기
 
         Page<Comment> comments = commentRepository.findByPostIdOrderByCreatedAtAscIdAsc(postId, pageable);
-//        List<CommentResponse> commentResponses = comments.stream().map(commentMapper::commentToCommentResponse).collect(Collectors.toList());
-//
-//        return commentResponses;
 
         log.info("Total Elements: " + comments.getTotalElements()); // 전체 요소 수
         log.info("Total Pages: " + comments.getTotalPages()); // 전체 페이지 수

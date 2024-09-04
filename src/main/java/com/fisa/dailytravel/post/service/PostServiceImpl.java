@@ -1,19 +1,10 @@
 package com.fisa.dailytravel.post.service;
 
-import com.fisa.dailytravel.comment.dto.CommentPageRequest;
-import com.fisa.dailytravel.comment.dto.CommentResponse;
-import com.fisa.dailytravel.comment.mapper.CommentMapper;
-import com.fisa.dailytravel.comment.models.Comment;
-import com.fisa.dailytravel.comment.repository.CommentRepository;
-import com.fisa.dailytravel.comment.service.CommentService;
-import com.fisa.dailytravel.comment.service.CommentServiceImpl;
-import com.fisa.dailytravel.global.config.S3Uploader;
-import com.fisa.dailytravel.post.dto.*;
-import com.fisa.dailytravel.post.models.*;
-import com.fisa.dailytravel.post.repository.*;
-import com.fisa.dailytravel.user.models.User;
-import com.fisa.dailytravel.user.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,11 +18,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import com.fisa.dailytravel.comment.dto.CommentPageRequest;
+import com.fisa.dailytravel.comment.dto.CommentResponse;
+import com.fisa.dailytravel.comment.service.CommentService;
+import com.fisa.dailytravel.global.config.S3Uploader;
+import com.fisa.dailytravel.post.dto.*;
+import com.fisa.dailytravel.post.models.*;
+import com.fisa.dailytravel.post.repository.*;
+import com.fisa.dailytravel.user.models.User;
+import com.fisa.dailytravel.user.repository.UserRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
@@ -39,8 +36,6 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final CommentService commentService;
-    private final CommentRepository commentRepository;
-    private final CommentMapper commentMapper;
     private final ImageRepository imageRepository;
     private final HashTagRepository hashTagRepository;
     private final PostHashtagRepository postHashtagRepository;
@@ -94,23 +89,6 @@ public class PostServiceImpl implements PostService {
             }
             authorProfileImagePath = post.get().getUser().getProfileImagePath();
 
-            List<Comment> commentList = new ArrayList<>();
-
-//            for (Comment comment : post.get().getComments()) {
-//                commentList.add(comment);
-//            }
-//
-//            for (Comment comment : commentList) {
-//                comments.add(CommentResponse.of(comment));
-//            }
-
-//            comments = post.get().getComments().stream()
-//                    .map(commentMapper::commentToCommentResponse)  // 매퍼를 사용하여 변환
-//                    .collect(Collectors.toList());
-
-//            comments = commentService.getComments(postId, commentPageRequest);
-
-            // 댓글 가져오기 (페이지네이션 적용)
             comments = commentService.getComments(postId, commentPageRequest);
         }
 
