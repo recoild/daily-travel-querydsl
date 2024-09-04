@@ -193,7 +193,7 @@ public class PostServiceImpl implements PostService {
             }
 
             List<Image> images = imageRepository.findByPostId(post.getId());
-            images.add(Image.builder().imagePath(post.getThumbnail()).build());
+//            images.add(Image.builder().imagePath(post.getThumbnail()).build());
 
             postPreviewResponses.add(PostPreviewResponse.of(post, getPostImages(images), hashtags));
         });
