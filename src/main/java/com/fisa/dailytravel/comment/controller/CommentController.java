@@ -37,6 +37,7 @@ public class CommentController {
     // 해당 게시글의 댓글 목록 조회
     @GetMapping("v1/comments/{postId}")
     public ApiResponse<CommentListResponse> getComments(@PathVariable("postId") Long postId, @ModelAttribute CommentPageRequest commentPageRequest) {
+
         List<CommentResponse> comments = commentService.getComments(postId, commentPageRequest);
         return ApiResponse.ok(CommentListResponse.builder().comments(comments).build());
     }
