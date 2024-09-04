@@ -11,6 +11,7 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,12 +24,13 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode(of = "id")
 @Table(name = "hashtag")
 @Entity
 public class Hashtag {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hashtag_seq")
-    @SequenceGenerator(name = "hashtag_seq", sequenceName = "hashtag_seq", allocationSize = 1)
+    @SequenceGenerator(name = "hashtag_seq", sequenceName = "hashtag_seq", allocationSize = 10)
     @Column(name = "hashtag_id")
     private Long id;
 

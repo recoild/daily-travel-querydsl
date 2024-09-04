@@ -27,7 +27,7 @@ import lombok.Setter;
 public class PostHashtag {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "post_hashtag_seq")
-    @SequenceGenerator(name = "post_hashtag_seq", sequenceName = "post_hashtag_seq", allocationSize = 1)
+    @SequenceGenerator(name = "post_hashtag_seq", sequenceName = "post_hashtag_seq", allocationSize = 10)
     @Column(name = "post_hashtag_id")
     private Long id;
 
