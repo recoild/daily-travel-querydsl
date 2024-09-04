@@ -1,5 +1,6 @@
 package com.fisa.dailytravel.post.controller;
 
+import com.fisa.dailytravel.comment.dto.CommentPageRequest;
 import com.fisa.dailytravel.global.dto.ApiResponse;
 import com.fisa.dailytravel.post.dto.*;
 import com.fisa.dailytravel.post.fasade.RedissonLockPostFacade;
@@ -23,9 +24,9 @@ public class PostController {
     }
 
     @GetMapping("/v1/post/{id}")
-    public ApiResponse<PostResponse> getPost(@PathVariable("id") String postId, JwtAuthenticationToken principal) {
+    public ApiResponse<PostResponse> getPost(@PathVariable("id") String postId, CommentPageRequest commentPageRequest, JwtAuthenticationToken principal) {
         String uuid = principal.getName();
-        return ApiResponse.ok(postService.getPost(uuid, Long.valueOf(postId)));
+        return ApiResponse.ok(postService.getPost(uuid, Long.valueOf(postId), commentPageRequest));
     }
 
     @GetMapping("/v1/post")

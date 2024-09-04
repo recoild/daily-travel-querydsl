@@ -28,16 +28,16 @@ public class CommentResponse {
     private String nickname; // 댓글 작성자 닉네임
     private String profileImagePath; // 댓글 작성자 프로필 이미지 경로
 
-    public static CommentResponse of(Comment comment) {
-        return CommentResponse.builder()
-                .id(comment.getId())
-                .postId(comment.getPost().getId())
-                .content(comment.getContent())
-                .createdAt(comment.getCreatedAt())
-                .updatedAt(comment.getUpdatedAt())
-                .usersId(comment.getUser().getId())
-                .nickname(comment.getUser().getNickname())
-                .profileImagePath(comment.getUser().getProfileImagePath())
-                .build();
-    }
+//    public static CommentResponse of(Comment comment) {
+//        return CommentResponse.builder()
+//                .id(comment.getId())
+//                .postId(comment.getPost().getId())
+//                .content(comment.getContent())
+//                .createdAt(comment.getCreatedAt())
+//                .updatedAt(comment.getUpdatedAt())
+//                .usersId(comment.getUser().getId())
+//                .nickname(comment.getUser().getNickname())
+//                .profileImagePath(comment.getUser().getProfileImagePath())
+//                .build();
+//    }
 }
