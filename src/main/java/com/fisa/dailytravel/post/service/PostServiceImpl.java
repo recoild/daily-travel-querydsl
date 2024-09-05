@@ -1,6 +1,8 @@
 package com.fisa.dailytravel.post.service;
 
+import com.fisa.dailytravel.comment.dto.CommentPageRequest;
 import com.fisa.dailytravel.comment.dto.CommentResponse;
+import com.fisa.dailytravel.comment.mapper.CommentMapper;
 import com.fisa.dailytravel.comment.models.Comment;
 import com.fisa.dailytravel.global.config.S3Uploader;
 import com.fisa.dailytravel.post.dto.PostPagingRequest;
@@ -50,6 +52,7 @@ public class PostServiceImpl implements PostService {
     private final S3Uploader s3Uploader;
     private final PostDocRepository postDocRepository;
     private final RestHighLevelClient client;
+    private final CommentMapper commentMapper;
 
     @Override
     @Transactional
@@ -60,7 +63,7 @@ public class PostServiceImpl implements PostService {
                 .title(postRequest.getTitle())
                 .content(postRequest.getContent())
                 .placeName(postRequest.getPlaceName()).likesCount(0)
-//                .thumbnail(postRequest.getImageFiles().get(0).getOriginalFilename())
+                // .thumbnail(postRequest.getImageFiles().get(0).getOriginalFilename())
                 .latitude(postRequest.getLatitude())
                 .longitude(postRequest.getLongitude())
                 .user(user)
@@ -136,7 +139,7 @@ public class PostServiceImpl implements PostService {
             }
 
             for (Comment comment : commentList) {
-                comments.add(CommentResponse.of(comment));
+                comments.add(commentMapper.commentToCommentResponse(comment));
             }
 
             if (post.get().getUser().getUuid().equals(uuid)) {
@@ -197,7 +200,8 @@ public class PostServiceImpl implements PostService {
     @Transactional
     @Override
     public PostPagingResponse getAllPosts(String uuid, PostPagingRequest postPagingRequest) {
-        Page<Post> postPageList = postRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(postPagingRequest.getPage(), postPagingRequest.getCount()));
+        Page<Post> postPageList = postRepository.findAllByOrderByCreatedAtDesc(
+                PageRequest.of(postPagingRequest.getPage(), postPagingRequest.getCount()));
 
         List<PostPreviewResponse> postPreviewResponses = new ArrayList<>();
 
@@ -210,7 +214,7 @@ public class PostServiceImpl implements PostService {
             }
 
             List<Image> images = imageRepository.findByPostId(post.getId());
-//            images.add(Image.builder().imagePath(post.getThumbnail()).build());
+            // images.add(Image.builder().imagePath(post.getThumbnail()).build());
 
             postPreviewResponses.add(PostPreviewResponse.of(post, getPostImages(images), hashtags));
         });
@@ -300,7 +304,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostPagingResponse searchPosts(String uuid, PostSearchPagingRequest postSearchPagingRequest) throws Exception {
+    public PostPagingResponse searchPosts(String uuid, PostSearchPagingRequest postSearchPagingRequest)
+            throws Exception {
 
         Pageable pageable = PageRequest.of(postSearchPagingRequest.getPage(), postSearchPagingRequest.getCount());
         List<Post> postPageList = postRepository.findByContentContaining(postSearchPagingRequest.getSearch(), pageable);
@@ -327,9 +332,10 @@ public class PostServiceImpl implements PostService {
     public PostPagingResponse searchPostsWithES(String uuid, PostSearchPagingRequest search) throws Exception {
         Pageable pageable = PageRequest.of(search.getPage(), search.getCount());
 
-        //공백 문자열 "win move" 를 검색 시 spring data는 *win move* 로 검색하여 오류 발생.
-        //그러므로, *win* *move* 로 검색하도록 수정
-        List<PostDoc> searchHits = postDocRepository.findByPostContentContainingOrderByCreatedAt(search.getSearch(), pageable);
+        // 공백 문자열 "win move" 를 검색 시 spring data는 *win move* 로 검색하여 오류 발생.
+        // 그러므로, *win* *move* 로 검색하도록 수정
+        List<PostDoc> searchHits = postDocRepository.findByPostContentContainingOrderByCreatedAt(search.getSearch(),
+                pageable);
 
         List<Long> postIds = new ArrayList<>();
         searchHits.forEach(doc -> {
@@ -339,45 +345,50 @@ public class PostServiceImpl implements PostService {
         List<Post> posts = postRepository.findAllByIdIn(postIds);
         List<PostPreviewResponse> postPreviewResponses = new ArrayList<>();
         posts.stream().forEach(post -> {
-            postPreviewResponses.add(PostPreviewResponse.of(post, getPostImages(imageRepository.findByPostId(post.getId())), new ArrayList<>()));
+            postPreviewResponses.add(PostPreviewResponse.of(post,
+                    getPostImages(imageRepository.findByPostId(post.getId())), new ArrayList<>()));
         });
 
+        // NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
+        // .withQuery(QueryBuilders.matchQuery("post_content", search.getSearch()))
+        // .withPageable(pageable)
+        // .build();
+        // SearchRequest searchRequest = new SearchRequest("posts");
+        // SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        // searchSourceBuilder.size(20);
+        // searchSourceBuilder.timeout(new TimeValue(2, TimeUnit.SECONDS));
+        // searchSourceBuilder.query(QueryBuilders.matchQuery("post_content",
+        // search.getSearch()));
+        // searchSourceBuilder.sort(new
+        // FieldSortBuilder("updated_at").order(SortOrder.DESC));
+        // searchRequest.source(searchSourceBuilder);
+        //
+        // SearchResponse searchResponse = client.search(searchRequest,
+        // RequestOptions.DEFAULT);
 
-//        NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
-//                .withQuery(QueryBuilders.matchQuery("post_content", search.getSearch()))
-//                .withPageable(pageable)
-//                .build();
-//        SearchRequest searchRequest = new SearchRequest("posts");
-//        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-//        searchSourceBuilder.size(20);
-//        searchSourceBuilder.timeout(new TimeValue(2, TimeUnit.SECONDS));
-//        searchSourceBuilder.query(QueryBuilders.matchQuery("post_content", search.getSearch()));
-//        searchSourceBuilder.sort(new FieldSortBuilder("updated_at").order(SortOrder.DESC));
-//        searchRequest.source(searchSourceBuilder);
-//
-//        SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
-
-//        SearchHits<PostDoc> searchHits = client.search(searchQuery, PostDoc.class);
-//
-//        SearchHits hits = searchResponse.getHits();
-//        TotalHits totalHits = hits.getTotalHits(); // total 검색 건수
-//
-//
-//        List<PostDoc> postDocs = searchHits.getSearchHits().stream()
-//                .map(SearchHit::getContent)
-//                .toList();
-//
-//        List<PostPreviewResponse> postPreviewResponses = new ArrayList<>();
-//        postDocs.forEach(postDoc -> {
-//            Post post = postRepository.findById(postDoc.getId()).get();
-//            List<Image> images = imageRepository.findByPostId(post.getId());
-//            List<PostHashtag> postHashtags = postHashtagRepository.findByPostId(post.getId());
-//            List<String> hashtags = new ArrayList<>();
-//            for (PostHashtag postHashtag : postHashtags) {
-//                hashtags.add(postHashtag.getHashtag().getHashtagName());
-//            }
-//            postPreviewResponses.add(PostPreviewResponse.of(post, getPostImages(images), hashtags));
-//        });
+        // SearchHits<PostDoc> searchHits = client.search(searchQuery, PostDoc.class);
+        //
+        // SearchHits hits = searchResponse.getHits();
+        // TotalHits totalHits = hits.getTotalHits(); // total 검색 건수
+        //
+        //
+        // List<PostDoc> postDocs = searchHits.getSearchHits().stream()
+        // .map(SearchHit::getContent)
+        // .toList();
+        //
+        // List<PostPreviewResponse> postPreviewResponses = new ArrayList<>();
+        // postDocs.forEach(postDoc -> {
+        // Post post = postRepository.findById(postDoc.getId()).get();
+        // List<Image> images = imageRepository.findByPostId(post.getId());
+        // List<PostHashtag> postHashtags =
+        // postHashtagRepository.findByPostId(post.getId());
+        // List<String> hashtags = new ArrayList<>();
+        // for (PostHashtag postHashtag : postHashtags) {
+        // hashtags.add(postHashtag.getHashtag().getHashtagName());
+        // }
+        // postPreviewResponses.add(PostPreviewResponse.of(post, getPostImages(images),
+        // hashtags));
+        // });
 
         return PostPagingResponse.builder()
                 .page(search.getPage())
