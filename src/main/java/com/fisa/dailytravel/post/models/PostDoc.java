@@ -40,7 +40,7 @@ public class PostDoc {
     @Field(name = "updated_at", type = FieldType.Date, format = {}, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime updatedAt;
 
-    @Field(name = "post_content", type = FieldType.Text)
+    @Field(name = "post_content", type = FieldType.Keyword)
     private String postContent;
 
     @Field(name = "longitude", type = FieldType.Double)

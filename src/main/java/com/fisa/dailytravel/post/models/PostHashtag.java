@@ -1,20 +1,33 @@
 package com.fisa.dailytravel.post.models;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = {"post", "hashtag"})
 @Table(name = "post_hashtag")
 @Entity
 public class PostHashtag {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "post_hashtag_seq")
-    @SequenceGenerator(name = "post_hashtag_seq", sequenceName = "post_hashtag_seq", allocationSize = 1)
+    @SequenceGenerator(name = "post_hashtag_seq", sequenceName = "post_hashtag_seq", allocationSize = 10)
     @Column(name = "post_hashtag_id")
     private Long id;
 
