@@ -8,7 +8,7 @@ import java.io.IOException;
 public interface PostService {
     String savePost(String uuid, PostRequest postRequest) throws IOException;
 
-    PostResponse getPost(String uuid, Long postId);
+    PostResponse getPost(String uuid, Long postId, CommentPageRequest commentPageRequest);
 
     PostPagingResponse getAllPosts(String uuid, PostPagingRequest postPagingRequest);
 

@@ -1,9 +1,25 @@
 package com.fisa.dailytravel.post.service;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import org.elasticsearch.client.RestHighLevelClient;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.fisa.dailytravel.comment.dto.CommentPageRequest;
 import com.fisa.dailytravel.comment.dto.CommentResponse;
-import com.fisa.dailytravel.comment.mapper.CommentMapper;
-import com.fisa.dailytravel.comment.models.Comment;
+import com.fisa.dailytravel.comment.service.CommentService;
 import com.fisa.dailytravel.global.config.S3Uploader;
 import com.fisa.dailytravel.post.dto.PostPagingRequest;
 import com.fisa.dailytravel.post.dto.PostPagingResponse;
@@ -23,36 +39,21 @@ import com.fisa.dailytravel.post.repository.PostHashtagRepository;
 import com.fisa.dailytravel.post.repository.PostRepository;
 import com.fisa.dailytravel.user.models.User;
 import com.fisa.dailytravel.user.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.elasticsearch.client.RestHighLevelClient;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final CommentService commentService;
     private final ImageRepository imageRepository;
     private final HashTagRepository hashTagRepository;
     private final PostHashtagRepository postHashtagRepository;
     private final S3Uploader s3Uploader;
     private final PostDocRepository postDocRepository;
     private final RestHighLevelClient client;
-    private final CommentMapper commentMapper;
 
     @Override
     @Transactional
@@ -115,7 +116,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional(readOnly = true)
-    public PostResponse getPost(String uuid, Long postId) {
+    public PostResponse getPost(String uuid, Long postId, CommentPageRequest commentPageRequest) {
         Optional<Post> post = postRepository.findById(postId);
         List<Image> images = imageRepository.findByPostId(postId);
 
@@ -132,15 +133,7 @@ public class PostServiceImpl implements PostService {
             }
             authorProfileImagePath = post.get().getUser().getProfileImagePath();
 
-            List<Comment> commentList = new ArrayList<>();
-
-            for (Comment comment : post.get().getComments()) {
-                commentList.add(comment);
-            }
-
-            for (Comment comment : commentList) {
-                comments.add(commentMapper.commentToCommentResponse(comment));
-            }
+            comments = commentService.getComments(postId, commentPageRequest);
 
             if (post.get().getUser().getUuid().equals(uuid)) {
                 mine = true;
