@@ -101,8 +101,8 @@
 ![2024-09-21 11 37 41](https://github.com/user-attachments/assets/c7d19dfe-6b14-49dc-8292-837151900d52)
 - API별 요청횟수를 모니터링하여 자주 요청되는 API에 캐싱전략을 사용할 수 있다.
 - API별 응답속도를 모니터링하여 응답속도가 느린 API를 찾아 최적화를 고민해볼 수 있다. 
-## 🥇이슈해결 및 성능최적화 - [위키이동](https://github.com/WooriFisa3-TeamOrg/daily-travel/wiki)
-- 좋아요 버튼 동시성 이슈(Redis Distributed Lock)
+## 🥇이슈해결 및 성능최적화
+- 좋아요 버튼 동시성 이슈(Redis Distributed Lock) - [위키이동](https://github.com/WooriFisa3-TeamOrg/daily-travel/wiki/%EC%A2%8B%EC%95%84%EC%9A%94-%EB%B2%84%ED%8A%BC-%EB%8F%99%EC%8B%9C%EC%84%B1-%EC%9D%B4%EC%8A%88(Redis-Distributed-Lock))
 - JPA Lazy 전략 성능이슈(Entity 그래프)
 - JWT 토큰인증 효율화
 - Entity 변환 성능최적화
