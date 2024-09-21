@@ -57,8 +57,9 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_URL=${DB_URL_LOGSTASH}
     volumes:
-      - ./ELK/logstash-post-service.conf:/usr/share/logstash/pipeline/logstash-post-service.conf
+      - ./ELK/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
       - ./ELK/ojdbc11.jar:/usr/share/logstash/logstash-core/lib/jars/ojdbc11.jar
+      - ./log/dailytravel.log:/usr/share/logstash/logs/dailytravel.log:ro
     ports:
       - "5044:5044"
     depends_on:
