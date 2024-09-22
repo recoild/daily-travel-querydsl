@@ -23,7 +23,7 @@
 
     <!-- 로거 정의: 'root' 로거는 모든 로그 레벨을 포괄 -->
     <root level="info">
-        <appender-ref ref="CONSOLE" />
-        <appender-ref ref="FILE" />
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
     </root>
 </configuration>
