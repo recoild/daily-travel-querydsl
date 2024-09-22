@@ -45,7 +45,7 @@ public class P6SpySqlFormatter implements MessageFormattingStrategy {
     }
 
     private static boolean isStatement(String category) {
-        return Category.STATEMENT.getName().equals(category);
+        return Category.STATEMENT.getName().equals(category) || category.equals("batch");
     }
 
     private String formatLog(long elapsed, String category, String formattedSql) {
