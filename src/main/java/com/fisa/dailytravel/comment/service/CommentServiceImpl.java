@@ -1,16 +1,5 @@
 package com.fisa.dailytravel.comment.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import jakarta.persistence.EntityManager;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.fisa.dailytravel.comment.dto.CommentPageRequest;
 import com.fisa.dailytravel.comment.dto.CommentRequest;
 import com.fisa.dailytravel.comment.dto.CommentResponse;
@@ -21,9 +10,17 @@ import com.fisa.dailytravel.post.models.Post;
 import com.fisa.dailytravel.post.repository.PostRepository;
 import com.fisa.dailytravel.user.models.User;
 import com.fisa.dailytravel.user.repository.UserRepository;
-
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -38,7 +35,8 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     @Override
     public String saveComment(String uuid, CommentRequest commentRequest) {
-        User user = userRepository.findByUuid(uuid);
+
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
         Post post = postRepository.findById(commentRequest.getId()).get();
 
         log.info("Authenticated UUID: " + uuid);

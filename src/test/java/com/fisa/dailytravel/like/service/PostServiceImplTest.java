@@ -2,10 +2,8 @@ package com.fisa.dailytravel.like.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.fisa.dailytravel.like.dto.PostRequest;
 import com.fisa.dailytravel.like.repository.PostLikeRepository;
-
 import com.fisa.dailytravel.post.models.Post;
 import com.fisa.dailytravel.user.models.User;
 import com.fisa.dailytravel.user.repository.UserRepository;
@@ -45,7 +43,7 @@ class PostServiceImplTest {
                 .longitude(-122.4194)
                 .build();
 
-        User user = userRepository.findByUuid(uuid);
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
 
         Post post = mapper.map(pDTO, Post.class);
         post.setUser(user);

@@ -36,31 +36,26 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void signin(UserCreateRequest userCreateRequest) throws Exception {
-        User user = userRepository.findByUuid(userCreateRequest.getUuid());
-        Optional<User> userOptional = Optional.ofNullable(user);
+        Optional<User> user = userRepository.findByUuid(userCreateRequest.getUuid());
 
-        if (userOptional.isEmpty()) {
-            user = new User();
+        if (user.isEmpty()) {
+            User newUser = new User();
             String nickname = "user_" + new Date().getTime();
 
-            user.setUuid(userCreateRequest.getUuid());
-            user.setNickname(nickname);
-            user.setEmail(userCreateRequest.getEmail());
-            user.setProfileImagePath(userCreateRequest.getPicture());
-            user.setIsDeleted(false);
-        }
+            newUser.setUuid(userCreateRequest.getUuid());
+            newUser.setNickname(nickname);
+            newUser.setEmail(userCreateRequest.getEmail());
+            newUser.setProfileImagePath(userCreateRequest.getPicture());
+            newUser.setIsDeleted(false);
 
-        userRepository.save(user);
+            userRepository.save(newUser);
+        }
     }
 
     @Transactional
     @Override
     public UserGetResponse getUser(String uuid) throws Exception {
-        User user = userRepository.findByUuid(uuid);
-        Optional<User> userOptional = Optional.ofNullable(user);
-        if (userOptional.isEmpty()) {
-            return null;
-        }
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         PageRequest posts = PageRequest.of(0, 4);
         Page<Post> postList = likeRepository.findFavoritePostsByUserId(user.getId(), posts);
@@ -85,7 +80,6 @@ public class UserServiceImpl implements UserService {
             );
         }
 
-
         return UserGetResponse.builder()
                 .email(user.getEmail())
                 .nickname(user.getNickname())
@@ -101,11 +95,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserUpdateResponse updateUser(String uuid, UserUpdateRequest userUpdateRequest) throws IOException {
-        User user = userRepository.findByUuid(uuid);
-        Optional<User> userOptional = Optional.ofNullable(user);
-
-        if (userOptional.isEmpty())
-            return null;
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
 
         user.setNickname(userUpdateRequest.getNickname());
 

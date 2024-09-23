@@ -2,17 +2,13 @@ package com.fisa.dailytravel.like.service;
 
 import com.fisa.dailytravel.like.dto.PostRequest;
 import com.fisa.dailytravel.like.repository.PostLikeRepository;
-
 import com.fisa.dailytravel.post.models.Post;
 import com.fisa.dailytravel.user.models.User;
 import com.fisa.dailytravel.user.repository.UserRepository;
-
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
-
-import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
@@ -27,7 +23,7 @@ public class PostLikeServiceImpl implements PostLikeService {
         Post post = modelMapper.map(pDTO, Post.class);
         String uuid = principal.getName();
 
-        User user = userRepository.findByUuid(uuid);
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
         post.setUser(user);
         postLikeRepository.save(post);
     }

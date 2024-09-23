@@ -1,21 +1,5 @@
 package com.fisa.dailytravel.post.service;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.fisa.dailytravel.comment.dto.CommentPageRequest;
 import com.fisa.dailytravel.comment.dto.CommentResponse;
 import com.fisa.dailytravel.comment.service.CommentService;
@@ -36,8 +20,22 @@ import com.fisa.dailytravel.post.repository.PostHashtagRepository;
 import com.fisa.dailytravel.post.repository.PostRepository;
 import com.fisa.dailytravel.user.models.User;
 import com.fisa.dailytravel.user.repository.UserRepository;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -53,7 +51,7 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public String savePost(String uuid, PostRequest postRequest) throws IOException {
-        User user = userRepository.findByUuid(uuid);
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
 
         Post post = Post.builder()
                 .title(postRequest.getTitle())
