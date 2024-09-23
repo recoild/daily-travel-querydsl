@@ -17,6 +17,4 @@ public interface PostService {
     String deletePost(String uuid, Long postId);
 
     PostPagingResponse searchPosts(String uuid, PostSearchPagingRequest postSearchPagingRequest) throws Exception;
-
-    PostPagingResponse searchPostsWithES(String uuid, PostSearchPagingRequest search) throws Exception;
 }

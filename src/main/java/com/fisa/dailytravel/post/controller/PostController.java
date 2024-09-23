@@ -75,12 +75,6 @@ public class PostController {
         return ApiResponse.ok(postService.searchPosts(uuid, postSearchPagingRequest));
     }
 
-    @GetMapping("/v2/post/search")
-    public ApiResponse<PostPagingResponse> searchPostsV2(@ModelAttribute PostSearchPagingRequest postSearchPagingRequest, JwtAuthenticationToken principal) throws Exception {
-        String uuid = principal.getName();
-        return ApiResponse.ok(postService.searchPostsWithES(uuid, postSearchPagingRequest));
-    }
-
     @PutMapping("/v1/post")
     public ApiResponse<String> editPost(@ModelAttribute PostRequest postRequest, JwtAuthenticationToken principal) throws IOException {
         String uuid = principal.getName();
