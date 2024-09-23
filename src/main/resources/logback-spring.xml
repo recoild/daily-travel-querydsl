@@ -9,10 +9,10 @@
     <!-- 파일에 저장되는 로그 패턴 설정 -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- 로그 파일 경로 설정 -->
-        <file>C:/01.lab/00.log/aop/dailytravel.log</file>
+        <file>./log/dailytravel.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 로그 파일 일별 롤링 설정 -->
-            <fileNamePattern>C:/01.lab/00.log/aop/dailytravel-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>./log/dailytravel-%d{yyyy-MM-dd}.log</fileNamePattern>
             <!-- 로그 파일 최대 보관 기간 설정 (예: 30일) -->
             <maxHistory>30</maxHistory>
         </rollingPolicy>
@@ -23,7 +23,7 @@
 
     <!-- 로거 정의: 'root' 로거는 모든 로그 레벨을 포괄 -->
     <root level="info">
-        <appender-ref ref="CONSOLE" />
-        <appender-ref ref="FILE" />
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
     </root>
 </configuration>

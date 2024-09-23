@@ -19,6 +19,7 @@ public class PostPreviewResponse {
     private String title;
     private String author;
     private String authorProfile;
+    private String content;
     private int likeCount;
     private List<String> imageFiles;
     private List<String> hashtags;
@@ -34,6 +35,7 @@ public class PostPreviewResponse {
                 .likeCount(post.getLikesCount())
                 .imageFiles(imageFiles)
                 .hashtags(hashtags)
+                .content(post.getContent())
                 .creationDate(post.getCreatedAt())
                 .build();
     }

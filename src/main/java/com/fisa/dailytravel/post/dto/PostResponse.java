@@ -3,7 +3,11 @@ package com.fisa.dailytravel.post.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fisa.dailytravel.comment.dto.CommentResponse;
 import com.fisa.dailytravel.post.models.Post;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,8 +33,9 @@ public class PostResponse {
     private LocalDateTime creationDate;
     private List<String> hashtags;
     private List<CommentResponse> comments;
+    private boolean mine;
 
-    public static PostResponse of(Post post, List<String> imageFiles, List<String> hashtags, String authorProfileImagePath, List<CommentResponse> comments) {
+    public static PostResponse of(Post post, List<String> imageFiles, List<String> hashtags, String authorProfileImagePath, List<CommentResponse> comments, boolean mine) {
         return PostResponse.builder()
                 .id(post.getId())
                 .title(post.getTitle())
@@ -46,6 +51,7 @@ public class PostResponse {
                 .hashtags(hashtags)
                 .creationDate(post.getCreatedAt())
                 .comments(comments)
+                .mine(mine)
                 .build();
     }
 }

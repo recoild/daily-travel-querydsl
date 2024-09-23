@@ -2,7 +2,9 @@ package com.fisa.dailytravel.post;
 
 import com.fisa.dailytravel.post.dto.PostRequest;
 import com.fisa.dailytravel.post.fasade.RedissonLockPostFacade;
+import com.fisa.dailytravel.post.models.Post;
 import com.fisa.dailytravel.post.repository.PostRepository;
+import com.fisa.dailytravel.user.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -22,6 +25,7 @@ import java.util.concurrent.Executors;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+
 @SpringBootTest
 public class PostServiceTest {
 
@@ -30,6 +34,34 @@ public class PostServiceTest {
 
     @Autowired
     private PostRepository postRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Test
+    @Transactional
+    public void insertMillionPosts() {
+        for (int i = 1; i <= 1000000; i++) {
+            Post post = Post.builder()
+                    .title("Title " + i)
+                    .content("Content " + i)
+                    .placeName("Place " + i)
+                    .likesCount(0)
+                    .thumbnail("thumbnail" + i + ".jpg")
+                    .latitude(Math.random() * 180 - 90)  // 예시 좌표
+                    .longitude(Math.random() * 360 - 180)  // 예시 좌표
+                    .user(userRepository.findByUuid("115521364043265380969"))  // 예시 사용자
+                    .build();
+            postRepository.save(post);
+
+            // 일정 수의 데이터를 배치로 저장하고 플러시/클리어
+            if (i % 1000 == 0) {
+                postRepository.flush();
+//                postRepository.clear();
+            }
+        }
+    }
+
 
     private PostRequest createRequestPost() {
         MockMultipartFile imageFile2 = new MockMultipartFile("imageFile2", "image2.jpg", "image/jpeg", "image content 2".getBytes());
@@ -98,7 +130,7 @@ public class PostServiceTest {
         long durationPageable = endTimePageable - startTimePageable;
 
         System.out.println("@Query 조회시간 : " + durationQuery + " ms");
-        System.out.println("Pageable 조회시간 : " + durationPageable + " ms");
+        System.out.println("@EntityGraph 조회시간 : " + durationPageable + " ms");
 
         assertTrue(durationQuery >= 0);
         assertTrue(durationPageable >= 0);

@@ -22,8 +22,15 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+    //actuator
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:3.3.2'
+
+
     //modelmapper
     implementation 'org.modelmapper:modelmapper:3.1.1'
+
+    //micrometer
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.13.3'
 
     //spring-security-test
     testImplementation 'org.springframework.security:spring-security-test:6.3.1'
@@ -56,11 +63,21 @@ dependencies {
     //ojdbc11
     implementation 'com.oracle.database.jdbc:ojdbc11'
 
+    //elastic search 7.11.1
+//    implementation 'org.springframework.data:spring-data-elasticsearch:4.2.12'
+
     //security
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
     //resource server
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+
+    //mapstruct
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    implementation 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+    implementation 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 
     //s3
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
@@ -68,6 +85,14 @@ dependencies {
     //redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.redisson:redisson-spring-boot-starter:3.32.0'
+
+    //testcontainers
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation 'org.testcontainers:oracle-free'
+
+    //p6spy
+    implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.2")
 }
 
 test {

@@ -65,6 +65,7 @@ public class UserServiceImpl implements UserService {
         PageRequest posts = PageRequest.of(0, 4);
         Page<Post> postList = likeRepository.findFavoritePostsByUserId(user.getId(), posts);
 
+
         List<PostPreviewResponse> likePreview = postList.stream()
                 .map(post -> PostPreviewResponse.of(
                         post,
@@ -75,12 +76,15 @@ public class UserServiceImpl implements UserService {
 
         //get recent 1 post of mine
         List<Post> myRecentPost = postRepository.findLatestPostByUserId(user.getId(), PageRequest.of(0, 1));
+        PostPreviewResponse myRecentPostPreview = null;
+        if (myRecentPost.size() > 0) {
+            myRecentPostPreview = PostPreviewResponse.of(
+                    myRecentPost.get(0),
+                    myRecentPost.get(0).getImages().stream().map(Image::getImagePath).collect(Collectors.toList()),
+                    myRecentPost.get(0).getPostHashtags().stream().map(hashtag -> hashtag.getHashtag().getHashtagName()).collect(Collectors.toList())
+            );
+        }
 
-        PostPreviewResponse myRecentPostPreview = PostPreviewResponse.of(
-                myRecentPost.get(0),
-                myRecentPost.get(0).getImages().stream().map(Image::getImagePath).collect(Collectors.toList()),
-                myRecentPost.get(0).getPostHashtags().stream().map(hashtag -> hashtag.getHashtag().getHashtagName()).collect(Collectors.toList())
-        );
 
         return UserGetResponse.builder()
                 .email(user.getEmail())
