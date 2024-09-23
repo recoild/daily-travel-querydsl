@@ -8,6 +8,7 @@ import com.fisa.dailytravel.comment.models.Comment;
 import com.fisa.dailytravel.comment.repository.CommentRepository;
 import com.fisa.dailytravel.post.models.Post;
 import com.fisa.dailytravel.post.repository.PostRepository;
+import com.fisa.dailytravel.user.exceptions.UserNotFoundException;
 import com.fisa.dailytravel.user.models.User;
 import com.fisa.dailytravel.user.repository.UserRepository;
 import jakarta.persistence.EntityManager;
@@ -36,7 +37,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public String saveComment(String uuid, CommentRequest commentRequest) {
 
-        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new UserNotFoundException(uuid));
         Post post = postRepository.findById(commentRequest.getId()).get();
 
         log.info("Authenticated UUID: " + uuid);

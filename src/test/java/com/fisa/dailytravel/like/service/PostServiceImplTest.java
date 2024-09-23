@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fisa.dailytravel.like.dto.PostRequest;
 import com.fisa.dailytravel.like.repository.PostLikeRepository;
 import com.fisa.dailytravel.post.models.Post;
+import com.fisa.dailytravel.user.exceptions.UserNotFoundException;
 import com.fisa.dailytravel.user.models.User;
 import com.fisa.dailytravel.user.repository.UserRepository;
 import org.assertj.core.api.Assertions;
@@ -43,7 +44,7 @@ class PostServiceImplTest {
                 .longitude(-122.4194)
                 .build();
 
-        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new UserNotFoundException(uuid));
 
         Post post = mapper.map(pDTO, Post.class);
         post.setUser(user);

@@ -18,6 +18,7 @@ import com.fisa.dailytravel.post.repository.HashTagRepository;
 import com.fisa.dailytravel.post.repository.ImageRepository;
 import com.fisa.dailytravel.post.repository.PostHashtagRepository;
 import com.fisa.dailytravel.post.repository.PostRepository;
+import com.fisa.dailytravel.user.exceptions.UserNotFoundException;
 import com.fisa.dailytravel.user.models.User;
 import com.fisa.dailytravel.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +52,7 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public String savePost(String uuid, PostRequest postRequest) throws IOException {
-        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new UserNotFoundException(uuid));
 
         Post post = Post.builder()
                 .title(postRequest.getTitle())

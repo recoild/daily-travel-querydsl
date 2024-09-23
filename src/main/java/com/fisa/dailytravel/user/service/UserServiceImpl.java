@@ -10,6 +10,7 @@ import com.fisa.dailytravel.user.dto.UserCreateRequest;
 import com.fisa.dailytravel.user.dto.UserGetResponse;
 import com.fisa.dailytravel.user.dto.UserUpdateRequest;
 import com.fisa.dailytravel.user.dto.UserUpdateResponse;
+import com.fisa.dailytravel.user.exceptions.UserNotFoundException;
 import com.fisa.dailytravel.user.models.User;
 import com.fisa.dailytravel.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -55,7 +56,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserGetResponse getUser(String uuid) throws Exception {
-        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new UserNotFoundException(uuid));
 
         PageRequest posts = PageRequest.of(0, 4);
         Page<Post> postList = likeRepository.findFavoritePostsByUserId(user.getId(), posts);
@@ -95,7 +96,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserUpdateResponse updateUser(String uuid, UserUpdateRequest userUpdateRequest) throws IOException {
-        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new UserNotFoundException(uuid));
 
         user.setNickname(userUpdateRequest.getNickname());
 

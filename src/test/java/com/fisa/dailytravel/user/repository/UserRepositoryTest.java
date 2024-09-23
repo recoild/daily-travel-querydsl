@@ -24,12 +24,16 @@ public class UserRepositoryTest {
         user.setIsDeleted(false);
 
         //when
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
 
         //then
         Optional<User> findUser = userRepository.findByUuid("1");
         assertTrue(findUser.isPresent());
         assertEquals("test", findUser.get().getNickname());
+        assertEquals("test@test.com", findUser.get().getEmail());
+        assertFalse(findUser.get().getIsDeleted());
+        assertNotNull(savedUser.getId(), "Generated ID는 반드시 존재해야 합니다.");
     }
+
 
 }

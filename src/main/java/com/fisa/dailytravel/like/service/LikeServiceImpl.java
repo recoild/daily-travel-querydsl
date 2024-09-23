@@ -7,6 +7,7 @@ import com.fisa.dailytravel.post.dto.PostPreviewResponse;
 import com.fisa.dailytravel.post.models.Image;
 import com.fisa.dailytravel.post.models.Post;
 import com.fisa.dailytravel.post.repository.PostRepository;
+import com.fisa.dailytravel.user.exceptions.UserNotFoundException;
 import com.fisa.dailytravel.user.models.User;
 import com.fisa.dailytravel.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ public class LikeServiceImpl implements LikeService {
     @Transactional
     @Override
     public Boolean likeToggle(Long postId, String uuid) {
-        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new UserNotFoundException(uuid));
 
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물"));
         Long userId = user.getId();
