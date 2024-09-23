@@ -10,11 +10,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-//@DataJpaTest
-//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-//@ImportAutoConfiguration(exclude = FlywayAutoConfiguration.class)
-//@ActiveProfiles("test")
-//@Import(TestcontainersConfiguration.class)
 @CustomDataJpaTest
 public class UserRepositoryTest {
     @Autowired

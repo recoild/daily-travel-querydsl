@@ -25,6 +25,5 @@ import java.lang.annotation.Target;
 @ImportAutoConfiguration(value = DataSourceDecoratorAutoConfiguration.class, exclude = FlywayAutoConfiguration.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Import({P6spyLogMessageFormatConfiguration.class, TestcontainersConfiguration.class})
-
 public @interface CustomDataJpaTest {
 }
