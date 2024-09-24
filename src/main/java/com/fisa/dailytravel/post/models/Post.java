@@ -64,7 +64,7 @@ public class Post {
     @Column(name = "longitude", columnDefinition = "NUMBER(9, 6)")
     private Double longitude;
 
-    @Column(name = "created_at", insertable = false, updatable = false, nullable = false)
+    @Column(name = "created_at", insertable = false, updatable = false, nullable = true)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
