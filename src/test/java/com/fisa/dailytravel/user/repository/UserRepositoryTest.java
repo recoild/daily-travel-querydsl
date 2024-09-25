@@ -80,10 +80,12 @@ public class UserRepositoryTest {
 
         //then
         Pageable pageable = PageRequest.of(0, 10);
+
         Page<Post> findLikes = likeRepository.findFavoritePostsByUserId(user.getId(), pageable);
         assertEquals(3, findLikes.getTotalElements());
 
-
+        Page<Post> findPosts = userRepository.findLatestPostsByUuid(user.getUuid(), pageable);
+        assertEquals(3, findPosts.getTotalElements());
     }
 
 }

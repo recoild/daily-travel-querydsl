@@ -71,13 +71,14 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
 
         //get recent 1 post of mine
-        List<Post> myRecentPost = postRepository.findLatestPostByUserId(user.getId(), PageRequest.of(0, 1));
+        Page<Post> myRecentPosts = userRepository.findLatestPostsByUuid(user.getUuid(), PageRequest.of(0, 4));
         PostPreviewResponse myRecentPostPreview = null;
-        if (myRecentPost.size() > 0) {
+        if (myRecentPosts.getTotalElements() > 0) {
+            Post recentPost = myRecentPosts.getContent().get(0);
             myRecentPostPreview = PostPreviewResponse.of(
-                    myRecentPost.get(0),
-                    myRecentPost.get(0).getImages().stream().map(Image::getImagePath).collect(Collectors.toList()),
-                    myRecentPost.get(0).getPostHashtags().stream().map(hashtag -> hashtag.getHashtag().getHashtagName()).collect(Collectors.toList())
+                    recentPost,
+                    recentPost.getImages().stream().map(Image::getImagePath).collect(Collectors.toList()),
+                    recentPost.getPostHashtags().stream().map(hashtag -> hashtag.getHashtag().getHashtagName()).collect(Collectors.toList())
             );
         }
 
