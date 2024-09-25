@@ -1,6 +1,5 @@
 package com.fisa.dailytravel.config;
 
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
@@ -16,7 +15,6 @@ import java.lang.annotation.Target;
 @Documented
 @Inherited
 @SpringBootTest
-@AutoConfigureMockMvc
 @Import({TestcontainersConfiguration.class})
 public @interface CustomSpringBootTest {
 }
