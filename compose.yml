@@ -1,20 +1,33 @@
 services:
-  oracledb:
-    image: gvenzl/oracle-free:23-slim-faststart
+  #  oracledb:
+  #    image: gvenzl/oracle-free:23-slim-faststart
+  #    environment:
+  #      ORACLE_RANDOM_PASSWORD: true
+  #      APP_USER: ${DB_USER}
+  #      APP_USER_PASSWORD: ${DB_PASSWORD}
+  #    healthcheck:
+  #      test: [ "CMD", "healthcheck.sh" ]
+  #      interval: 1s
+  #      timeout: 5s
+  #      retries: 10
+  #      start_period: 1s
+  #    ports:
+  #      - "1521:1521"
+  #    volumes:
+  #      - oracle-data:/opt/oracle/oradata
+
+  mysql:
+    container_name: mysql
+    image: mysql:latest
     environment:
-      ORACLE_RANDOM_PASSWORD: true
-      APP_USER: ${DB_USER}
-      APP_USER_PASSWORD: ${DB_PASSWORD}
-    healthcheck:
-      test: [ "CMD", "healthcheck.sh" ]
-      interval: 1s
-      timeout: 5s
-      retries: 10
-      start_period: 1s
+      MYSQL_DATABASE: test
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
     ports:
-      - "1521:1521"
+      - "3306:3306"
     volumes:
-      - oracle-data:/opt/oracle/oradata
+      - mysql-data:/var/lib/mysql
+
 
   redis:
     image: redis:latest
@@ -39,44 +52,45 @@ services:
   #   volumes:
   #     - grafana-data:/var/lib/grafana
 
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.11.1
-    environment:
-      - discovery.type=single-node
-      - xpack.security.enabled=false
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ports:
-      - "9200:9200"
-    volumes:
-      - es-data:/usr/share/elasticsearch/data
-
-  logstash:
-    image: docker.elastic.co/logstash/logstash:7.11.1
-    environment:
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_URL=${DB_URL_LOGSTASH}
-    volumes:
-      - ./ELK/logstash-post-service.conf:/usr/share/logstash/pipeline/logstash-post-service.conf
-      - ./ELK/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
-      - ./ELK/ojdbc11.jar:/usr/share/logstash/logstash-core/lib/jars/ojdbc11.jar
-      - ./log/dailytravel.log:/usr/share/logstash/logs/dailytravel.log:ro
-    ports:
-      - "5044:5044"
-    depends_on:
-      - elasticsearch
-      - oracledb
-
-  kibana:
-    image: docker.elastic.co/kibana/kibana:7.11.1
-    environment:
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-    ports:
-      - "5601:5601"
-    depends_on:
-      - elasticsearch
+#  elasticsearch:
+#    image: docker.elastic.co/elasticsearch/elasticsearch:7.11.1
+#    environment:
+#      - discovery.type=single-node
+#      - xpack.security.enabled=false
+#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#    ports:
+#      - "9200:9200"
+#    volumes:
+#      - es-data:/usr/share/elasticsearch/data
+#
+#  logstash:
+#    image: docker.elastic.co/logstash/logstash:7.11.1
+#    environment:
+#      - DB_USER=${DB_USER}
+#      - DB_PASSWORD=${DB_PASSWORD}
+#      - DB_URL=${DB_URL_LOGSTASH}
+#    volumes:
+#      - ./ELK/logstash-post-service.conf:/usr/share/logstash/pipeline/logstash-post-service.conf
+#      - ./ELK/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
+#      - ./ELK/ojdbc11.jar:/usr/share/logstash/logstash-core/lib/jars/ojdbc11.jar
+#      - ./log/dailytravel.log:/usr/share/logstash/logs/dailytravel.log:ro
+#    ports:
+#      - "5044:5044"
+#    depends_on:
+#      - elasticsearch
+#      - oracledb
+#
+#  kibana:
+#    image: docker.elastic.co/kibana/kibana:7.11.1
+#    environment:
+#      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+#    ports:
+#      - "5601:5601"
+#    depends_on:
+#      - elasticsearch
 
 volumes:
-  oracle-data: # grafana-data:
-
-  es-data:
+  #  oracle-data: # grafana-data:
+  #
+  #  es-data:
+  mysql-data:
