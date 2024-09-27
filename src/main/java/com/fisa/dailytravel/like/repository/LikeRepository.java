@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface LikeRepository extends JpaRepository<Like, Long> {
+public interface LikeRepository extends JpaRepository<Like, Long>, LikeRepositoryCustom {
     Optional<Like> findByPostIdAndUserId(Long postId, Long userId);
 
     void deleteByPostIdAndUserId(Long postId, Long userId);

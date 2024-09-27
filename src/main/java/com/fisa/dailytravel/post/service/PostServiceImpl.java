@@ -59,8 +59,8 @@ public class PostServiceImpl implements PostService {
                 .content(postRequest.getContent())
                 .placeName(postRequest.getPlaceName()).likesCount(0)
                 // .thumbnail(postRequest.getImageFiles().get(0).getOriginalFilename())
-                .latitude(postRequest.getLatitude())
-                .longitude(postRequest.getLongitude())
+//                .latitude(postRequest.getLatitude())
+//                .longitude(postRequest.getLongitude())
                 .user(user)
                 .postHashtags(new HashSet<>())
                 .build();
@@ -222,8 +222,8 @@ public class PostServiceImpl implements PostService {
         post.setTitle(postRequest.getTitle());
         post.setContent(postRequest.getContent());
         post.setPlaceName(postRequest.getPlaceName());
-        post.setLatitude(postRequest.getLatitude());
-        post.setLongitude(postRequest.getLongitude());
+//        post.setLatitude(postRequest.getLatitude());
+//        post.setLongitude(postRequest.getLongitude());
 
         postRepository.save(post);
 
