@@ -47,12 +47,6 @@ public class Post {
     @Column(name = "thumbnail")
     private String thumbnail;
 
-//    @Column(name = "latitude", columnDefinition = "DECIMAL(9, 6)")
-//    private Double latitude;
-//
-//    @Column(name = "longitude", columnDefinition = "DECIMAL(9, 6)")
-//    private Double longitude;
-
     @Column(name = "created_at", insertable = false, updatable = false, nullable = true)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
