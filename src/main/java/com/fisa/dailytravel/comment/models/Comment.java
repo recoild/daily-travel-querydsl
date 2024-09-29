@@ -37,10 +37,6 @@ public class Comment {
     @Column(name = "comments_id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "post_id", nullable = false)
-    private Post post;
-
     @Column(name = "comments_content", nullable = false)
     private String content;
 
@@ -51,10 +47,18 @@ public class Comment {
     @Column(name = "updated_at", insertable = false, updatable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
-    //
+
+    //    @ManyToOne
+//    @JoinColumn(name = "post_id", nullable = false)
+//    private Post post;
+//
 //    @ManyToOne
 //    @JoinColumn(name = "users_id", nullable = false)
 //    private User user;
+
+    @Column(name = "post_id")
+    private Long postId;
+
     @Column(name = "users_id")
     private Long userId;
 }

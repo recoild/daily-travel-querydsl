@@ -13,4 +13,6 @@ public interface UserService {
     UserGetResponse getUser(String uuid) throws Exception;
 
     UserUpdateResponse updateUser(String uuid, UserUpdateRequest userUpdateRequest) throws IOException;
+
+    void deleteUser(String uuid) throws Exception;
 }

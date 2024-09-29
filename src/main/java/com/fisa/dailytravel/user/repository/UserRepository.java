@@ -12,12 +12,12 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByUuid(String uuid);
+public interface UserRepository extends JpaRepository<User, Long>, UserRepositoryCustom {
+//    Optional<User> findByUuid(String uuid);
 
-    @Query("SELECT p " +
-            "FROM Post p " +
-            "WHERE p.user.uuid = :uuid " +
-            "ORDER BY p.createdAt DESC")
-    Page<Post> findLatestPostsByUuid(@Param("uuid") String uuid, Pageable pageable);
+//    @Query("SELECT p " +
+//            "FROM Post p " +
+//            "WHERE p.user.uuid = :uuid " +
+//            "ORDER BY p.createdAt DESC")
+//    Page<Post> findLatestPostsByUuid(@Param("uuid") String uuid, Pageable pageable);
 }

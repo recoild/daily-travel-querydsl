@@ -13,8 +13,8 @@ import java.util.List;
 public class PostPreviewResponse {
     private Long id;
     private String title;
-    private String author;
-    private String authorProfile;
+    private String nickname;
+    private String profileImagePath;
     private String content;
     private int likeCount;
     //    private List<String> imageFiles;
@@ -38,15 +38,14 @@ public class PostPreviewResponse {
 //    }
 
     @QueryProjection
-    public PostPreviewResponse(Long id, String title, String author, String authorProfile, String content, int likeCount, String thumbnail, List<String> hashtags, LocalDateTime creationDate) {
+    public PostPreviewResponse(Long id, String title, String nickname, String profileImagePath, String content, int likeCount, String thumbnail,  LocalDateTime creationDate) {
         this.id = id;
         this.title = title;
-        this.author = author;
-        this.authorProfile = authorProfile;
+        this.nickname = nickname;
+        this.profileImagePath = profileImagePath;
         this.content = content;
         this.likeCount = likeCount;
         this.thumbnail = thumbnail;
-        this.hashtags = hashtags;
         this.creationDate = creationDate;
     }
 }

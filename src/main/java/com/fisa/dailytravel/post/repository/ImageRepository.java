@@ -12,12 +12,12 @@ import java.util.List;
 
 @Repository
 public interface ImageRepository extends JpaRepository<Image, Long> {
-    List<Image> findByPostId(Long postId);
-
-    void deleteAllByPost(Post post);
+//    List<Image> findByPostId(Long postId);
+//
+//    void deleteAllByPost(Post post);
     
-    @Modifying
-    @Query("DELETE FROM Image i WHERE i.post.id = :postId")
-    void deleteByPostId(@Param("postId") Long postId);
+//    @Modifying
+//    @Query("DELETE FROM Image i WHERE i.post.id = :postId")
+//    void deleteByPostId(@Param("postId") Long postId);
 
 }

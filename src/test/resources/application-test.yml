@@ -11,7 +11,7 @@ spring:
       data-source-properties:
         ApplicationName: ${spring.application.name} # show application's name when using pg_stat_activity
         stringtype: unspecified
-        reWriteBatchedInserts: true
+#        reWriteBatchedInserts: true
 
   jpa:
     open-in-view: false
@@ -20,9 +20,9 @@ spring:
     #    show-sql: true
     properties:
       hibernate:
-        jdbc.batch_size: 50
-        order_inserts: true
-        order_updates: true
+#        jdbc.batch_size: 50
+#        order_inserts: true
+#        order_updates: true
         #        "[format_sql]": true
         temp:
           use_jdbc_metadata_access: false

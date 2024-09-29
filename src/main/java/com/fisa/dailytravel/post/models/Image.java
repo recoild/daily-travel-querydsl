@@ -33,10 +33,11 @@ public class Image {
 //    @JoinColumn(name = "post_id", nullable = false)
 //    private Post post;
 
+    @Column(name = "image_path", nullable = false)
+    private String imagePath;
+
     @Column(name = "post_id")
     private Long postId;
 
-    @Column(name = "image_path", nullable = false)
-    private String imagePath;
 }
 

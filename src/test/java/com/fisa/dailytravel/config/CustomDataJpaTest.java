@@ -1,6 +1,7 @@
 package com.fisa.dailytravel.config;
 
 import com.fisa.dailytravel.global.config.P6spyLogMessageFormatConfiguration;
+import com.fisa.dailytravel.global.config.QueryDSLConfig;
 import com.github.gavlyukovskiy.boot.jdbc.decorator.DataSourceDecoratorAutoConfiguration;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
@@ -24,6 +25,6 @@ import java.lang.annotation.Target;
 @DataJpaTest(showSql = false)
 @ImportAutoConfiguration(value = DataSourceDecoratorAutoConfiguration.class, exclude = FlywayAutoConfiguration.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import({P6spyLogMessageFormatConfiguration.class, TestcontainersConfiguration.class})
+@Import({P6spyLogMessageFormatConfiguration.class, TestcontainersConfiguration.class, QueryDSLConfig.class})
 public @interface CustomDataJpaTest {
 }

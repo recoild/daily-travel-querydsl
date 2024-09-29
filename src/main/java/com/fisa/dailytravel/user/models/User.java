@@ -61,12 +61,12 @@ public class User {
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
 
-    @OneToMany(mappedBy = "user")
-    private List<Post> posts = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<Comment> comments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<Like> likes = new ArrayList<>();
+//    @OneToMany(mappedBy = "user")
+//    private List<Post> posts = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "user")
+//    private List<Comment> comments = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "user")
+//    private List<Like> likes = new ArrayList<>();
 }

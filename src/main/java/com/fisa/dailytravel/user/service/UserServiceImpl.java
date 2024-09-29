@@ -58,40 +58,43 @@ public class UserServiceImpl implements UserService {
     public UserGetResponse getUser(String uuid) throws Exception {
         User user = userRepository.findByUuid(uuid).orElseThrow(() -> new UserNotFoundException(uuid));
 
-        PageRequest posts = PageRequest.of(0, 4);
-        Page<Post> postList = likeRepository.findFavoritePostsByUserId(user.getId(), posts);
-
-
-        List<PostPreviewResponse> likePreview = postList.stream()
-                .map(post -> PostPreviewResponse.of(
-                        post,
-                        post.getImages().stream().map(Image::getImagePath).collect(Collectors.toList()),
-                        post.getPostHashtags().stream().map(hashtag -> hashtag.getHashtag().getHashtagName()).collect(Collectors.toList())
-                ))
-                .collect(Collectors.toList());
-
-        //get recent 1 post of mine
-        Page<Post> myRecentPosts = userRepository.findLatestPostsByUuid(user.getUuid(), PageRequest.of(0, 4));
-        PostPreviewResponse myRecentPostPreview = null;
-        if (myRecentPosts.getTotalElements() > 0) {
-            Post recentPost = myRecentPosts.getContent().get(0);
-            myRecentPostPreview = PostPreviewResponse.of(
-                    recentPost,
-                    recentPost.getImages().stream().map(Image::getImagePath).collect(Collectors.toList()),
-                    recentPost.getPostHashtags().stream().map(hashtag -> hashtag.getHashtag().getHashtagName()).collect(Collectors.toList())
-            );
-        }
-
-        return UserGetResponse.builder()
-                .email(user.getEmail())
-                .nickname(user.getNickname())
-                .profileImagePath(user.getProfileImagePath())
-                .likedPosts(likePreview)
-                .recentPost(myRecentPostPreview)
-                .createdAt(user.getCreatedAt())
-                .updatedAt(user.getUpdatedAt())
-                .isDeleted(user.getIsDeleted())
-                .build();
+        return null;
+//        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new UserNotFoundException(uuid));
+//
+//        PageRequest posts = PageRequest.of(0, 4);
+//        Page<Post> postList = likeRepository.findFavoritePostsByUserId(user.getId(), posts);
+//
+//
+//        List<PostPreviewResponse> likePreview = postList.stream()
+//                .map(post -> PostPreviewResponse.of(
+//                        post,
+//                        post.getImages().stream().map(Image::getImagePath).collect(Collectors.toList()),
+//                        post.getPostHashtags().stream().map(hashtag -> hashtag.getHashtag().getHashtagName()).collect(Collectors.toList())
+//                ))
+//                .collect(Collectors.toList());
+//
+//        //get recent 1 post of mine
+//        Page<Post> myRecentPosts = userRepository.findLatestPostsByUuid(user.getUuid(), PageRequest.of(0, 4));
+//        PostPreviewResponse myRecentPostPreview = null;
+//        if (myRecentPosts.getTotalElements() > 0) {
+//            Post recentPost = myRecentPosts.getContent().get(0);
+//            myRecentPostPreview = PostPreviewResponse.of(
+//                    recentPost,
+//                    recentPost.getImages().stream().map(Image::getImagePath).collect(Collectors.toList()),
+//                    recentPost.getPostHashtags().stream().map(hashtag -> hashtag.getHashtag().getHashtagName()).collect(Collectors.toList())
+//            );
+//        }
+//
+//        return UserGetResponse.builder()
+//                .email(user.getEmail())
+//                .nickname(user.getNickname())
+//                .profileImagePath(user.getProfileImagePath())
+//                .likedPosts(likePreview)
+//                .recentPost(myRecentPostPreview)
+//                .createdAt(user.getCreatedAt())
+//                .updatedAt(user.getUpdatedAt())
+//                .isDeleted(user.getIsDeleted())
+//                .build();
     }
 
     @Transactional
@@ -116,5 +119,15 @@ public class UserServiceImpl implements UserService {
                 .nickname(user.getNickname())
                 .profileImagePath(user.getProfileImagePath())
                 .build();
+    }
+
+    @Transactional
+    @Override
+    public void deleteUser(String uuid) throws Exception {
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new UserNotFoundException(uuid));
+
+        user.setIsDeleted(true);
+
+        userRepository.save(user);
     }
 }
