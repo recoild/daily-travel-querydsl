@@ -1,0 +1,42 @@
+DROP SEQUENCE users_seq;
+DROP SEQUENCE post_seq;
+DROP SEQUENCE comments_seq;
+DROP SEQUENCE image_seq;
+DROP SEQUENCE likes_seq;
+DROP SEQUENCE hashtag_seq;
+DROP SEQUENCE post_hashtag_seq;
+
+CREATE SEQUENCE users_seq
+    START WITH 1
+    INCREMENT BY 1
+    NOCYCLE;
+
+CREATE SEQUENCE post_seq
+    START WITH 1
+    INCREMENT BY 1
+    NOCYCLE;
+
+CREATE SEQUENCE comments_seq
+    START WITH 1
+    INCREMENT BY 1
+    NOCYCLE;
+
+CREATE SEQUENCE image_seq
+    START WITH 1
+    INCREMENT BY 10
+    NOCYCLE;
+
+CREATE SEQUENCE likes_seq
+    START WITH 1
+    INCREMENT BY 1
+    NOCYCLE;
+
+CREATE SEQUENCE hashtag_seq
+    START WITH 1
+    INCREMENT BY 10
+    NOCYCLE;
+
+CREATE SEQUENCE post_hashtag_seq
+    START WITH 1
+    INCREMENT BY 10
+    NOCYCLE;

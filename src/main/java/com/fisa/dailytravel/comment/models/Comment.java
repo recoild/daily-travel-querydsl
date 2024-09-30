@@ -1,7 +1,7 @@
 package com.fisa.dailytravel.comment.models;
 
-import java.time.LocalDateTime;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fisa.dailytravel.post.models.Post;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,11 +11,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fisa.dailytravel.post.models.Post;
-import com.fisa.dailytravel.user.models.User;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -23,6 +18,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -40,10 +37,6 @@ public class Comment {
     @Column(name = "comments_id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "post_id", nullable = false)
-    private Post post;
-
     @Column(name = "comments_content", nullable = false)
     private String content;
 
@@ -55,7 +48,17 @@ public class Comment {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
 
-    @ManyToOne
-    @JoinColumn(name = "users_id", nullable = false)
-    private User user;
+    //    @ManyToOne
+//    @JoinColumn(name = "post_id", nullable = false)
+//    private Post post;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "users_id", nullable = false)
+//    private User user;
+
+    @Column(name = "post_id")
+    private Long postId;
+
+    @Column(name = "users_id")
+    private Long userId;
 }

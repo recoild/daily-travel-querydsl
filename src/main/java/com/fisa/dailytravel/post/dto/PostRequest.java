@@ -19,6 +19,4 @@ public class PostRequest {
     private List<MultipartFile> imageFiles;
     private String placeName;
     private List<String> hashtags;
-    private double latitude;
-    private double longitude;
 }
