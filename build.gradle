@@ -27,7 +27,7 @@ dependencies {
 
 
     //modelmapper
-    implementation 'org.modelmapper:modelmapper:3.1.1'
+//    implementation 'org.modelmapper:modelmapper:3.1.1'
 
     //micrometer
     implementation 'io.micrometer:micrometer-registry-prometheus:1.13.3'
@@ -36,7 +36,7 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test:6.3.1'
 
     //flyway
-    runtimeOnly 'org.flywaydb:flyway-database-oracle:10.17.0'
+//    runtimeOnly 'org.flywaydb:flyway-database-oracle:10.17.0'
 
     //web
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -54,14 +54,16 @@ dependencies {
 
     //jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.modelmapper:modelmapper:3.1.1'
 
     //redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.redisson:redisson-spring-boot-starter:3.32.0'
 
     //ojdbc11
-    implementation 'com.oracle.database.jdbc:ojdbc11'
+//    implementation 'com.oracle.database.jdbc:ojdbc11'
+
+    //mysql
+    runtimeOnly 'com.mysql:mysql-connector-j'
 
     //elastic search 7.11.1
 //    implementation 'org.springframework.data:spring-data-elasticsearch:4.2.12'
@@ -89,10 +91,20 @@ dependencies {
     //testcontainers
     testImplementation 'org.springframework.boot:spring-boot-testcontainers'
     testImplementation 'org.testcontainers:junit-jupiter'
-    testImplementation 'org.testcontainers:oracle-free'
+//    testImplementation 'org.testcontainers:oracle-free'
+    testImplementation 'org.testcontainers:mysql'
 
     //p6spy
     implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.2")
+
+    //compose support
+    developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
+
+    // queryDSL
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 }
 
 test {

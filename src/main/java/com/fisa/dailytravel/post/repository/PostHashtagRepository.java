@@ -13,10 +13,10 @@ import java.util.List;
 @Repository
 public interface PostHashtagRepository extends JpaRepository<PostHashtag, Long> {
     List<PostHashtag> findByPostId(Long postId);
+//
+//    void deleteByPost(Post post);
 
-    void deleteByPost(Post post);
-
-    @Modifying
-    @Query("DELETE FROM PostHashtag ph WHERE ph.post.id = :postId")
-    void deleteByPostId(@Param("postId") Long postId);
+//    @Modifying
+//    @Query("DELETE FROM PostHashtag ph WHERE ph.post.id = :postId")
+//    void deleteByPostId(@Param("postId") Long postId);
 }
