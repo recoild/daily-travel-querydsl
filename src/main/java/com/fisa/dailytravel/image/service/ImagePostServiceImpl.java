@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class ImageServiceImpl implements ImageService {
+public class ImagePostServiceImpl implements ImageService {
     private final S3Uploader s3Uploader;
     private final ImageRepository imageRepository;
     private final UserRepository userRepository;
