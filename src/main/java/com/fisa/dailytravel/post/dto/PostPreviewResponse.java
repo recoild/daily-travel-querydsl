@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -19,7 +20,7 @@ public class PostPreviewResponse {
     private int likeCount;
     //    private List<String> imageFiles;
     private String thumbnail;
-    private List<String> hashtags;
+    private List<String> hashtags = new ArrayList<>();
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime creationDate;
 //
@@ -38,7 +39,7 @@ public class PostPreviewResponse {
 //    }
 
     @QueryProjection
-    public PostPreviewResponse(Long id, String title, String nickname, String profileImagePath, String content, int likeCount, String thumbnail,  LocalDateTime creationDate) {
+    public PostPreviewResponse(Long id, String title, String nickname, String profileImagePath, String content, int likeCount, String thumbnail, LocalDateTime creationDate, List<String> hashtags) {
         this.id = id;
         this.title = title;
         this.nickname = nickname;
@@ -47,5 +48,6 @@ public class PostPreviewResponse {
         this.likeCount = likeCount;
         this.thumbnail = thumbnail;
         this.creationDate = creationDate;
+        this.hashtags = hashtags;
     }
 }
