@@ -1,15 +1,18 @@
 package com.fisa.dailytravel.image.service;
 
-import org.springframework.web.multipart.MultipartFile;
+import com.fisa.dailytravel.image.dto.ImageCreateRequest;
+import com.fisa.dailytravel.image.dto.ImageGetRequest;
+import com.fisa.dailytravel.image.dto.ImageGetResponse;
 
 import java.util.List;
 
 public interface ImageService {
-    void saveImages(Long postId, String userNickname, List<MultipartFile> imageFiles) throws Exception;
+    void saveImages(ImageCreateRequest imageCreateRequest) throws Exception;
 
-    void updateImages() throws Exception;
+    List<ImageGetResponse> getImages(ImageGetRequest imageGetRequest) throws Exception;
 
-    void deleteImages() throws Exception;
+    void updateImages(ImageCreateRequest imageCreateRequest) throws Exception;
 
-    void getImages() throws Exception;
+    void deleteImages(Long postId) throws Exception;
+
 }
