@@ -1,6 +1,8 @@
 package com.fisa.dailytravel.post.repository;
 
 import com.fisa.dailytravel.config.CustomDataJpaTest;
+import com.fisa.dailytravel.image.models.Image;
+import com.fisa.dailytravel.image.repository.ImageRepository;
 import com.fisa.dailytravel.like.models.Like;
 import com.fisa.dailytravel.like.repository.LikeRepository;
 import com.fisa.dailytravel.post.dto.PostPreviewResponse;
@@ -41,7 +43,6 @@ public class PostRepositoryTest {
     @Test
     public void 좋아요_누른_게시글_조회_테스트() {
         //given
-
         //유저 생성
         User user = new User();
         user.setUuid("1");
@@ -102,12 +103,25 @@ public class PostRepositoryTest {
                         .build()
         );
 
+        //이미지 생성
+        List<Image> images = List.of(
+                Image.builder()
+                        .imagePath("test")
+                        .postId(1L)
+                        .build(),
+                Image.builder()
+                        .imagePath("test2")
+                        .postId(1L)
+                        .build()
+        );
+
         //when
         User savedUser = userRepository.save(user);
         postRepository.saveAll(posts);
         likeRepository.saveAll(likes);
         hashtagRepository.saveAll(hashtags);
         postHashtagRepository.saveAll(postHashtags);
+        imageRepository.saveAll(images);
 
         //then
         Page<PostPreviewResponse> likedPosts = likeRepository.findFavoritePostsByUserId(1L, PageRequest.of(0, 10));

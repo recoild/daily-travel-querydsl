@@ -1,4 +1,4 @@
-package com.fisa.dailytravel.post.models;
+package com.fisa.dailytravel.image.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -2,9 +2,6 @@ package com.fisa.dailytravel.user.service;
 
 import com.fisa.dailytravel.global.config.S3Uploader;
 import com.fisa.dailytravel.like.repository.LikeRepository;
-import com.fisa.dailytravel.post.dto.PostPreviewResponse;
-import com.fisa.dailytravel.post.models.Image;
-import com.fisa.dailytravel.post.models.Post;
 import com.fisa.dailytravel.post.repository.PostRepository;
 import com.fisa.dailytravel.user.dto.UserCreateRequest;
 import com.fisa.dailytravel.user.dto.UserGetResponse;
@@ -15,16 +12,12 @@ import com.fisa.dailytravel.user.models.User;
 import com.fisa.dailytravel.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service

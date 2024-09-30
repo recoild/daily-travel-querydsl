@@ -4,7 +4,7 @@
 //import com.fisa.dailytravel.like.models.Like;
 //import com.fisa.dailytravel.like.repository.LikeRepository;
 //import com.fisa.dailytravel.post.dto.PostPreviewResponse;
-//import com.fisa.dailytravel.post.models.Image;
+//import com.fisa.dailytravel.image.models.Image;
 //import com.fisa.dailytravel.post.models.Post;
 //import com.fisa.dailytravel.post.repository.PostRepository;
 //import com.fisa.dailytravel.user.exceptions.UserNotFoundException;
