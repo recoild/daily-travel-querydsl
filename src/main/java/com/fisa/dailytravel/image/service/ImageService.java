@@ -9,7 +9,7 @@ import java.util.List;
 public interface ImageService {
     void saveImages(ImageCreateRequest imageCreateRequest) throws Exception;
 
-    List<ImageGetResponse> getImages(ImageGetRequest imageGetRequest) throws Exception;
+    ImageGetResponse getImages(ImageGetRequest imageGetRequest) throws Exception;
 
     void updateImages(ImageCreateRequest imageCreateRequest) throws Exception;
 

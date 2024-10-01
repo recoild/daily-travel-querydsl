@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService {
         Optional<MultipartFile> imageFileOptional = Optional.ofNullable(imageFile);
 
         if (imageFileOptional.isPresent()) {
-            String imageUrl = s3Uploader.uploadImage("user", user.getNickname(), user.getId(), imageFile);
+            String imageUrl = s3Uploader.uploadImage("user/"+user.getUuid(), imageFile);
             user.setProfileImagePath(imageUrl);
         }
 

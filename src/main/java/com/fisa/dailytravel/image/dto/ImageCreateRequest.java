@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @Builder
 public class ImageCreateRequest {
-    public Long postId;
-    public String directoryName;
-    public List<MultipartFile> imageFiles = new ArrayList<>();
+    private Long postId;
+    private String directoryName;
+    private List<MultipartFile> imageFiles;
 }

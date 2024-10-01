@@ -26,10 +26,13 @@ public class ImagePostServiceImpl implements ImageService {
         List<MultipartFile> imageFiles = imageCreateRequest.getImageFiles();
         if (!imageFiles.isEmpty()) {
             List<Image> imagesNew = new ArrayList<>();
+
+            int i = 0;
             for (MultipartFile imageFile : imageFiles) {
                 String imageUrl = s3Uploader.uploadImage(imageCreateRequest.getDirectoryName(), imageFile);
 
                 imagesNew.add(Image.builder()
+                        .imageNo(i++)
                         .postId(imageCreateRequest.getPostId())
                         .imagePath(imageUrl)
                         .build());
@@ -40,15 +43,14 @@ public class ImagePostServiceImpl implements ImageService {
     }
 
     @Override
-    public List<ImageGetResponse> getImages(ImageGetRequest imageGetRequest) throws Exception {
+    public ImageGetResponse getImages(ImageGetRequest imageGetRequest) throws Exception {
         List<Image> images = imageRepository.findByPostId(imageGetRequest.getPostId());
-        List<ImageGetResponse> imageGetResponses = new ArrayList<>();
+
+        List< String> imagePaths = new ArrayList<>();
         for (Image image : images) {
-            imageGetResponses.add(ImageGetResponse.builder()
-                    .imagePath(image.getImagePath())
-                    .build());
+            imagePaths.add(image.getImagePath());
         }
-        return imageGetResponses;
+        return ImageGetResponse.builder().imagePaths(imagePaths).build();
     }
 
     @Transactional
