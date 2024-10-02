@@ -37,6 +37,7 @@ public class TestcontainersConfiguration {
 //                .withCreateContainerCmdModifier(cmd -> cmd.withHostConfig(
 //                        new HostConfig().withPortBindings(new PortBinding(Ports.Binding.bindPort(6379), new ExposedPort(6379)))
 //                ))
+                .withExposedPorts(6379)
                 .withReuse(true);
 
     }
