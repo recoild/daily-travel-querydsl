@@ -39,18 +39,18 @@ public class PostController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/v1/post")
-    public ResponseEntity<Page<PostPreviewResponse>> getPosts(Pageable pageRequest, JwtAuthenticationToken principal) throws Exception{
-        String uuid = principal.getName();
-        Page<PostPreviewResponse> posts =  postService.getPosts(uuid, pageRequest);
-        return ResponseEntity.ok(posts);
-    }
-
-    @GetMapping("/v1/post/{id}")
-    public ResponseEntity<PostResponse> getPostById(@PathVariable Long id, JwtAuthenticationToken principal) throws Exception{
-        PostResponse post = postService.getPost(principal.getName(),id);
-        return ResponseEntity.ok(post);
-    }
+//    @GetMapping("/v1/post")
+//    public ResponseEntity<Page<PostPreviewResponse>> getPosts(Pageable pageRequest, JwtAuthenticationToken principal) throws Exception{
+//        String uuid = principal.getName();
+//        Page<PostPreviewResponse> posts =  postService.getPosts(uuid, pageRequest);
+//        return ResponseEntity.ok(posts);
+//    }
+//
+//    @GetMapping("/v1/post/{id}")
+//    public ResponseEntity<PostResponse> getPostById(@PathVariable Long id, JwtAuthenticationToken principal) throws Exception{
+//        PostResponse post = postService.getPost(principal.getName(),id);
+//        return ResponseEntity.ok(post);
+//    }
 
 
     @GetMapping("/v1/post/image")

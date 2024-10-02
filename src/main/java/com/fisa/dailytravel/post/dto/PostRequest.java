@@ -16,7 +16,7 @@ public class PostRequest {
     private Long id;
     private String title;
     private String content;
-    private List<MultipartFile> imageFiles;
     private String placeName;
+    private List<MultipartFile> imageFiles;
     private List<String> hashtags;
 }

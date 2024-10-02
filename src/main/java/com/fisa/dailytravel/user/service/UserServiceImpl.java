@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public UserGetResponse getUser(String uuid) throws Exception {
+    public UserGetResponse getUserFeed(String uuid) throws Exception {
         User user = userRepository.findByUuid(uuid).orElseThrow(() -> new UserNotFoundException(uuid));
 
         return null;

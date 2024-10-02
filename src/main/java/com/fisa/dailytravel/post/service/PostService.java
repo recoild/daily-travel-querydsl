@@ -8,15 +8,15 @@ import org.springframework.data.domain.Pageable;
 import java.io.IOException;
 
 public interface PostService {
-    String savePost(String uuid, PostRequest postRequest) throws Exception;
+    void savePost(String uuid, PostRequest postRequest) throws Exception;
 
-    PostResponse getPost(String uuid, Long postId);
-
-    Page<PostPreviewResponse> getPosts(String uuid, Pageable pageRequest) throws Exception;
-
-    String modifyPost(String uuid, PostRequest postRequest) throws Exception;
-
-    String deletePost(String uuid, Long postId);
-
-    PostPagingResponse searchPosts(String uuid, PostSearchPagingRequest postSearchPagingRequest) throws Exception;
+//    PostResponse getPost(String uuid, Long postId);
+//
+//    Page<PostPreviewResponse> getPosts(String uuid, Pageable pageRequest) throws Exception;
+//
+//    String modifyPost(String uuid, PostRequest postRequest) throws Exception;
+//
+//    String deletePost(String uuid, Long postId);
+//
+//    PostPagingResponse searchPosts(String uuid, PostSearchPagingRequest postSearchPagingRequest) throws Exception;
 }

@@ -7,7 +7,5 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface HashTagRepository extends JpaRepository<Hashtag, Long> {
-
-    Optional<Hashtag> findByHashtagName(String hashtag);
+public interface HashTagRepository extends JpaRepository<Hashtag, Long>, HashTagRepositoryCustom {
 }
