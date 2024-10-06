@@ -1,4 +1,4 @@
-package com.fisa.dailytravel.image.repository;
+package com.fisa.dailytravel.post.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;

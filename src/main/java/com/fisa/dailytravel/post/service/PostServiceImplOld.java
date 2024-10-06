@@ -13,11 +13,11 @@
 //import com.fisa.dailytravel.post.dto.PostResponse;
 //import com.fisa.dailytravel.post.dto.PostSearchPagingRequest;
 //import com.fisa.dailytravel.post.models.Hashtag;
-//import com.fisa.dailytravel.image.models.Image;
+//import com.fisa.dailytravel.post.models.Image;
 //import com.fisa.dailytravel.post.models.Post;
 //import com.fisa.dailytravel.post.models.PostHashtag;
 //import com.fisa.dailytravel.post.repository.HashTagRepository;
-//import com.fisa.dailytravel.image.repository.ImageRepository;
+//import com.fisa.dailytravel.post.repository.ImageRepository;
 //import com.fisa.dailytravel.post.repository.PostHashtagRepository;
 //import com.fisa.dailytravel.post.repository.PostRepository;
 //import com.fisa.dailytravel.user.exceptions.UserNotFoundException;

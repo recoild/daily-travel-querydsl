@@ -1,11 +1,11 @@
-package com.fisa.dailytravel.image.service;
+package com.fisa.dailytravel.post.service;
 
 import com.fisa.dailytravel.global.config.S3Uploader;
-import com.fisa.dailytravel.image.dto.ImageCreateRequest;
-import com.fisa.dailytravel.image.dto.ImageGetRequest;
-import com.fisa.dailytravel.image.dto.ImageGetResponse;
-import com.fisa.dailytravel.image.models.Image;
-import com.fisa.dailytravel.image.repository.ImageRepository;
+import com.fisa.dailytravel.post.dto.ImageCreateRequest;
+import com.fisa.dailytravel.post.dto.ImageGetRequest;
+import com.fisa.dailytravel.post.dto.ImageGetResponse;
+import com.fisa.dailytravel.post.models.Image;
+import com.fisa.dailytravel.post.repository.ImageRepository;
 import com.fisa.dailytravel.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;

@@ -2,13 +2,14 @@ package com.fisa.dailytravel.post.service;
 
 import com.fisa.dailytravel.comment.dto.CommentPageRequest;
 import com.fisa.dailytravel.post.dto.*;
+import com.fisa.dailytravel.post.models.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.io.IOException;
 
 public interface PostService {
-    void savePost(String uuid, PostRequest postRequest) throws Exception;
+    Post savePost(String uuid, PostRequest postRequest) throws Exception;
 
 //    PostResponse getPost(String uuid, Long postId);
 //

@@ -1,10 +1,8 @@
-package com.fisa.dailytravel.image.service;
+package com.fisa.dailytravel.post.service;
 
-import com.fisa.dailytravel.image.dto.ImageCreateRequest;
-import com.fisa.dailytravel.image.dto.ImageGetRequest;
-import com.fisa.dailytravel.image.dto.ImageGetResponse;
-
-import java.util.List;
+import com.fisa.dailytravel.post.dto.ImageCreateRequest;
+import com.fisa.dailytravel.post.dto.ImageGetRequest;
+import com.fisa.dailytravel.post.dto.ImageGetResponse;
 
 public interface ImageService {
     void saveImages(ImageCreateRequest imageCreateRequest) throws Exception;
