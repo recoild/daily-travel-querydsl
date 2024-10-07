@@ -92,9 +92,9 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
         List<PostPreviewResponse> posts = queryFactory
                 .from(post)
-                .innerJoin(user).on(post.userId.eq(user.id))  // 게시글 작성자 정보
-                .leftJoin(postHashtag).on(postHashtag.postId.eq(post.id))  // 게시글과 해시태그의 연결 테이블
-                .leftJoin(hashtag).on(postHashtag.hashtagId.eq(hashtag.id))  // 해시태그 테이블
+                .innerJoin(user).on(post.userId.eq(user.id))
+                .leftJoin(postHashtag).on(postHashtag.postId.eq(post.id))
+                .leftJoin(hashtag).on(postHashtag.hashtagId.eq(hashtag.id))
                 .orderBy(post.createdAt.desc())
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
@@ -103,14 +103,14 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                                 new QPostPreviewResponse(
                                         post.id,
                                         post.title,
-                                        user.nickname,  // 사용자 닉네임을 userId로 대체 (실제로는 User 엔티티로 처리 필요)
+                                        user.nickname,
                                         user.profileImagePath,
                                         post.content,
                                         post.placeName,
                                         post.likesCount,
                                         post.thumbnail,
                                         post.createdAt,
-                                        list(hashtag.hashtagName)  // 해시태그 목록을 그룹화하여 리스트로 만듦
+                                        list(hashtag.hashtagName)
                                 )
                         )
                 );
