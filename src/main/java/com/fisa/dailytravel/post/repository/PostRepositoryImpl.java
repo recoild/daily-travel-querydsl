@@ -32,7 +32,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     //게시글 상세정보 조회
     //게시글, 이미지, 해시태그, 댓글(처음 페이지) 조회
     @Override
-    public PostResponse getPost(Long userId, Long postId) {
+    public PostResponse getPost(String uuid, Long postId) {
         QUser user = QUser.user;
         QPost post = QPost.post;
         QImage image = QImage.image;
@@ -41,7 +41,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         QComment comment = QComment.comment;
 
         User theUser = queryFactory.selectFrom(user)
-                .where(user.id.eq(userId))
+                .where(user.uuid.eq(uuid))
                 .fetchOne();
 
         Post thePost = queryFactory.selectFrom(post)
@@ -69,7 +69,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .fetch();
 
         return PostResponse.builder()
-                .mine(thePost.getUserId().equals(userId))
+                .mine(thePost.getUserId().equals(theUser.getId()))
                 .title(thePost.getTitle())
                 .content(thePost.getContent())
                 .nickname(theUser.getNickname())
@@ -84,15 +84,19 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     }
 
     @Override
-    public Page<PostPreviewResponse> getPosts(Long userId, Pageable pageRequest) {
+    public Page<PostPreviewResponse> getPosts(String uuid, Pageable pageRequest) {
         QPost post = QPost.post;
         QHashtag hashtag = QHashtag.hashtag;
         QPostHashtag postHashtag = QPostHashtag.postHashtag;
         QUser user = QUser.user;
 
+        User theUser = queryFactory.selectFrom(user)
+                .where(user.uuid.eq(uuid))
+                .fetchOne();
+
         List<PostPreviewResponse> posts = queryFactory
                 .from(post)
-                .innerJoin(user).on(post.userId.eq(user.id))
+                .innerJoin(user).on(post.userId.eq(theUser.getId()))
                 .leftJoin(postHashtag).on(postHashtag.postId.eq(post.id))
                 .leftJoin(hashtag).on(postHashtag.hashtagId.eq(hashtag.id))
                 .orderBy(post.createdAt.desc())

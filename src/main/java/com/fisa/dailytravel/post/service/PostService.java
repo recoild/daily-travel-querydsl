@@ -10,9 +10,9 @@ import org.springframework.data.domain.Pageable;
 public interface PostService {
     Post savePost(String uuid, PostRequest postRequest) throws Exception;
 
-    PostResponse getPost(Long userId, Long postId) throws Exception;
+    PostResponse getPost(String uuid, Long postId) throws Exception;
 
-    Page<PostPreviewResponse> getPosts(Long userId, Pageable pageRequest) throws Exception;
+    Page<PostPreviewResponse> getPosts(String uuid, Pageable pageRequest) throws Exception;
 
 //    String modifyPost(String uuid, PostRequest postRequest) throws Exception;
 //

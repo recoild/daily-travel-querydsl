@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -61,8 +60,6 @@ public class PostRepositoryTest {
         postHashtagRepository.deleteAll();
         hashtagRepository.deleteAll();
         commentRepository.deleteAll();
-
-
 
         // 사용자 생성 및 저장
         User user = User.builder()
@@ -167,27 +164,28 @@ public class PostRepositoryTest {
 
     @Test
     public void 좋아요_누른_게시글_조회_테스트() {
-        //then
+        //when
         Page<PostPreviewResponse> likedPosts = likeRepository.findFavoritePostsByUserId(savedUser.getId(), PageRequest.of(0, 10));
+
+        //then
         assertThat(likedPosts.getContent().size()).isEqualTo(2);
     }
 
     @Test
     public void 게시글_조회_테스트() {
         //when
-        PostResponse postResponse = postRepository.getPost(savedUser.getId(), savedPosts.get(0).getId());
+        PostResponse postResponse = postRepository.getPost(savedUser.getUuid(), savedPosts.get(0).getId());
 
+        //then
         assertThat(postResponse.getTitle()).isEqualTo("test");
-
     }
 
     @Test
     public void 게시글_목록_테스트() {
-        User savedUser = userRepository.findByUuid("1").get();
-
         //when
-        Page<PostPreviewResponse> posts = postRepository.getPosts(savedUser.getId(), PageRequest.of(0, 10));
+        Page<PostPreviewResponse> posts = postRepository.getPosts(savedUser.getUuid(), PageRequest.of(0, 10));
 
+        //then
         assertThat(posts.getContent().size()).isEqualTo(3);
     }
 }

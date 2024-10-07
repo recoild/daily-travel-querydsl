@@ -103,14 +103,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponse getPost(Long userId, Long postId) throws Exception {
-        PostResponse postResponse = postRepository.getPost(userId, postId);
+    public PostResponse getPost(String uuid, Long postId) throws Exception {
+        PostResponse postResponse = postRepository.getPost(uuid, postId);
         return postResponse;
     }
 
     @Override
-    public Page<PostPreviewResponse> getPosts(Long userId, Pageable pageRequest) throws Exception {
-        Page<PostPreviewResponse> postPreviewResponses = postRepository.getPosts(userId, pageRequest);
+    public Page<PostPreviewResponse> getPosts(String uuid, Pageable pageRequest) throws Exception {
+        Page<PostPreviewResponse> postPreviewResponses = postRepository.getPosts(uuid, pageRequest);
         return postPreviewResponses;
     }
 

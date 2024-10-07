@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface PostRepositoryCustom {
-    PostResponse getPost(Long userId, Long postId);
+    PostResponse getPost(String uuid, Long postId);
 
-    Page<PostPreviewResponse> getPosts(Long userId, Pageable pageRequest);
+    Page<PostPreviewResponse> getPosts(String uuid, Pageable pageRequest);
 }
