@@ -39,17 +39,17 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping("/v1/user")
-    public ApiResponse<UserGetResponse> getUser(JwtAuthenticationToken principal) throws Exception {
-        String uuid = principal.getName();
-
-        UserGetResponse user = userService.getUser(uuid);
-        if (user == null) {
-            return ApiResponse.error(null);
-        }
-
-        return ApiResponse.ok(user);
-    }
+//    @GetMapping("/v1/user")
+//    public ApiResponse<UserGetResponse> getUser(JwtAuthenticationToken principal) throws Exception {
+//        String uuid = principal.getName();
+//
+//        UserGetResponse user = userService.getUser(uuid);
+//        if (user == null) {
+//            return ApiResponse.error(null);
+//        }
+//
+//        return ApiResponse.ok(user);
+//    }
 
     @PutMapping("/v1/user")
     public ApiResponse<UserUpdateResponse> updateUser(@ModelAttribute UserUpdateRequest userUpdateRequest, JwtAuthenticationToken principal) throws IOException {

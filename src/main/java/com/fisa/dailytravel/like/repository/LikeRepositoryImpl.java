@@ -1,10 +1,11 @@
 package com.fisa.dailytravel.like.repository;
 
-import com.fisa.dailytravel.image.models.QImage;
+
 import com.fisa.dailytravel.like.models.QLike;
 import com.fisa.dailytravel.post.dto.PostPreviewResponse;
 import com.fisa.dailytravel.post.dto.QPostPreviewResponse;
 import com.fisa.dailytravel.post.models.QHashtag;
+import com.fisa.dailytravel.post.models.QImage;
 import com.fisa.dailytravel.post.models.QPost;
 import com.fisa.dailytravel.post.models.QPostHashtag;
 import com.fisa.dailytravel.user.models.QUser;

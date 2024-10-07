@@ -1,11 +1,15 @@
-package com.fisa.dailytravel.image.dto;
+package com.fisa.dailytravel.post.dto;
 
+import lombok.Builder;
+import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@Data
+@Builder
 public class ImageCreateRequest {
     private Long postId;
-    private Long userId;
+    private String directoryName;
     private List<MultipartFile> imageFiles;
 }

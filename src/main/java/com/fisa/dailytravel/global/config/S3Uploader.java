@@ -27,18 +27,12 @@ public class S3Uploader {
     private String bucket;
 
     // 이미지 S3에 업로드 후 이미지 URL 반환
-    public String uploadImage(String type, String nickname, Long postId, MultipartFile file) throws IOException {
-        String s3FileName = nickname + "-postId" + postId + "-" + file.getOriginalFilename();
+    public String uploadImage(String directoryName, MultipartFile file) throws IOException {
+        String s3FileName = directoryName+"/" + file.getOriginalFilename();
 
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(file.getContentType());
         metadata.setContentLength(file.getSize());
-
-        if (type.equals("post")) {
-            s3FileName = "post/" + s3FileName;
-        } else if (type.equals("user")) {
-            s3FileName = "user/" + s3FileName;
-        }
 
         PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, s3FileName, file.getInputStream(), metadata);
         putObjectRequest.withCannedAcl(CannedAccessControlList.PublicRead);

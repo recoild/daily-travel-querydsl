@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public UserGetResponse getUser(String uuid) throws Exception {
+    public UserGetResponse getUserFeed(String uuid) throws Exception {
         User user = userRepository.findByUuid(uuid).orElseThrow(() -> new UserNotFoundException(uuid));
 
         return null;
@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService {
         Optional<MultipartFile> imageFileOptional = Optional.ofNullable(imageFile);
 
         if (imageFileOptional.isPresent()) {
-            String imageUrl = s3Uploader.uploadImage("user", user.getNickname(), user.getId(), imageFile);
+            String imageUrl = s3Uploader.uploadImage("user/"+user.getUuid(), imageFile);
             user.setProfileImagePath(imageUrl);
         }
 
