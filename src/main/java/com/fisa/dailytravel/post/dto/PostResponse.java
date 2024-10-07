@@ -2,9 +2,7 @@ package com.fisa.dailytravel.post.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fisa.dailytravel.comment.dto.CommentResponse;
-import com.fisa.dailytravel.post.models.Post;
 import com.querydsl.core.annotations.QueryProjection;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,16 +16,16 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class PostResponse {
-//    private Long id;
+    //    private Long id;
     private String title;
     private String content;
     private String nickname;
     private String profileImagePath;
     private String placeName;
     private int likesCount;
-//    private String thumbnail;
+    //    private String thumbnail;
     private List<String> images;
-//    private Double latitude;
+    //    private Double latitude;
 //    private Double longitude;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime creationDate;
@@ -36,7 +34,17 @@ public class PostResponse {
     private boolean mine;
 
     @QueryProjection
-    public PostResponse( String title, String content, String nickname, String profileImagePath, String placeName, int likesCount, List<String> images, LocalDateTime creationDate, List<String> hashtags, List<CommentResponse> comments, boolean mine) {
+    public PostResponse(String title,
+                        String content,
+                        String nickname,
+                        String profileImagePath,
+                        String placeName,
+                        int likesCount,
+                        List<String> images,
+                        LocalDateTime creationDate,
+                        List<String> hashtags,
+                        List<CommentResponse> comments,
+                        boolean mine) {
         this.title = title;
         this.content = content;
         this.nickname = nickname;

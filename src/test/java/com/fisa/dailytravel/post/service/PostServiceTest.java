@@ -5,8 +5,6 @@ import com.fisa.dailytravel.post.dto.PostRequest;
 import com.fisa.dailytravel.post.models.Post;
 import com.fisa.dailytravel.user.models.User;
 import com.fisa.dailytravel.user.repository.UserRepository;
-import com.fisa.dailytravel.user.service.UserService;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
@@ -26,7 +24,8 @@ public class PostServiceTest {
     private UserRepository userRepository;
 
     @Test
-    public  void testSavePost() throws Exception{
+    public void testSavePost() throws Exception {
+        //given
         User user = new User();
         user.setUuid("uuid1");
         user.setEmail("test@test.com");
@@ -53,9 +52,8 @@ public class PostServiceTest {
         postRequest.setPlaceName("placeName");
         postRequest.setImageFiles(List.of(multipartFile));
 
-
+        //when
         Post savedPost = postService.savePost("uuid1", postRequest);
-
 
         // then
         assertNotNull(savedPost);
