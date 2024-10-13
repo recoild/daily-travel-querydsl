@@ -3,7 +3,10 @@ package com.fisa.dailytravel.user.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fisa.dailytravel.post.dto.PostPreviewResponse;
 import com.querydsl.core.annotations.QueryProjection;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,7 +15,7 @@ import java.util.List;
 @Setter
 @Builder
 @NoArgsConstructor
-public class UserGetResponse {
+public class UserFeedResponse {
     private String email;
     private String nickname;
     private String profileImagePath;
@@ -28,7 +31,7 @@ public class UserGetResponse {
     private Boolean isDeleted;
 
     @QueryProjection
-    public UserGetResponse(String email, String nickname, String profileImagePath, List<PostPreviewResponse> recentPosts, List<PostPreviewResponse> likedPosts, LocalDateTime createdAt, LocalDateTime updatedAt, Boolean isDeleted) {
+    public UserFeedResponse(String email, String nickname, String profileImagePath, List<PostPreviewResponse> recentPosts, List<PostPreviewResponse> likedPosts, LocalDateTime createdAt, LocalDateTime updatedAt, Boolean isDeleted) {
         this.email = email;
         this.nickname = nickname;
         this.profileImagePath = profileImagePath;

@@ -4,7 +4,9 @@ import com.fisa.dailytravel.global.config.S3Uploader;
 import com.fisa.dailytravel.like.repository.LikeRepository;
 import com.fisa.dailytravel.post.repository.PostRepository;
 import com.fisa.dailytravel.user.dto.UserCreateRequest;
-import com.fisa.dailytravel.user.dto.UserGetResponse;
+import com.fisa.dailytravel.user.dto.UserCreateResponse;
+import com.fisa.dailytravel.user.dto.UserFeedResponse;
+import com.fisa.dailytravel.user.dto.UserInfoResponse;
 import com.fisa.dailytravel.user.dto.UserUpdateRequest;
 import com.fisa.dailytravel.user.dto.UserUpdateResponse;
 import com.fisa.dailytravel.user.exceptions.UserNotFoundException;
@@ -12,6 +14,7 @@ import com.fisa.dailytravel.user.models.User;
 import com.fisa.dailytravel.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void signin(UserCreateRequest userCreateRequest) throws Exception {
+    public UserCreateResponse signin(UserCreateRequest userCreateRequest) throws Exception {
         Optional<User> user = userRepository.findByUuid(userCreateRequest.getUuid());
 
         if (user.isEmpty()) {
@@ -43,12 +46,35 @@ public class UserServiceImpl implements UserService {
             newUser.setIsDeleted(false);
 
             userRepository.save(newUser);
+            return UserCreateResponse.builder()
+                    .status(HttpStatus.CREATED)
+                    .message("User created successfully")
+                    .build();
         }
+
+        return UserCreateResponse.builder()
+                .status(HttpStatus.OK)
+                .message("User signed in successfully")
+                .build();
+    }
+
+    @Override
+    public UserInfoResponse getUserInfo(String uuid) throws Exception {
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> new UserNotFoundException(uuid));
+
+        return UserInfoResponse.builder()
+                .email(user.getEmail())
+                .nickname(user.getNickname())
+                .profileImagePath(user.getProfileImagePath())
+                .createdAt(user.getCreatedAt())
+                .updatedAt(user.getUpdatedAt())
+                .isDeleted(user.getIsDeleted())
+                .build();
     }
 
     @Transactional
     @Override
-    public UserGetResponse getUserFeed(String uuid) throws Exception {
+    public UserFeedResponse getUserFeed(String uuid) throws Exception {
         User user = userRepository.findByUuid(uuid).orElseThrow(() -> new UserNotFoundException(uuid));
 
         return null;
@@ -102,7 +128,7 @@ public class UserServiceImpl implements UserService {
         Optional<MultipartFile> imageFileOptional = Optional.ofNullable(imageFile);
 
         if (imageFileOptional.isPresent()) {
-            String imageUrl = s3Uploader.uploadImage("user/"+user.getUuid(), imageFile);
+            String imageUrl = s3Uploader.uploadImage("user/" + user.getUuid(), imageFile);
             user.setProfileImagePath(imageUrl);
         }
 
