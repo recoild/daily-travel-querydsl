@@ -48,6 +48,7 @@ public class LoggingAspect {
             result = joinPoint.proceed();
         } catch (Exception e) {
             logger.error("ExceptionMethod: {} - ExceptionMessage: {}", joinPoint.getSignature().getName(), e.getMessage());
+            result = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         } finally {
             long endTime = System.currentTimeMillis();
             long duration = endTime - startTime;

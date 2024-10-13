@@ -1,11 +1,13 @@
 package com.fisa.dailytravel.post.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PostPersist;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -14,6 +16,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -25,6 +30,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(of = "id")
 @Table(name = "post")
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "post_seq")
@@ -47,30 +53,31 @@ public class Post {
     @Column(name = "thumbnail")
     private String thumbnail;
 
-    @Column(name = "created_at", insertable = false, updatable = false, nullable = true)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+//    @Column(name = "created_at", insertable = false, updatable = false, nullable = true)
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+//    private LocalDateTime createdAt;
+//
+//    @Column(name = "updated_at", insertable = false, updatable = false)
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+//    private LocalDateTime updatedAt;
+
+    @CreatedDate
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", insertable = false, updatable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @LastModifiedDate
     private LocalDateTime updatedAt;
-
-//    @ManyToOne
-//    @JoinColumn(name = "users_id", nullable = false)
-//    private User user;
-//
-//    @OneToMany(mappedBy = "post")
-//    private List<Comment> comments = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "post")
-//    private List<Image> images = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "post")
-//    private List<Like> likes = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private Set<PostHashtag> postHashtags = new HashSet<>();
 
     @Column(name = "users_id")
     private Long userId;
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PostPersist
+    public void postPersist() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }

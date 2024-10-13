@@ -29,7 +29,7 @@ public class PostController {
     private final S3Uploader s3Uploader;
 
     @PostMapping("/v1/post")
-    public ResponseEntity<Void> createPost(@ModelAttribute PostRequest postRequest, JwtAuthenticationToken principal) throws Exception {
+    public ResponseEntity<Void> savePost(@ModelAttribute PostRequest postRequest, JwtAuthenticationToken principal) throws Exception {
         String uuid = principal.getName();
         postService.savePost(uuid, postRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
