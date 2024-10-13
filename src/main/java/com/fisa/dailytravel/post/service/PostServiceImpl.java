@@ -5,7 +5,6 @@ import com.fisa.dailytravel.post.dto.PostPreviewResponse;
 import com.fisa.dailytravel.post.dto.PostRequest;
 import com.fisa.dailytravel.post.dto.PostResponse;
 import com.fisa.dailytravel.post.models.Hashtag;
-import com.fisa.dailytravel.post.models.Image;
 import com.fisa.dailytravel.post.models.Post;
 import com.fisa.dailytravel.post.models.PostHashtag;
 import com.fisa.dailytravel.post.repository.HashTagRepository;
@@ -20,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +32,7 @@ public class PostServiceImpl implements PostService {
     private final PostHashtagRepository postHashtagRepository;
     private final S3Uploader s3Uploader;
     private final ImageRepository imageRepository;
+    private final AsyncImageUploadService asyncImageUploadService;
 
     private final String imageDirectory = "post";
 
@@ -91,27 +90,32 @@ public class PostServiceImpl implements PostService {
             postHashtagRepository.saveAll(postHashtags);
         }
 
+//        if (!postRequest.getImageFiles().isEmpty()) {
+//            //이미지 생성
+//            List<MultipartFile> imageFiles = postRequest.getImageFiles();
+
+//            List<Image> imagesNew = new ArrayList<>();
+
+//            int i = 0;
+//            for (MultipartFile imageFile : imageFiles) {
+//                String imageUrl = s3Uploader.uploadImage(imageDirectory, imageFile);
+//                Thread.sleep(2000);
+//                imagesNew.add(Image.builder()
+//                        .imageNo(i++)
+//                        .postId(post.getId())
+//                        .imagePath(imageUrl)
+//                        .build());
+//            }
+//
+//            imageRepository.saveAll(imagesNew);
+//
+//            post.setThumbnail(imagesNew.get(0).getImagePath());
+//            post = postRepository.save(post);
+//        }
+
+        // 이미지 업로드를 비동기 작업으로 처리 (게시글은 즉시 반환)
         if (!postRequest.getImageFiles().isEmpty()) {
-            //이미지 생성
-            List<MultipartFile> imageFiles = postRequest.getImageFiles();
-
-            List<Image> imagesNew = new ArrayList<>();
-
-            int i = 0;
-            for (MultipartFile imageFile : imageFiles) {
-                String imageUrl = s3Uploader.uploadImage(imageDirectory, imageFile);
-
-                imagesNew.add(Image.builder()
-                        .imageNo(i++)
-                        .postId(post.getId())
-                        .imagePath(imageUrl)
-                        .build());
-            }
-
-            imageRepository.saveAll(imagesNew);
-
-            post.setThumbnail(imagesNew.get(0).getImagePath());
-            post = postRepository.save(post);
+            asyncImageUploadService.uploadImagesAsync(postRequest.getImageFiles(), post);
         }
 
         return post;
