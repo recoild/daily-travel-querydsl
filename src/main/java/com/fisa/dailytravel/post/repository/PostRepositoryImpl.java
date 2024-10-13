@@ -69,6 +69,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .fetch();
 
         return PostResponse.builder()
+                .id(thePost.getId())
                 .mine(thePost.getUserId().equals(theUser.getId()))
                 .title(thePost.getTitle())
                 .content(thePost.getContent())
@@ -90,15 +91,16 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         QPostHashtag postHashtag = QPostHashtag.postHashtag;
         QUser user = QUser.user;
 
-        User theUser = queryFactory.selectFrom(user)
+        User me = queryFactory.selectFrom(user)
                 .where(user.uuid.eq(uuid))
                 .fetchOne();
 
         List<PostPreviewResponse> posts = queryFactory
                 .from(post)
-                .innerJoin(user).on(post.userId.eq(theUser.getId()))
+                .leftJoin(user).on(post.userId.eq(user.id))
                 .leftJoin(postHashtag).on(postHashtag.postId.eq(post.id))
                 .leftJoin(hashtag).on(postHashtag.hashtagId.eq(hashtag.id))
+                .where(user.isDeleted.isFalse())
                 .orderBy(post.createdAt.desc())
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
@@ -114,13 +116,12 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                                         post.likesCount,
                                         post.thumbnail,
                                         post.createdAt,
-                                        list(hashtag.hashtagName)
+                                        list(hashtag.hashtagName),
+                                        post.userId.eq(me.getId())
                                 )
                         )
                 );
 
         return new PageImpl<>(posts, pageRequest, posts.size());
     }
-
-
 }

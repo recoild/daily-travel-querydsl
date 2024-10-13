@@ -32,7 +32,7 @@ public class AsyncImageUploadService {
             if (imgNo == 0) {
                 post.setThumbnail(imageUrl);
             }
-
+//            Thread.sleep(3000);
             postRepository.save(post);
             imageRepository.save(Image.builder()
                     .imageNo(imgNo)
