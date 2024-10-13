@@ -10,10 +10,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -27,34 +24,25 @@ public class AsyncImageUploadService {
 
     @Async("customTaskExecutor")
     @Transactional
-    public CompletableFuture<String> uploadImagesAsync(List<MultipartFile> imageFilesData, Post post) throws Exception {
+    public CompletableFuture<String> uploadImagesAsync(int imgNo, byte[] imageFileData, String fileName, String contentType, Post post) throws Exception {
         System.out.println("Executing method asynchronously - " + Thread.currentThread().getName());
-        System.out.println("Image upload count: " + imageFilesData.size());
-        List<Image> images = new ArrayList<>();
-        int i = 0;
-        for (MultipartFile imageFile : imageFilesData) {
-            try {
-                String imageUrl = s3Uploader.uploadImage(imageDirectory, imageFile);
+        try {
+            String imageUrl = s3Uploader.uploadImage(imageDirectory, imageFileData, fileName, contentType);
 
-                images.add(Image.builder()
-                        .imageNo(i++)
-                        .postId(post.getId())
-                        .imagePath(imageUrl)
-                        .build());
-            } catch (Exception e) {
-                // Postman 에서만 발생하는 오류는 아래와 같다.
-                // Postman 오류 : java.nio.file.NoSuchFileException: ~~~~.tmp
-                // 해당 오류를 catch 하여 로그 출력으로 처리.
-
-                e.printStackTrace();
+            if (imgNo == 0) {
+                post.setThumbnail(imageUrl);
             }
+
+            postRepository.save(post);
+            imageRepository.save(Image.builder()
+                    .imageNo(imgNo)
+                    .postId(post.getId())
+                    .imagePath(imageUrl)
+                    .build());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        if (!images.isEmpty()) {
-            post.setThumbnail(images.get(0).getImagePath());
-            postRepository.save(post);
-            imageRepository.saveAll(images);
-        }
 
         return new AsyncResult<>("Image upload completed").completable();
     }

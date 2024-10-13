@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,8 +116,18 @@ public class PostServiceImpl implements PostService {
 
         // 이미지 업로드를 비동기 작업으로 처리 (게시글은 즉시 반환)
         if (!postRequest.getImageFiles().isEmpty()) {
-            asyncImageUploadService.uploadImagesAsync(postRequest.getImageFiles(), post);
+//            asyncImageUploadService.uploadImagesAsync(postRequest.getImageFiles(), post);
+
+            List<MultipartFile> imageFiles = postRequest.getImageFiles();
+            int i = 0;
+            for (MultipartFile imageFile : imageFiles) {
+                byte[] imageFileData = imageFile.getBytes();
+                String fileName = imageFile.getOriginalFilename();
+                String contentType = imageFile.getContentType();
+                asyncImageUploadService.uploadImagesAsync(i++, imageFileData, fileName, contentType, post);
+            }
         }
+
 
         return post;
     }
