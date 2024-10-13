@@ -37,7 +37,7 @@ public class AsyncImageUploadService {
             System.out.println("Executing method asynchronously - " + Thread.currentThread().getName());
 
             String imageUrl = s3Uploader.uploadImage(imageDirectory, imageFile);
-            Thread.sleep(3000);
+//            Thread.sleep(3000);
             images.add(Image.builder()
                     .imageNo(i++)
                     .postId(post.getId())
