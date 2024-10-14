@@ -23,7 +23,6 @@ public class PostResponse {
     private String content;
     private String nickname;
     private String profileImagePath;
-    private String placeName;
     private int likesCount;
     private List<String> images;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
@@ -38,7 +37,6 @@ public class PostResponse {
                         String content,
                         String nickname,
                         String profileImagePath,
-                        String placeName,
                         int likesCount,
                         LocalDateTime creationDate,
                         boolean mine) {
@@ -47,7 +45,6 @@ public class PostResponse {
         this.content = content;
         this.nickname = nickname;
         this.profileImagePath = profileImagePath;
-        this.placeName = placeName;
         this.likesCount = likesCount;
         this.creationDate = creationDate;
         this.mine = mine;
@@ -60,7 +57,6 @@ public class PostResponse {
             String content,
             String nickname,
             String profileImagePath,
-            String placeName,
             int likesCount,
             List<String> images,
             LocalDateTime creationDate,
@@ -72,7 +68,6 @@ public class PostResponse {
         this.content = content;
         this.nickname = nickname;
         this.profileImagePath = profileImagePath;
-        this.placeName = placeName;
         this.likesCount = likesCount;
         this.images = images;
         this.creationDate = creationDate;

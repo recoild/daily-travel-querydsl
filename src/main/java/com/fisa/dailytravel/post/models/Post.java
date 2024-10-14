@@ -44,9 +44,6 @@ public class Post {
     @Column(name = "post_content", nullable = false)
     private String content;
 
-    @Column(name = "place_name")
-    private String placeName;
-
     @Column(name = "likes_count")
     private int likesCount;
 

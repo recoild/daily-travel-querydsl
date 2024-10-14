@@ -49,7 +49,6 @@ public class PostServiceTest {
         postRequest.setContent("content");
         postRequest.setTitle("title");
         postRequest.setHashtags(List.of("hashtag1", "hashtag2"));
-        postRequest.setPlaceName("placeName");
         postRequest.setImageFiles(List.of(multipartFile));
 
         //when

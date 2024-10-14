@@ -17,7 +17,6 @@ public class PostRequest {
     private Long id;
     private String title;
     private String content;
-    private String placeName;
     private List<MultipartFile> imageFiles = new ArrayList<>();
     private List<String> hashtags = new ArrayList<>();
 }

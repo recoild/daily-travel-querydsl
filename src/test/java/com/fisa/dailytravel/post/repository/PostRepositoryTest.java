@@ -76,21 +76,18 @@ public class PostRepositoryTest {
                         .title("test")
                         .content("test")
                         .userId(savedUser.getId()) // 실제 저장된 사용자 ID 사용
-                        .placeName("test")
                         .likesCount(0)
                         .build(),
                 Post.builder()
                         .title("test2")
                         .content("test2")
                         .userId(savedUser.getId())
-                        .placeName("test")
                         .likesCount(0)
                         .build(),
                 Post.builder()
                         .title("test3")
                         .content("test3")
                         .userId(savedUser.getId())
-                        .placeName("test")
                         .likesCount(0)
                         .build()
         );
