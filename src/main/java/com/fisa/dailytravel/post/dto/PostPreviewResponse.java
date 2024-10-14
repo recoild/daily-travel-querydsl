@@ -17,7 +17,6 @@ public class PostPreviewResponse {
     private String nickname;
     private String profileImagePath;
     private String content;
-    private String plcaeName;
     private int likeCount;
     private String thumbnail;
     private List<String> hashtags = new ArrayList<>();
@@ -26,13 +25,12 @@ public class PostPreviewResponse {
     private boolean mine;
 
     @QueryProjection
-    public PostPreviewResponse(Long id, String title, String nickname, String profileImagePath, String content, String plcaeName, int likeCount, String thumbnail, LocalDateTime creationDate, List<String> hashtags, boolean mine) {
+    public PostPreviewResponse(Long id, String title, String nickname, String profileImagePath, String content, int likeCount, String thumbnail, LocalDateTime creationDate, List<String> hashtags, boolean mine) {
         this.id = id;
         this.title = title;
         this.nickname = nickname;
         this.profileImagePath = profileImagePath;
         this.content = content;
-        this.plcaeName = plcaeName;
         this.likeCount = likeCount;
         this.thumbnail = thumbnail;
         this.creationDate = creationDate;

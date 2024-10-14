@@ -52,7 +52,6 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                                 post.content,
                                 user.nickname,
                                 user.profileImagePath,
-                                post.placeName,
                                 post.likesCount,
                                 post.createdAt,
                                 post.userId.eq(myUserId) // 본인 여부 체크
@@ -119,7 +118,6 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                                         user.nickname,
                                         user.profileImagePath,
                                         post.content,
-                                        post.placeName,
                                         post.likesCount,
                                         post.thumbnail,
                                         post.createdAt,
