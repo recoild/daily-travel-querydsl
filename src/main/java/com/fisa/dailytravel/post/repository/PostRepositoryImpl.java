@@ -6,6 +6,7 @@ import com.fisa.dailytravel.comment.models.QComment;
 import com.fisa.dailytravel.post.dto.PostPreviewResponse;
 import com.fisa.dailytravel.post.dto.PostResponse;
 import com.fisa.dailytravel.post.dto.QPostPreviewResponse;
+import com.fisa.dailytravel.post.dto.QPostResponse;
 import com.fisa.dailytravel.post.models.Image;
 import com.fisa.dailytravel.post.models.QHashtag;
 import com.fisa.dailytravel.post.models.QImage;
@@ -13,7 +14,6 @@ import com.fisa.dailytravel.post.models.QPost;
 import com.fisa.dailytravel.post.models.QPostHashtag;
 import com.fisa.dailytravel.user.models.QUser;
 import com.fisa.dailytravel.user.models.User;
-import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -46,7 +46,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .fetchOne();
 
         PostResponse response = queryFactory.select(
-                        Projections.constructor(PostResponse.class,
+                        new QPostResponse(
                                 post.id,
                                 post.title,
                                 post.content,
@@ -69,8 +69,9 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         List<String> theHashtags = queryFactory
                 .select(hashtag.hashtagName)
                 .from(hashtag)
-                .leftJoin(postHashtag).on(hashtag.id.eq(postHashtag.hashtagId))
-                .where(postHashtag.postId.eq(postId))
+                .innerJoin(postHashtag).on(postHashtag.hashtagId.eq(hashtag.id))
+                .innerJoin(post).on(post.id.eq(postHashtag.postId))
+                .where(post.id.eq(postId))
                 .fetch();
 
         List<CommentResponse> theComments = queryFactory
@@ -86,7 +87,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         response.setImages(images);
         response.setHashtags(theHashtags);
         response.setComments(theComments);
-        
+
         return response;
     }
 

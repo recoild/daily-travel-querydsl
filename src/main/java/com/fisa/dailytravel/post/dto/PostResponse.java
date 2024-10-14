@@ -32,6 +32,7 @@ public class PostResponse {
     private List<CommentResponse> comments;
     private boolean mine;
 
+    @QueryProjection
     public PostResponse(Long id,
                         String title,
                         String content,

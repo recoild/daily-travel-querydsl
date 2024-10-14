@@ -48,46 +48,33 @@ public class PostServiceImpl implements PostService {
                 .title(postRequest.getTitle())
                 .content(postRequest.getContent())
                 .build();
-        post = postRepository.save(post);
+        Post savedPost = postRepository.save(post);
 
         if (!postRequest.getHashtags().isEmpty()) {
-            //기존 해시태그 목록 검색
+            // 기존 해시태그 검색 및 매핑
             List<Hashtag> existingHashtags = hashTagRepository.findExistingHashtags(postRequest.getHashtags());
-            List<PostHashtag> postHashtags = postHashtagRepository.findAllByHashtags(existingHashtags);
+            List<String> existingHashtagNames = existingHashtags.stream()
+                    .map(Hashtag::getHashtagName)
+                    .toList();
 
-            //기존 목록에 없는 해시태그들 생성
-            List<Hashtag> newHashtags = new ArrayList<>();
-            boolean flag = false;
-            for (String hashtagName : postRequest.getHashtags()) {
-                for (Hashtag existingHashtag : existingHashtags) {
-                    if (existingHashtag.getHashtagName().equals(hashtagName)) {
-                        flag = true;
-                        break;
-                    }
-                }
-                if (!flag) {
-                    newHashtags.add(Hashtag.builder()
-                            .hashtagName(hashtagName)
-                            .build());
-                }
-            }
+            // 새로운 해시태그 생성
+            List<Hashtag> newHashtags = postRequest.getHashtags().stream()
+                    .filter(tag -> !existingHashtagNames.contains(tag))
+                    .map(tag -> Hashtag.builder().hashtagName(tag).build())
+                    .toList();
             hashTagRepository.saveAll(newHashtags);
 
-            //게시글-해시태그 연결
-            for (Hashtag hashtag : existingHashtags) {
-                PostHashtag postHashtag = PostHashtag.builder()
-                        .postId(post.getId())
-                        .hashtagId(hashtag.getId())
-                        .build();
-                postHashtags.add(postHashtag);
-            }
-            for (Hashtag hashtag : newHashtags) {
-                PostHashtag postHashtag = PostHashtag.builder()
-                        .postId(post.getId())
-                        .hashtagId(hashtag.getId())
-                        .build();
-                postHashtags.add(postHashtag);
-            }
+            // 기존 해시태그와 신규 해시태그를 병합
+            List<Hashtag> allHashtags = new ArrayList<>(existingHashtags);
+            allHashtags.addAll(newHashtags);
+
+            // 게시글-해시태그 관계 매핑 생성
+            List<PostHashtag> postHashtags = allHashtags.stream()
+                    .map(hashtag -> PostHashtag.builder()
+                            .postId(savedPost.getId())
+                            .hashtagId(hashtag.getId())
+                            .build())
+                    .toList();
             postHashtagRepository.saveAll(postHashtags);
         }
 
@@ -122,12 +109,12 @@ public class PostServiceImpl implements PostService {
                 byte[] imageFileData = imageFile.getBytes();
                 String fileName = imageFile.getOriginalFilename();
                 String contentType = imageFile.getContentType();
-                asyncImageUploadService.uploadImagesAsync(i++, imageFileData, fileName, contentType, post);
+                asyncImageUploadService.uploadImagesAsync(i++, imageFileData, fileName, contentType, savedPost);
             }
         }
 
 
-        return post;
+        return savedPost;
     }
 
     @Override
