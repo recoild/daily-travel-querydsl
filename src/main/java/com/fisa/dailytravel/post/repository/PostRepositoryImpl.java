@@ -7,13 +7,13 @@ import com.fisa.dailytravel.post.dto.PostPreviewResponse;
 import com.fisa.dailytravel.post.dto.PostResponse;
 import com.fisa.dailytravel.post.dto.QPostPreviewResponse;
 import com.fisa.dailytravel.post.models.Image;
-import com.fisa.dailytravel.post.models.Post;
 import com.fisa.dailytravel.post.models.QHashtag;
 import com.fisa.dailytravel.post.models.QImage;
 import com.fisa.dailytravel.post.models.QPost;
 import com.fisa.dailytravel.post.models.QPostHashtag;
 import com.fisa.dailytravel.user.models.QUser;
 import com.fisa.dailytravel.user.models.User;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -40,11 +40,25 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         QPostHashtag postHashtag = QPostHashtag.postHashtag;
         QComment comment = QComment.comment;
 
-        User theUser = queryFactory.selectFrom(user)
+        Long myUserId = queryFactory.select(user.id)
+                .from(user)
                 .where(user.uuid.eq(uuid))
                 .fetchOne();
 
-        Post thePost = queryFactory.selectFrom(post)
+        PostResponse response = queryFactory.select(
+                        Projections.constructor(PostResponse.class,
+                                post.id,
+                                post.title,
+                                post.content,
+                                user.nickname,
+                                user.profileImagePath,
+                                post.placeName,
+                                post.likesCount,
+                                post.createdAt,
+                                post.userId.eq(myUserId) // 본인 여부 체크
+                        ))
+                .from(post)
+                .join(user).on(user.id.eq(post.userId))
                 .where(post.id.eq(postId))
                 .fetchOne();
 
@@ -68,20 +82,12 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .limit(100)
                 .fetch();
 
-        return PostResponse.builder()
-                .id(thePost.getId())
-                .mine(thePost.getUserId().equals(theUser.getId()))
-                .title(thePost.getTitle())
-                .content(thePost.getContent())
-                .nickname(theUser.getNickname())
-                .profileImagePath(theUser.getProfileImagePath())
-                .placeName(thePost.getPlaceName())
-                .likesCount(thePost.getLikesCount())
-                .creationDate(thePost.getCreatedAt())
-                .images(theImage.stream().map(Image::getImagePath).toList())
-                .hashtags(theHashtags)
-                .comments(theComments)
-                .build();
+        List<String> images = theImage.stream().map(Image::getImagePath).toList();
+        response.setImages(images);
+        response.setHashtags(theHashtags);
+        response.setComments(theComments);
+        
+        return response;
     }
 
     @Override

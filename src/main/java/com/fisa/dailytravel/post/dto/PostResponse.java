@@ -6,12 +6,14 @@ import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
+@Setter
 @ToString
 @NoArgsConstructor
 @Builder
@@ -29,6 +31,26 @@ public class PostResponse {
     private List<String> hashtags;
     private List<CommentResponse> comments;
     private boolean mine;
+
+    public PostResponse(Long id,
+                        String title,
+                        String content,
+                        String nickname,
+                        String profileImagePath,
+                        String placeName,
+                        int likesCount,
+                        LocalDateTime creationDate,
+                        boolean mine) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.nickname = nickname;
+        this.profileImagePath = profileImagePath;
+        this.placeName = placeName;
+        this.likesCount = likesCount;
+        this.creationDate = creationDate;
+        this.mine = mine;
+    }
 
     @QueryProjection
     public PostResponse(
