@@ -26,7 +26,8 @@ spring:
         #        "[format_sql]": true
         temp:
           use_jdbc_metadata_access: false
-    database-platform: org.hibernate.dialect.MySQLDialect
+#    database-platform: org.hibernate.dialect.MySQLDialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
 
 server:
   error:

@@ -16,18 +16,25 @@ services:
   #    volumes:
   #      - oracle-data:/opt/oracle/oradata
 
-  mysql:
-    container_name: mysql
-    image: mysql:latest
+#  mysql:
+#    container_name: mysql
+#    image: mysql:latest
+#    environment:
+#      MYSQL_DATABASE: test
+#      MYSQL_USER: test
+#      MYSQL_PASSWORD: test
+#    ports:
+#      - "3306:3306"
+#    volumes:
+#      - mysql-data:/var/lib/mysql
+  postgres:
+    image: 'postgres:latest'
     environment:
-      MYSQL_DATABASE: test
-      MYSQL_USER: test
-      MYSQL_PASSWORD: test
+      - 'POSTGRES_DB=test'
+      - 'POSTGRES_PASSWORD=test'
+      - 'POSTGRES_USER=test'
     ports:
-      - "3306:3306"
-    volumes:
-      - mysql-data:/var/lib/mysql
-
+      - '5432:5432'
 
   redis:
     image: redis:latest
