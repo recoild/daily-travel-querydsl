@@ -1,6 +1,6 @@
-package com.fisa.dailytravel.image.repository;
+package com.fisa.dailytravel.post.repository;
 
-import com.fisa.dailytravel.image.models.Image;
+import com.fisa.dailytravel.post.models.Image;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

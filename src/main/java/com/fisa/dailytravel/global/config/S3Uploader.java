@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 
@@ -28,7 +29,7 @@ public class S3Uploader {
 
     // 이미지 S3에 업로드 후 이미지 URL 반환
     public String uploadImage(String directoryName, MultipartFile file) throws IOException {
-        String s3FileName = directoryName+"/" + file.getOriginalFilename();
+        String s3FileName = directoryName + "/" + file.getOriginalFilename();
 
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(file.getContentType());
@@ -38,6 +39,30 @@ public class S3Uploader {
         putObjectRequest.withCannedAcl(CannedAccessControlList.PublicRead);
         amazonS3.putObject(putObjectRequest);
 
+        return amazonS3.getUrl(bucket, s3FileName).toString();
+    }
+
+    //byte 배열을 받는 함수
+    public String uploadImage(String directoryName, byte[] fileData, String fileName, String contentType) throws IOException {
+        // S3 파일 이름 생성
+        String s3FileName = directoryName + "/" + fileName;
+
+        // 메타데이터 설정
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentType(contentType);
+        metadata.setContentLength(fileData.length);
+
+        // byte[] 데이터를 S3에 업로드
+        PutObjectRequest putObjectRequest = new PutObjectRequest(
+                bucket,
+                s3FileName,
+                new ByteArrayInputStream(fileData),
+                metadata
+        ).withCannedAcl(CannedAccessControlList.PublicRead);
+
+        amazonS3.putObject(putObjectRequest);
+
+        // 업로드된 파일의 URL 반환
         return amazonS3.getUrl(bucket, s3FileName).toString();
     }
 

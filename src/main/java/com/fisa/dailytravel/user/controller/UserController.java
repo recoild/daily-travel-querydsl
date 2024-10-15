@@ -3,12 +3,12 @@ package com.fisa.dailytravel.user.controller;
 import com.fisa.dailytravel.global.dto.ApiResponse;
 import com.fisa.dailytravel.user.dto.UserCreateRequest;
 import com.fisa.dailytravel.user.dto.UserCreateResponse;
-import com.fisa.dailytravel.user.dto.UserGetResponse;
+import com.fisa.dailytravel.user.dto.UserFeedResponse;
+import com.fisa.dailytravel.user.dto.UserInfoResponse;
 import com.fisa.dailytravel.user.dto.UserUpdateRequest;
 import com.fisa.dailytravel.user.dto.UserUpdateResponse;
 import com.fisa.dailytravel.user.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,23 +33,28 @@ public class UserController {
         userCreateRequest.setEmail(email);
         userCreateRequest.setUuid(principal.getName());
         userCreateRequest.setPicture(picture);
-        userService.signin(userCreateRequest);
+        UserCreateResponse userCreateResponse = userService.signin(userCreateRequest);
 
-        UserCreateResponse response = new UserCreateResponse("User created successfully");
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(userCreateResponse.getStatus()).body(userCreateResponse);
     }
 
-//    @GetMapping("/v1/user")
-//    public ApiResponse<UserGetResponse> getUser(JwtAuthenticationToken principal) throws Exception {
-//        String uuid = principal.getName();
-//
-//        UserGetResponse user = userService.getUser(uuid);
-//        if (user == null) {
-//            return ApiResponse.error(null);
-//        }
-//
-//        return ApiResponse.ok(user);
-//    }
+    @GetMapping("/v1/user")
+    public ResponseEntity<UserInfoResponse> getUser(JwtAuthenticationToken principal) throws Exception {
+        String uuid = principal.getName();
+
+        UserInfoResponse user = userService.getUserInfo(uuid);
+
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/v1/user/feed")
+    public ResponseEntity<UserFeedResponse> getUserFeed(JwtAuthenticationToken principal) throws Exception {
+        String uuid = principal.getName();
+
+        UserFeedResponse userFeed = userService.getUserFeed(uuid);
+
+        return ResponseEntity.ok(userFeed);
+    }
 
     @PutMapping("/v1/user")
     public ApiResponse<UserUpdateResponse> updateUser(@ModelAttribute UserUpdateRequest userUpdateRequest, JwtAuthenticationToken principal) throws IOException {
