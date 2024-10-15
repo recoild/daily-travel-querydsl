@@ -50,11 +50,11 @@ public class LikeRepositoryImpl implements LikeRepositoryCustom {
                                         user.nickname,  // 사용자 닉네임을 userId로 대체 (실제로는 User 엔티티로 처리 필요)
                                         user.profileImagePath,
                                         post.content,
-                                        post.placeName,
                                         post.likesCount,
                                         post.thumbnail,
                                         post.createdAt,
-                                        list(hashtag.hashtagName)  // 해시태그 목록을 그룹화하여 리스트로 만듦
+                                        list(hashtag.hashtagName),
+                                        like.userId.eq(userId)
                                 )
                         )
                 );
